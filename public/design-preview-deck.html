@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GCAO Website Design Preview — Client Deck</title>
+  <style>
+    @page { margin: 0.75in; size: letter; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: Georgia, "Times New Roman", serif; color: #1A2332; line-height: 1.5; }
+    .page { page-break-after: always; padding: 0 0 40px; }
+    .page:last-child { page-break-after: avoid; }
+    h1 { font-size: 28px; margin-bottom: 8px; }
+    h2 { font-size: 20px; margin: 24px 0 12px; color: #006B3F; }
+    h3 { font-size: 16px; margin-bottom: 8px; }
+    p, li { font-size: 13px; color: #444; }
+    .subtitle { font-size: 14px; color: #666; margin-bottom: 24px; }
+    .cover { text-align: center; padding-top: 120px; }
+    .cover h1 { font-size: 36px; }
+    .cover .org { color: #006B3F; font-size: 14px; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 16px; }
+    .swatch-row { display: flex; gap: 8px; margin: 12px 0; }
+    .swatch { width: 32px; height: 32px; border-radius: 4px; border: 1px solid #ccc; }
+    table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 12px; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    th { background: #F5F5F0; }
+    .pick-box { border: 2px solid #006B3F; border-radius: 8px; padding: 24px; margin-top: 24px; text-align: center; }
+    .pick-box p { font-size: 16px; margin-bottom: 16px; }
+    .pick-options { display: flex; justify-content: center; gap: 32px; font-size: 18px; font-weight: bold; flex-wrap: wrap; }
+    .checklist li { margin: 6px 0; list-style: none; }
+    .checklist li::before { content: "☐ "; }
+    @media print {
+      .no-print { display: none; }
+      body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+    .print-btn { position: fixed; top: 16px; right: 16px; background: #006B3F; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-size: 14px; z-index: 100; }
+  </style>
+</head>
+<body>
+  <button class="print-btn no-print" onclick="window.print()">Save as PDF / Print</button>
+
+  <div class="page cover">
+    <p class="org">Ghanaian-Canadian Association of Ontario</p>
+    <h1>Website Redesign</h1>
+    <p class="subtitle">Design Preview Options — Client Review Deck</p>
+    <p style="margin-top: 40px; font-size: 13px; color: #888;">Prepared for client review · September 2026</p>
+  </div>
+
+  <div class="page">
+    <h1>Overview</h1>
+    <p class="subtitle">Four homepage design directions for the GCAO website redesign</p>
+    <p>Each preview uses the <strong>same GCAO content</strong> so you compare design direction, not copy. All four are mobile-responsive and use the official GCAO circular logo and brand colors (red, gold, green).</p>
+
+    <h2>How to Review</h2>
+    <ol style="margin-left: 20px; font-size: 13px; color: #444;">
+      <li>Open each live preview URL on desktop and phone</li>
+      <li>Check: Does it feel modern? Easy to navigate? Trustworthy?</li>
+      <li>Consider your audience: donors, families, youth, seniors</li>
+      <li>Pick Option A, B, C, or D on the final page</li>
+    </ol>
+
+    <h2>Live Preview URLs</h2>
+    <table>
+      <tr><th>Option</th><th>URL</th></tr>
+      <tr><td><strong>Option A</strong></td><td>/preview/foundation</td></tr>
+      <tr><td><strong>Option B</strong></td><td>/preview/community-hub</td></tr>
+      <tr><td><strong>Option C</strong></td><td>/preview/bridge</td></tr>
+      <tr><td><strong>Option D</strong></td><td>/preview/diaspora</td></tr>
+    </table>
+    <p style="margin-top: 12px; font-size: 12px; color: #888;">Replace with your deployed URL prefix, e.g. https://gcao-website.vercel.app/preview/foundation</p>
+  </div>
+
+  <div class="page">
+    <h1>Option A</h1>
+    <p class="subtitle">Premium, story-driven, editorial</p>
+
+    <div class="swatch-row">
+      <div class="swatch" style="background:#1A2332" title="Navy"></div>
+      <div class="swatch" style="background:#FAF8F5" title="Cream"></div>
+      <div class="swatch" style="background:#C9A227" title="Gold"></div>
+    </div>
+
+    <h3>Design Characteristics</h3>
+    <ul style="margin-left: 20px; font-size: 13px;">
+      <li>Full-bleed cinematic hero with large editorial headline</li>
+      <li>Mission statement as a prominent blockquote</li>
+      <li>Story-driven news cards with category tags on dark background</li>
+      <li>Minimal navigation, single Donate CTA</li>
+      <li>Navy + gold palette — premium, warm, institutional</li>
+    </ul>
+
+    <h3>Best For</h3>
+    <p>Donor trust, storytelling, board-facing polish, organizations emphasizing legacy and impact narratives.</p>
+  </div>
+
+  <div class="page">
+    <h1>Option B</h1>
+    <p class="subtitle">Bold, energetic, program-first</p>
+
+    <div class="swatch-row">
+      <div class="swatch" style="background:#006B3F" title="Green"></div>
+      <div class="swatch" style="background:#FCD116" title="Gold"></div>
+      <div class="swatch" style="background:#CE1126" title="Red"></div>
+    </div>
+
+    <h3>Design Characteristics</h3>
+    <ul style="margin-left: 20px; font-size: 13px;">
+      <li>Question-led hero: "How do we strengthen Ghanaian-Canadian communities?"</li>
+      <li>Bold uppercase headings, green header bar</li>
+      <li>Three pillar cards with colored top borders</li>
+      <li>Impact stats row, featured program with "Register Now"</li>
+      <li>Full Ghana flag palette — energetic, action-oriented</li>
+    </ul>
+
+    <h3>Best For</h3>
+    <p>Volunteers, program participants, youth and families, organizations prioritizing program enrollment and community engagement.</p>
+  </div>
+
+  <div class="page">
+    <h1>Option C</h1>
+    <p class="subtitle">Modern balance of layout clarity and community energy</p>
+
+    <div class="swatch-row">
+      <div class="swatch" style="background:#FFFFFF" title="White"></div>
+      <div class="swatch" style="background:#006B3F" title="Green"></div>
+      <div class="swatch" style="background:#FCD116" title="Gold"></div>
+      <div class="swatch" style="background:#F5F5F0" title="Warm gray"></div>
+    </div>
+
+    <h3>Design Characteristics</h3>
+    <ul style="margin-left: 20px; font-size: 13px;">
+      <li>Split hero: mission headline + community photo side by side</li>
+      <li>Clean white header, green + gold accents</li>
+      <li>Card-based program grid with hover effects</li>
+      <li>Featured event banner, 2-column news layout</li>
+      <li>Resource Hub callout with contact details</li>
+    </ul>
+
+    <h3>Best For</h3>
+    <p>Broad audience — seniors, youth, donors, and first-time visitors. Balances polish with approachability.</p>
+  </div>
+
+  <div class="page">
+    <h1>Option D</h1>
+    <p class="subtitle">Cultural identity-forward · Ghanaian-Canadian belonging</p>
+
+    <div class="swatch-row">
+      <div class="swatch" style="background:#CE1126" title="Red"></div>
+      <div class="swatch" style="background:#FCD116" title="Gold"></div>
+      <div class="swatch" style="background:#006B3F" title="Green"></div>
+      <div class="swatch" style="background:#FAF8F5" title="Cream"></div>
+    </div>
+
+    <h3>Design Characteristics</h3>
+    <ul style="margin-left: 20px; font-size: 13px;">
+      <li>Hero: "Where Ghanaian roots meet Canadian community" with kente-inspired accent bands</li>
+      <li>Flag-color stripe beneath navigation (red, gold, green)</li>
+      <li>Pillar cards with colored left borders in flag palette</li>
+      <li>Intergenerational photo grid, serif display headings</li>
+      <li>Full Ghana palette on warm cream — identity and culture at the forefront</li>
+    </ul>
+
+    <h3>Best For</h3>
+    <p>Community members who want the site to reflect Ghanaian-Canadian identity prominently — cultural events, diaspora initiatives, and intergenerational belonging.</p>
+  </div>
+
+  <div class="page">
+    <h1>Comparison at a Glance</h1>
+    <table>
+      <tr><th></th><th>Option A</th><th>Option B</th><th>Option C</th><th>Option D</th></tr>
+      <tr><td>Hero style</td><td>Cinematic full-bleed</td><td>Question-led, centered</td><td>Split text + photo</td><td>Cultural band + identity headline</td></tr>
+      <tr><td>Primary color</td><td>Navy</td><td>Green</td><td>Green on white</td><td>Full flag palette on cream</td></tr>
+      <tr><td>Typography</td><td>Editorial serif</td><td>Bold sans, uppercase</td><td>Clean sans</td><td>Serif display + sans</td></tr>
+      <tr><td>Energy</td><td>Calm, premium</td><td>Bold, energetic</td><td>Balanced, friendly</td><td>Warm, culturally rooted</td></tr>
+      <tr><td>Best audience</td><td>Donors, board</td><td>Volunteers, youth</td><td>Everyone</td><td>Community identity</td></tr>
+    </table>
+
+    <h2>Client Review Checklist</h2>
+    <ul class="checklist">
+      <li>Does the homepage feel modern and trustworthy?</li>
+      <li>Is it easy to find Programs, Events, and Contact?</li>
+      <li>Does the design reflect Ghanaian-Canadian identity?</li>
+      <li>Does it work well on mobile?</li>
+      <li>Which direction feels right for your primary audience?</li>
+    </ul>
+
+    <div class="pick-box">
+      <p><strong>Our chosen direction is:</strong></p>
+      <div class="pick-options">
+        <span>☐ Option A</span>
+        <span>☐ Option B</span>
+        <span>☐ Option C</span>
+        <span>☐ Option D</span>
+      </div>
+      <p style="margin-top: 24px; font-size: 13px; color: #666;">Client signature: _________________________ Date: _____________</p>
+    </div>
+  </div>
+</body>
+</html>
