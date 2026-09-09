@@ -17,6 +17,7 @@ export const siteContent = {
     { label: "Programs", href: "#programs" },
     { label: "Events", href: "#events" },
     { label: "News", href: "#news" },
+    { label: "Get Involved", href: "#get-involved" },
     { label: "Contact", href: "#contact" },
   ],
   pillars: [
@@ -92,35 +93,27 @@ export const siteContent = {
 
 export const previewMeta = [
   {
-    id: "foundation",
+    id: "meridian",
     option: "A",
     description:
-      "Premium, story-driven, editorial feel. Cinematic hero, navy + gold palette, mission as anchor.",
-    bestFor: "Donor trust, storytelling, board-facing polish",
-    href: "/preview/foundation",
+      "Crisp and institutional. White canvas, hairline grid, split hero, numbered sections, quiet green accent.",
+    bestFor: "Funders, partners, and credibility",
+    href: "/preview/meridian",
   },
   {
-    id: "community-hub",
+    id: "kente",
     option: "B",
     description:
-      "Bold, energetic, program-first. Question-led hero, Ghana green palette, clear action CTAs.",
-    bestFor: "Volunteers, program participants, youth and families",
-    href: "/preview/community-hub",
+      "Warm and vibrant. Cream canvas, rounded cards, Ghana-flag colour blocking, and a highlighted headline.",
+    bestFor: "Families, members, and everyday visitors",
+    href: "/preview/kente",
   },
   {
-    id: "bridge",
+    id: "sankofa",
     option: "C",
     description:
-      "Modern balance of layout clarity and community energy. Split hero, clean layout, green + gold on white.",
-    bestFor: "Broad audience — seniors, youth, donors, first-time visitors",
-    href: "/preview/bridge",
-  },
-  {
-    id: "diaspora",
-    option: "D",
-    description:
-      "Ghanaian-Canadian identity at the forefront. Flag palette, kente-inspired accents, diaspora storytelling.",
-    bestFor: "Community identity, cultural events, intergenerational belonging",
-    href: "/preview/diaspora",
+      "Dark and immersive. Deep forest canvas, gold light, a scrolling photo band, and panels that open on hover.",
+    bestFor: "A bold, memorable brand statement",
+    href: "/preview/sankofa",
   },
 ];

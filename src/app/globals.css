@@ -45,6 +45,30 @@
   .btn-premium {
     @apply transition-transform duration-200 hover:scale-[1.02] active:scale-[0.98];
   }
+
+  .glass {
+    @apply border border-white/20 bg-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.18)] backdrop-blur-xl;
+  }
+
+  .glass-dark {
+    @apply border border-white/10 bg-black/30 shadow-[0_8px_32px_rgba(0,0,0,0.35)] backdrop-blur-xl;
+  }
+
+  .hover-lift {
+    @apply transition-all duration-500 hover:-translate-y-1.5;
+  }
+
+  .img-zoom {
+    @apply transition-transform duration-[900ms] ease-out group-hover:scale-[1.06];
+  }
+
+  .link-arrow > span {
+    @apply inline-block transition-transform duration-300;
+  }
+
+  .link-arrow:hover > span {
+    @apply translate-x-1;
+  }
 }
 
 @keyframes fadeInUp {
@@ -91,9 +115,180 @@
   animation-delay: 400ms;
 }
 
+/* Slow cinematic drift on hero photography */
+@keyframes kenBurns {
+  from {
+    transform: scale(1) translate3d(0, 0, 0);
+  }
+  to {
+    transform: scale(1.12) translate3d(0, -1.5%, 0);
+  }
+}
+
+/* Gentle vertical float for glass panels */
+@keyframes floatSoft {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-7px);
+  }
+}
+
+/* Gold light sweeping across an eyebrow label */
+@keyframes shimmer {
+  0% {
+    background-position: 200% center;
+  }
+  100% {
+    background-position: -200% center;
+  }
+}
+
+/* Masked word rise for headline reveals */
+@keyframes wordRise {
+  from {
+    opacity: 0;
+    transform: translateY(110%) rotate(2deg);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) rotate(0deg);
+  }
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Highlighter bar drawing itself behind a word */
+@keyframes markerSweep {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* Headline resolving out of a soft blur */
+@keyframes blurIn {
+  from {
+    opacity: 0;
+    filter: blur(14px);
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+  }
+}
+
+@keyframes ringSpin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-ken-burns {
+  animation: kenBurns 22s ease-out both;
+}
+
+.animate-float {
+  animation: floatSoft 7s ease-in-out infinite;
+}
+
+.animate-ring-spin {
+  animation: ringSpin 38s linear infinite;
+}
+
+.animate-blur-in {
+  animation: blurIn 1.1s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.animate-marker {
+  transform-origin: left center;
+  animation: markerSweep 0.9s cubic-bezier(0.22, 1, 0.36, 1) 400ms both;
+}
+
+.text-shimmer {
+  background: linear-gradient(
+    90deg,
+    #fcd116 0%,
+    #fff8d6 20%,
+    #fcd116 40%,
+    #fcd116 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shimmer 6s linear infinite;
+}
+
+.reveal-word {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+
+.reveal-word > span {
+  display: inline-block;
+  animation: wordRise 0.85s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 34s linear infinite;
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.7s ease-out both;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.6s ease-out both;
+}
+
+.delay-500 {
+  animation-delay: 500ms;
+}
+
+.delay-600 {
+  animation-delay: 600ms;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animate-fade-in-up,
-  .animate-fade-in {
+  .animate-fade-in,
+  .animate-ken-burns,
+  .animate-float,
+  .animate-ring-spin,
+  .animate-marker,
+  .animate-blur-in,
+  .text-shimmer,
+  .marquee-track,
+  .reveal-word > span {
     animation: none;
+  }
+
+  .text-shimmer {
+    color: #fcd116;
+  }
+
+  .hover-lift,
+  .img-zoom {
+    transition: none;
   }
 }
