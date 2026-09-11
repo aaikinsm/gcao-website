@@ -1,10 +1,9 @@
 import Link from "next/link";
 import { previewMeta } from "@/lib/content";
 
-const delayClasses = ["delay-100", "delay-200", "delay-300"];
+const delayClasses = ["delay-100", "delay-200"];
 const barClasses = [
-  "bg-white ring-1 ring-black/10",
-  "bg-gradient-to-r from-[#006B3F] via-[#FCD116] to-[#CE1126]",
+  "bg-[#FFFBF2] ring-1 ring-black/10",
   "bg-[#06110D]",
 ];
 
@@ -26,10 +25,11 @@ export default function HomePage() {
 
       <main className="mx-auto max-w-6xl px-6 py-12">
         <p className="animate-fade-in-up max-w-2xl text-lg text-gray-700">
-          Three new homepage directions — modern, professional, and built with real GCAO photography.
+          Two homepage themes of the same Sankofa direction — light and dark — with a full-bleed
+          video hero and interactive text.
         </p>
 
-        <div className="mt-10 grid gap-6 md:grid-cols-3">
+        <div className="mt-10 grid gap-6 md:grid-cols-2">
           {previewMeta.map((preview, index) => (
             <article
               key={preview.id}
@@ -91,8 +91,8 @@ export default function HomePage() {
             <li>✓ Is it easy to find Programs, Events, and Contact?</li>
             <li>✓ Does the design reflect Ghanaian-Canadian identity?</li>
             <li>✓ Does it work well on mobile? (resize your browser)</li>
-            <li>✓ Which direction feels right for donors vs. families?</li>
-            <li>✓ Pick A, B, or C</li>
+            <li>✓ Which theme feels right — light or dark?</li>
+            <li>✓ Pick A or B</li>
           </ul>
         </section>
       </main>

@@ -6,6 +6,7 @@ interface LogoProps {
   showText?: boolean;
   className?: string;
   textClassName?: string;
+  href?: string;
 }
 
 export function Logo({
@@ -13,9 +14,10 @@ export function Logo({
   showText = true,
   className = "",
   textClassName = "",
+  href = "/",
 }: LogoProps) {
   return (
-    <Link href="/" className={`flex items-center gap-3 ${className}`}>
+    <Link href={href} className={`flex items-center gap-3 ${className}`}>
       <Image
         src="/logo.jpg"
         alt="GCAO logo"
