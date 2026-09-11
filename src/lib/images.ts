@@ -4,48 +4,48 @@ export const siteImages = {
     alt: "GCAO Women's Wing celebrating Black History Month",
   },
   heroCommunity: {
-    src: "/images/seniors-picnic.jpg",
-    alt: "GCAO seniors gathering at a community picnic",
+    src: "/images/programs/homework.jpg",
+    alt: "GCAO Homework Club students in an online class",
   },
   heroGathering: {
-    src: "/images/mhfa.jpg",
-    alt: "Community members gathered for a GCAO program",
+    src: "/images/vigil.jpg",
+    alt: "GCAO community standing together outdoors",
   },
   heroEvent: {
-    src: "/images/mcs.jpg",
-    alt: "Speakers on stage at a GCAO celebration",
+    src: "/images/programs/homework.jpg",
+    alt: "GCAO Homework Club students in an online class",
   },
   heroWide: {
     src: "/images/heritage-wide.jpg",
     alt: "Ghanaian-Canadian Heritage celebration",
   },
   programs: {
-    src: "/images/mental-health.jpg",
-    alt: "Mental Health First Aid training with GCAO participants",
+    src: "/images/programs/grocery.jpg",
+    alt: "GCAO Resource Hub grocery and food program",
   },
   events: {
     src: "/images/emancipation.jpg",
     alt: "Emancipation Month community celebration",
   },
   newsHealth: {
-    src: "/images/boat-cruise.jpg",
-    alt: "GCAO Women's well-being event",
+    src: "/images/mental-health.jpg",
+    alt: "Mental Health First Aid training with GCAO participants",
   },
   newsCulture: {
-    src: "/images/conference.jpg",
-    alt: "GCAO Women's Empowerment Conference",
+    src: "/images/emancipation.jpg",
+    alt: "Emancipation Month Continental Africa-Sankofa celebration",
   },
   newsPrograms: {
-    src: "/images/clothing-drive.jpg",
-    alt: "GCAO winter clothing drive",
+    src: "/images/programs/seniors.jpg",
+    alt: "GCAO seniors program at the Resource Hub",
   },
   hub: {
     src: "/images/vigil.jpg",
     alt: "GCAO community standing together outdoors",
   },
   volunteer: {
-    src: "/images/womens-conf.jpg",
-    alt: "GCAO volunteers and members at a conference",
+    src: "/images/clothing-drive.jpg",
+    alt: "GCAO volunteers at a winter clothing drive",
   },
 };
 

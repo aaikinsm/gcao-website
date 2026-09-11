@@ -16,10 +16,12 @@ const sora = Sora({
 const display = { fontFamily: "var(--font-sankofa), sans-serif" };
 
 const aboutNav = [
-  { label: "Mission & history", href: "#mission" },
+  { label: "Mission & vision", href: "#mission" },
+  { label: "History", href: "#history" },
   { label: "Team", href: "#team" },
-  { label: "Impact stats", href: "#impact" },
-  { label: "Projects & fundraising", href: "#projects" },
+  { label: "Objectives", href: "#objectives" },
+  { label: "Impact", href: "#impact" },
+  { label: "Projects", href: "#projects" },
 ];
 
 interface SankofaAboutProps {
@@ -33,6 +35,9 @@ export function SankofaAbout({ theme, optionLabel, basePath }: SankofaAboutProps
   const isLight = theme === "light";
   const donateHref = `${basePath}#donate`;
   const historyParagraphs = siteContent.about.history.split("\n\n");
+  const hoverOverlay = isLight
+    ? "bg-gradient-to-t from-[#006B3F]/55 via-[#006B3F]/15 to-transparent"
+    : "bg-gradient-to-t from-black/70 via-[#FCD116]/15 to-transparent";
 
   return (
     <div className={`${sora.variable} ${t.page}`}>
@@ -85,24 +90,17 @@ export function SankofaAbout({ theme, optionLabel, basePath }: SankofaAboutProps
       </section>
 
       <AnimatedSection id="mission" className="px-6 py-24 md:px-10 md:py-32">
-        <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-12">
-          <div className="lg:col-span-4">
-            <p className={`text-[11px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>
-              Mission & history
-            </p>
-            <h2 className="mt-4 text-3xl font-semibold tracking-tight md:text-4xl" style={display}>
-              Why we exist
-            </h2>
-          </div>
-          <div className="space-y-10 lg:col-span-8">
-            <div>
-              <p className={`text-[11px] font-semibold uppercase tracking-[0.22em] ${t.eyebrow}`}>
-                Our Mission
-              </p>
-              <p className="mt-3 text-xl leading-relaxed md:text-2xl" style={display}>
-                {siteContent.mission}
-              </p>
-            </div>
+        <div className="mx-auto max-w-6xl">
+          <p className={`text-[11px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>
+            Mission & vision
+          </p>
+          <h2 className="mt-4 max-w-3xl text-3xl font-semibold tracking-tight md:text-5xl" style={display}>
+            Why we exist
+          </h2>
+          <p className="mt-10 max-w-3xl text-xl leading-relaxed md:text-2xl" style={display}>
+            {siteContent.mission}
+          </p>
+          <div className="mt-14 grid gap-10 md:grid-cols-2 md:gap-12">
             <div>
               <p className={`text-[11px] font-semibold uppercase tracking-[0.22em] ${t.eyebrow}`}>
                 Our Vision
@@ -119,39 +117,31 @@ export function SankofaAbout({ theme, optionLabel, basePath }: SankofaAboutProps
                 {siteContent.about.whatWeDo}
               </p>
             </div>
-            <div className="space-y-4">
-              <p className={`text-[11px] font-semibold uppercase tracking-[0.22em] ${t.eyebrow}`}>
-                History
-              </p>
-              {historyParagraphs.map((paragraph) => (
-                <p key={paragraph.slice(0, 48)} className={`text-base leading-relaxed ${t.cardMuted}`}>
-                  {paragraph}
-                </p>
-              ))}
-            </div>
-            <div>
-              <p className={`text-[11px] font-semibold uppercase tracking-[0.22em] ${t.eyebrow}`}>
-                Objectives
-              </p>
-              <ul className={`mt-4 space-y-3 text-sm leading-relaxed ${t.cardMuted}`}>
-                {siteContent.about.objectives.map((objective) => (
-                  <li key={objective} className="flex gap-3">
-                    <span
-                      className={`mt-2 h-1.5 w-1.5 shrink-0 rounded-full ${
-                        isLight ? "bg-[#006B3F]" : "bg-[#FCD116]"
-                      }`}
-                      aria-hidden
-                    />
-                    <span>{objective}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
           </div>
         </div>
       </AnimatedSection>
 
-      <AnimatedSection id="team" className={`border-y px-6 py-24 md:px-10 md:py-32 ${t.statsWrap}`}>
+      <AnimatedSection id="history" className={`border-y px-6 py-24 md:px-10 md:py-32 ${t.statsWrap}`}>
+        <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-12">
+          <div className="lg:col-span-4">
+            <p className={`text-[11px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>
+              History
+            </p>
+            <h2 className="mt-4 text-3xl font-semibold tracking-tight md:text-4xl" style={display}>
+              From the 1970s to today
+            </h2>
+          </div>
+          <div className="space-y-6 lg:col-span-8">
+            {historyParagraphs.map((paragraph) => (
+              <p key={paragraph.slice(0, 48)} className={`text-base leading-relaxed md:text-lg ${t.cardMuted}`}>
+                {paragraph}
+              </p>
+            ))}
+          </div>
+        </div>
+      </AnimatedSection>
+
+      <AnimatedSection id="team" className="px-6 py-24 md:px-10 md:py-32">
         <div className="mx-auto max-w-6xl">
           <p className={`text-[11px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>
             Team
@@ -160,20 +150,27 @@ export function SankofaAbout({ theme, optionLabel, basePath }: SankofaAboutProps
             Leadership & stewards
           </h2>
           <p className={`mt-4 max-w-xl text-sm ${t.sectionMuted}`}>
-            {siteContent.about.whatWeDo}
+            Executives and group leaders serving the GTA community.
           </p>
           <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {siteContent.about.team.map((member) => (
               <article
                 key={member.name}
-                className={`overflow-hidden rounded-3xl border ${t.card} ${t.panelBorder}`}
+                className={`group overflow-hidden rounded-3xl border ${t.card} ${t.panelBorder}`}
               >
-                <SiteImage
-                  src={member.image}
-                  alt={member.alt}
-                  className="aspect-[3/4]"
-                  sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                />
+                <div className="relative aspect-[3/4] overflow-hidden">
+                  <SiteImage
+                    src={member.image}
+                    alt={member.alt}
+                    className="absolute inset-0 h-full w-full"
+                    imageClassName="img-zoom"
+                    sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                  />
+                  <div
+                    className={`pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 ${hoverOverlay}`}
+                    aria-hidden
+                  />
+                </div>
                 <div className="p-6">
                   <h3 className="text-lg font-semibold tracking-tight" style={display}>
                     {member.name}
@@ -183,6 +180,30 @@ export function SankofaAbout({ theme, optionLabel, basePath }: SankofaAboutProps
               </article>
             ))}
           </div>
+        </div>
+      </AnimatedSection>
+
+      <AnimatedSection id="objectives" className={`border-y px-6 py-24 md:px-10 md:py-32 ${t.statsWrap}`}>
+        <div className="mx-auto max-w-6xl">
+          <p className={`text-[11px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>
+            Objectives
+          </p>
+          <h2 className="mt-4 max-w-2xl text-3xl font-semibold tracking-tight md:text-5xl" style={display}>
+            What we work toward
+          </h2>
+          <ul className={`mt-14 grid gap-x-10 gap-y-5 md:grid-cols-2 ${t.cardMuted}`}>
+            {siteContent.about.objectives.map((objective) => (
+              <li key={objective} className="flex gap-3 text-sm leading-relaxed md:text-[15px]">
+                <span
+                  className={`mt-2 h-1.5 w-1.5 shrink-0 rounded-full ${
+                    isLight ? "bg-[#006B3F]" : "bg-[#FCD116]"
+                  }`}
+                  aria-hidden
+                />
+                <span>{objective}</span>
+              </li>
+            ))}
+          </ul>
         </div>
       </AnimatedSection>
 

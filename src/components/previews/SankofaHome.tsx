@@ -8,6 +8,7 @@ import { SiteImage } from "@/components/shared/SiteImage";
 import { VideoHero } from "@/components/shared/VideoHero";
 import { SankofaFooter } from "@/components/previews/SankofaFooter";
 import { SankofaHeader } from "@/components/previews/SankofaHeader";
+import { ServePanels } from "@/components/previews/ServePanels";
 import { sankofaThemes, type SankofaTheme } from "@/components/previews/sankofaTheme";
 import { siteContent } from "@/lib/content";
 import { newsImages, siteImages } from "@/lib/images";
@@ -157,50 +158,36 @@ export function SankofaHome({ theme, optionLabel, basePath }: SankofaHomeProps) 
                 How we serve
               </h2>
             </div>
-            <p className={`max-w-xs text-sm ${t.sectionMuted}`}>
-              <AnimatedHeadline
-                before="Built for"
-                words={["youth", "seniors", "newcomers", "families"]}
-                after="across Ontario"
-                className="text-sm"
-              />
-            </p>
+            <div className="flex flex-col items-start gap-3 sm:items-end">
+              <p className={`max-w-xs text-sm ${t.sectionMuted}`}>
+                <AnimatedHeadline
+                  before="Built for"
+                  words={["youth", "seniors", "newcomers", "families"]}
+                  after="across Ontario"
+                  className="text-sm"
+                />
+              </p>
+              <a
+                href={`${basePath}/programs`}
+                className={`link-arrow text-sm font-semibold ${
+                  isLight ? "text-[#006B3F]" : "text-[#FCD116]"
+                }`}
+              >
+                View all programs <span aria-hidden>→</span>
+              </a>
+            </div>
           </div>
 
-          <div className="mt-14 flex flex-col gap-4 md:h-[460px] md:flex-row">
-            {panels.map((panel) => (
-              <article
-                key={panel.title}
-                className={`group relative h-52 flex-1 overflow-hidden rounded-3xl border transition-all duration-700 ease-out md:h-full md:hover:flex-[2.4] ${t.panelBorder}`}
-              >
-                <SiteImage
-                  {...panel.image}
-                  className="absolute inset-0"
-                  imageClassName="img-zoom"
-                  overlay={t.panelOverlay}
-                  sizes="(min-width: 768px) 40vw, 100vw"
-                />
-                <div className="absolute inset-x-0 bottom-0 p-6 text-white md:p-7">
-                  <h3
-                    className={`text-xl font-semibold tracking-tight transition-colors md:text-2xl ${t.panelHover}`}
-                    style={display}
-                  >
-                    {panel.title}
-                  </h3>
-                  <p
-                    className={`mt-3 max-w-sm text-sm leading-relaxed transition-all duration-500 md:max-h-0 md:overflow-hidden md:opacity-0 md:group-hover:max-h-40 md:group-hover:opacity-100 ${t.panelDesc}`}
-                  >
-                    {panel.description}
-                  </p>
-                </div>
-                <span
-                  className={`absolute right-6 top-6 h-8 w-8 rounded-full border text-center text-sm leading-7 transition-transform duration-500 group-hover:rotate-45 ${t.panelPlus}`}
-                >
-                  +
-                </span>
-              </article>
-            ))}
-          </div>
+          <ServePanels
+            panels={panels}
+            tokens={{
+              panelBorder: t.panelBorder,
+              panelOverlay: t.panelOverlay,
+              panelHover: t.panelHover,
+              panelDesc: t.panelDesc,
+              panelPlus: t.panelPlus,
+            }}
+          />
         </div>
       </AnimatedSection>
 

@@ -113,61 +113,61 @@ export const siteContent = {
       {
         name: "Emmanuel Duodu",
         role: "President",
-        image: "/images/team/emmanuel-duodu.png",
+        image: "/images/team/emmanuel-duodu.jpeg",
         alt: "Portrait of Emmanuel Duodu, GCAO President",
       },
       {
         name: "Mary Akuamoah-Boateng",
         role: "Vice President",
-        image: "/images/team/mary-akuamoah-boateng.png",
+        image: "/images/team/mary-akuamoah-boateng.jpeg",
         alt: "Portrait of Mary Akuamoah-Boateng, GCAO Vice President",
       },
       {
         name: "Juliet Opoku",
         role: "Vice President",
-        image: "/images/team/juliet-opoku.png",
+        image: "/images/team/juliet-opoku.jpeg",
         alt: "Portrait of Juliet Opoku, GCAO Vice President",
       },
       {
         name: "Gabriel Odartei",
         role: "Executive Secretary",
-        image: "/images/team/gabriel-odartei.png",
+        image: "/images/team/gabriel-odartei.jpeg",
         alt: "Portrait of Gabriel Odartei, GCAO Executive Secretary",
       },
       {
         name: "Michael Ampah Baiden",
         role: "Youth Wing Leader",
-        image: "/images/team/michael-ampah-baiden.png",
+        image: "/images/team/michael-ampah-baiden.jpeg",
         alt: "Portrait of Michael Ampah Baiden, GCAO Youth Wing Leader",
       },
       {
         name: "Maud Cole",
         role: "Women's Group Lead",
-        image: "/images/team/maud-cole.png",
+        image: "/images/team/maud-cole.jpeg",
         alt: "Portrait of Maud Cole, GCAO Women's Group Lead",
       },
       {
         name: "Mrs. Felicia Botchway",
         role: "Seniors Wing Chair",
-        image: "/images/team/felicia-botchway.png",
+        image: "/images/team/felicia-botchway.jpeg",
         alt: "Portrait of Mrs. Felicia Botchway, GCAO Seniors Wing Chair",
       },
       {
         name: "Naomi Apenteng",
         role: "Welfare Chair",
-        image: "/images/team/naomi-apenteng.png",
+        image: "/images/team/naomi-apenteng.jpeg",
         alt: "Portrait of Naomi Apenteng, GCAO Welfare Chair",
       },
       {
         name: "Joseph Kingsley Eyiah",
         role: "Homework Club Leader",
-        image: "/images/team/joseph-kingsley-eyiah.png",
+        image: "/images/team/joseph-kingsley-eyiah.jpeg",
         alt: "Portrait of Joseph Kingsley Eyiah, Leader of the GCAO Homework Club",
       },
       {
         name: "Abeeku Van Dyke",
         role: "PRO",
-        image: "/images/team/abeeku-van-dyke.png",
+        image: "/images/team/abeeku-van-dyke.jpeg",
         alt: "Portrait of Abeeku Van Dyke, GCAO PRO",
       },
     ],
@@ -191,6 +191,132 @@ export const siteContent = {
         cta: "Fuel the next campaign",
       },
     ],
+  },
+  programsPage: {
+    intro:
+      "Social, cultural, educational, and wellness programs serving Ghanaian-Canadians across Ontario — from after-school learning to seniors, family wings, mental health training, and diaspora advocacy.",
+    homework: {
+      title: "Homework Club",
+      eyebrow: "Education",
+      summary:
+        "One of GCAO’s first programs, the Homework Club is an after-school program for elementary to high school students aged 6 to 18. It supports homework completion and broader skill development, run by registered and retired teachers and experienced community members.",
+      context:
+        "Nearly 50% of Ontario students have failed to meet standards in math and English on EQAO assessments. The Homework Club offers valuable support for working parents and new immigrant families who may face economic or language barriers.",
+      mission:
+        "To develop a creative, respectful, and intellectual learning environment for the Ghanaian-Canadian community — empowering young leaders to mentor and assist the next generation.",
+      offers: [
+        "Homework support",
+        "Mentorship",
+        "Summer camp",
+        "Language and cultural education",
+        "Seminars and educational opportunities",
+      ],
+      schedule: "Every Sunday afternoon from 3:30 p.m. to 5:00 p.m.",
+      contact: "asp@gcaocanada.org",
+      contactLabel: "Mr. Eyiah",
+      image: "/images/programs/homework.jpg",
+      alt: "GCAO Homework Club online classes",
+    },
+    community: {
+      title: "Youth · Seniors · Women · Men",
+      eyebrow: "Community wings",
+      summary:
+        "Four interconnected wings keep Ghanaian-Canadian families supported across generations — leadership for youth, connection for seniors, empowerment for women, and fellowship for men.",
+      groups: [
+        {
+          id: "youth",
+          title: "Youth & Young Adults",
+          summary:
+            "GCAO’s Youth Wing elevates and inspires young people to act as positive change agents in local communities.",
+          highlights: [
+            "Youth Leadership Summit workshops",
+            "Mentorship for ages 18–29",
+            "Leadership, entrepreneurship & identity seminars",
+            "Scholarships for students of Ghanaian heritage",
+          ],
+          image: "/images/programs/youth-soccer.jpg",
+          alt: "Participants at GCAO Youth Soccer Camp",
+        },
+        {
+          id: "seniors",
+          title: "Golden Ages Seniors",
+          summary:
+            "A community-based program for Ghanaian-Canadian seniors 65+ that promotes active aging, reduces isolation, and strengthens social connection — engaging 400+ seniors with support from the Ontario Seniors Community Grant Program.",
+          highlights: [
+            "Virtual fitness, Zumba & fall-prevention classes",
+            "Health education on chronic disease and wellness",
+            "Social engagement and community connection",
+            "Culturally relevant lifelong learning",
+          ],
+          image: "/images/programs/seniors.jpg",
+          alt: "GCAO seniors program participants",
+        },
+        {
+          id: "women",
+          title: "Women’s Program",
+          summary:
+            "A community-centered initiative empowering women and girls through culturally responsive spaces for connection, learning, and resources that support personal, professional, and family well-being.",
+          highlights: [
+            "Health, wellness & self-care",
+            "Financial literacy & economic empowerment",
+            "Leadership and mentorship",
+            "Gender-based violence awareness",
+          ],
+          image: "/images/womens-conf.jpg",
+          alt: "GCAO Women’s Empowerment Conference",
+        },
+        {
+          id: "men",
+          title: "Men’s Group",
+          summary:
+            "A safe space where Ghanaian and non-Ghanaian men of all ages discuss, learn, teach, mentor each other, and build community.",
+          highlights: [
+            "Mental health and complete well-being",
+            "Financial education and professional networks",
+            "Passing culture and tradition to youth",
+            "Marriage and relationships conversations",
+          ],
+          image: "/images/programs/mens-group.jpeg",
+          alt: "GCAO Men’s Group gathering",
+        },
+      ],
+    },
+    health: {
+      title: "Health & wellness",
+      eyebrow: "Mental Health First Aid",
+      summary:
+        "Mental Health First Aid for Africans in the Diaspora builds capacity among Black Canadians and African diaspora communities through culturally focused MHFA courses and training.",
+      context:
+        "Mental health supports are often the least available resources for African immigrants. Incorporating culture into MHFA increases uptake and helps communities address unique barriers to care.",
+      highlights: [
+        "Culturally relevant Mental Health First Aid courses",
+        "Capacity building for community responders",
+        "Training delivered across Canadian cities",
+        "Education that reduces stigma and superstition around mental health",
+      ],
+      image: "/images/programs/health.jpg",
+      alt: "Mental Health First Aid training with GCAO participants",
+    },
+    dett: {
+      title: "Diaspora Engagement Think Tank (DETT)",
+      eyebrow: "Advocacy",
+      summary:
+        "DETT is a non-profit, voluntary organization anchored under GCAO in Toronto that promotes critical analysis of policies and community challenges — and advocacy to support Ghanaian-Canadians in Canada or wishing to return to Ghana.",
+      mission:
+        "Voice of the Ghanaian-Canadian community in developing policies and partnering with governments, professional, and business groups to meet community challenges.",
+      vision:
+        "To be recognized by Ghanaian-Canadians in the diaspora as serving their interests in advocacy on community challenges.",
+      membership:
+        "A constituted body of subject-matter experts from academia, industry, and community organizations, by special invitation from the GCAO executive board.",
+      benefits: [
+        "Close knowledge gaps that block equitable policy for Ghanaian-Canadian communities",
+        "Advocate for diaspora interests with governments and partners",
+        "Network with think tanks in Canada and beyond",
+        "Collate ideas and develop policies for Canadian–Ghanaian challenges",
+      ],
+      image: "/images/programs/grocery.jpg",
+      alt: "GCAO community food program volunteers",
+    },
   },
 };
 
