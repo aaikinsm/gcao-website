@@ -1,7 +1,6 @@
 "use client";
 
-import { useState } from "react";
-import { SiteImage } from "@/components/shared/SiteImage";
+import { useEffect, useRef, useState } from "react";
 import type { SankofaThemeTokens } from "@/components/previews/sankofaTheme";
 
 const display = { fontFamily: "var(--font-sankofa), sans-serif" };
@@ -9,7 +8,8 @@ const display = { fontFamily: "var(--font-sankofa), sans-serif" };
 export type ServePanel = {
   title: string;
   description: string;
-  image: { src: string; alt: string };
+  video: string;
+  poster: string;
 };
 
 interface ServePanelsProps {
@@ -20,8 +20,87 @@ interface ServePanelsProps {
   >;
 }
 
+function useReducedMotion() {
+  const [reducedMotion, setReducedMotion] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const apply = () => setReducedMotion(mq.matches);
+    apply();
+    mq.addEventListener("change", apply);
+    return () => mq.removeEventListener("change", apply);
+  }, []);
+
+  return reducedMotion;
+}
+
+function PanelVideo({
+  src,
+  poster,
+  reducedMotion,
+}: {
+  src: string;
+  poster: string;
+  reducedMotion: boolean;
+}) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const wrapRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (reducedMotion) return;
+    const video = videoRef.current;
+    const wrap = wrapRef.current;
+    if (!video || !wrap) return;
+
+    video.muted = true;
+    video.playbackRate = 0.75;
+
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          void video.play().catch(() => {});
+        } else {
+          video.pause();
+        }
+      },
+      { threshold: 0.2 },
+    );
+    io.observe(wrap);
+    return () => io.disconnect();
+  }, [reducedMotion, src]);
+
+  return (
+    <div ref={wrapRef} className="absolute inset-0">
+      {/* Poster stays as the base layer for load and reduced motion. */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={poster}
+        alt=""
+        className="absolute inset-0 h-full w-full object-cover"
+        aria-hidden
+      />
+      {!reducedMotion && (
+        <video
+          ref={videoRef}
+          className="pointer-events-none absolute inset-0 h-full w-full object-cover"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          poster={poster}
+          aria-hidden
+        >
+          <source src={src} type="video/mp4" />
+        </video>
+      )}
+    </div>
+  );
+}
+
 export function ServePanels({ panels, tokens: t }: ServePanelsProps) {
   const [open, setOpen] = useState<string | null>(null);
+  const reducedMotion = useReducedMotion();
 
   const toggle = (title: string) => {
     if (typeof window !== "undefined" && window.matchMedia("(min-width: 768px)").matches) {
@@ -45,13 +124,8 @@ export function ServePanels({ panels, tokens: t }: ServePanelsProps) {
               expanded ? "h-80" : "h-52"
             } ${t.panelBorder}`}
           >
-            <SiteImage
-              {...panel.image}
-              className="absolute inset-0"
-              imageClassName="img-zoom"
-              overlay={t.panelOverlay}
-              sizes="(min-width: 768px) 40vw, 100vw"
-            />
+            <PanelVideo src={panel.video} poster={panel.poster} reducedMotion={reducedMotion} />
+            <div className={`absolute inset-0 ${t.panelOverlay}`} />
             <div className="absolute inset-x-0 bottom-0 p-6 text-white md:p-7">
               <h3
                 className={`text-xl font-semibold tracking-tight transition-colors md:text-2xl ${t.panelHover}`}

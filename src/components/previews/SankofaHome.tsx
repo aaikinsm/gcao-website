@@ -21,13 +21,23 @@ const sora = Sora({
 const display = { fontFamily: "var(--font-sankofa), sans-serif" };
 
 const panels = [
-  { ...siteContent.pillars[0], image: siteImages.programs },
-  { ...siteContent.pillars[1], image: siteImages.heroGathering },
-  { ...siteContent.pillars[2], image: siteImages.volunteer },
   {
-    title: siteContent.featuredProgram.title,
-    description: siteContent.featuredProgram.description,
-    image: siteImages.heroCommunity,
+    title: siteContent.pillars[0].title,
+    description: siteContent.pillars[0].description,
+    video: "/videos/serve-programs.mp4",
+    poster: "/videos/serve-programs-poster.jpg",
+  },
+  {
+    title: siteContent.pillars[1].title,
+    description: siteContent.pillars[1].description,
+    video: "/videos/serve-advocacy.mp4",
+    poster: "/videos/serve-advocacy-poster.jpg",
+  },
+  {
+    title: siteContent.pillars[2].title,
+    description: siteContent.pillars[2].description,
+    video: "/videos/serve-volunteer.mp4",
+    poster: "/videos/serve-volunteer-poster.jpg",
   },
 ];
 

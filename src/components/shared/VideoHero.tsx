@@ -41,6 +41,7 @@ export function VideoHero({
     const video = videoRef.current;
     if (!video) return;
     video.muted = true;
+    video.playbackRate = 0.75;
     const play = video.play();
     if (play) {
       play.catch(() => setUseYoutube(true));
