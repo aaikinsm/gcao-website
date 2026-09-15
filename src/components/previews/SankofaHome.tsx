@@ -224,6 +224,12 @@ export function SankofaHome({ theme, optionLabel, basePath }: SankofaHomeProps) 
               {siteContent.featuredEvent.description}
             </p>
             <p className={`mt-4 text-sm ${t.eventLoc}`}>{siteContent.featuredEvent.location}</p>
+            <a
+              href={`${basePath}/events`}
+              className="link-arrow mt-8 inline-flex items-center gap-2 text-sm font-semibold text-[#FCD116]"
+            >
+              View all events <span aria-hidden>→</span>
+            </a>
           </div>
         </div>
       </AnimatedSection>
