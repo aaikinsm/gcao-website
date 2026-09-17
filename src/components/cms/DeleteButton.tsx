@@ -14,20 +14,15 @@ export function DeleteButton({
   const action = kind === "event" ? deleteEventAction.bind(null, id) : deleteNewsAction.bind(null, id);
 
   return (
-    <form
-      action={action}
-      onSubmit={(event) => {
-        if (!confirm(`Delete “${title}”? This cannot be undone.`)) {
-          event.preventDefault();
-        }
+    <button
+      type="button"
+      onClick={() => {
+        if (!confirm(`Delete “${title}”? This cannot be undone.`)) return;
+        void action();
       }}
+      className="rounded-full border border-red-200 px-5 py-2.5 text-sm font-semibold text-red-700 hover:bg-red-50"
     >
-      <button
-        type="submit"
-        className="rounded-full border border-red-200 px-5 py-2.5 text-sm font-semibold text-red-700 hover:bg-red-50"
-      >
-        Delete
-      </button>
-    </form>
+      Delete
+    </button>
   );
 }

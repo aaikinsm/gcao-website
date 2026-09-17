@@ -114,6 +114,26 @@ export function splitEvents(events: GcaoEvent[]) {
   return { upcoming, past };
 }
 
+export type UpcomingEventSlide = {
+  slug: string;
+  title: string;
+  excerpt: string;
+  location: string;
+  imageUrl: string;
+  dateLabel: string;
+};
+
+export function toUpcomingSlides(events: GcaoEvent[]): UpcomingEventSlide[] {
+  return splitEvents(events).upcoming.map((event) => ({
+    slug: event.slug,
+    title: event.title,
+    excerpt: event.excerpt,
+    location: event.location,
+    imageUrl: event.imageUrl,
+    dateLabel: formatEventDateRange(event.startsAt, event.endsAt),
+  }));
+}
+
 export async function getPublishedEvents(): Promise<GcaoEvent[]> {
   try {
     const [rows] = await getPool().query<EventRow[]>(

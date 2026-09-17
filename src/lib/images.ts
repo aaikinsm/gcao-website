@@ -47,6 +47,18 @@ export const siteImages = {
     src: "/images/clothing-drive.jpg",
     alt: "GCAO volunteers at a winter clothing drive",
   },
+  aboutFlagGathering: {
+    src: "/images/about/ghana-flag-gathering.jpg",
+    alt: "GCAO community in kente gathering around the Ghana flag",
+  },
+  aboutYouthSummit: {
+    src: "/images/about/youth-summit.jpg",
+    alt: "GCAO youth summit group photo in a community gym",
+  },
+  aboutKente: {
+    src: "/images/about/vibrant-kente-cloth.webp",
+    alt: "Vibrant kente cloth",
+  },
 };
 
 export const newsImages = [

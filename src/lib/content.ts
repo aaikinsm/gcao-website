@@ -90,24 +90,27 @@ export const siteContent = {
     { value: "1000s", label: "Families supported annually" },
   ],
   about: {
+    intro: "Who we are, who we serve, and the work that holds Ghanaian-Canadian communities together.",
+    mission:
+      "GCAO strengthens the wellbeing of Ghanaian-Canadians across every generation, through trusted social, cultural, educational, and health programs, and advocates for the community as one unified voice.",
     vision:
-      "To build a strong, inclusive, vibrant, and sustainable community that provides support services and resources to enhance the well-being of Ghanaian-Canadians in Ontario.",
+      "A thriving, sustainable, and connected Ghanaian-Canadian community that belongs, contributes, and leads across Ontario and Canada, with support and opportunity for every generation.",
     whatWeDo:
-      "GCAO is a non-profit umbrella organization for all Ghanaian-Canadian individuals, religious, professionals, cultural associations, and community organizations residing within the Greater Toronto Area.",
+      "GCAO is a non-profit umbrella for Ghanaian-Canadian people, faith groups, professionals, and community organizations in the Greater Toronto Area.",
     history:
-      "GCAO started in the 1970s when groups of Ghanaians arrived in Canada to study at various institutions. As students and skilled labourers continued to migrate to Ontario, the group was established to support these individuals in their educational pursuits and career aspirations. GCAO has since supported the community despite facing several challenges.\n\nGCAO has the commitment to preserve and sustain the welfare of all Ghanaian-Canadians within the multicultural Canadian landscape. We do this by working with community agencies and all levels of governments to shape social policies as well as developing programs aimed at improving the quality of life for all Ghanaian residents in Canada.",
+      "GCAO began in the 1970s as Ghanaians arrived in Canada to study and work. The association grew to support newcomers in school and careers, and still does today.\n\nWe partner with community agencies and all levels of government on social policy and programs that improve daily life for Ghanaian residents in Canada.",
     objectives: [
-      "Elevate the spirit of acceptance, understanding, and goodwill between all segments of society within a multicultural Canada",
-      "Build and operate Resource and Community Centers in the delivery of social, educational, welfare programs",
-      "Advocate on behalf of the community on matters relating to social welfare, civic engagement, and communal integration and development",
-      "Encourage citizenship and enhance community development by engaging youth and elder",
-      "Coordinate, promote, and sponsor cultural, festivals, and civic-day events",
-      "Support with youth issues providing youth-centered programs, workshops, and seminars, as a building block for sustainable succession planning",
-      "Promote entrepreneurs and businesses by organizing business expos and workshops",
-      "Embrace peace and love through respect, conflict resolution, and mutual understanding within the community",
-      "Provide a space for reflection, communication, mentorship, and growth, through innovation and implementation",
-      "Showcase and promote local Ghanaian Canadian businesses and organizations",
-      "Develop strategies to increase civic engagement, ensure representation in media and creative arts, grow Black wealth and ownership, and enrich mental health and physical wellness",
+      "Foster acceptance, understanding, and goodwill across multicultural Canada",
+      "Build resource centres for social, educational, and welfare programs",
+      "Advocate on social welfare, civic engagement, and community development",
+      "Engage youth and elders in citizenship and community-building",
+      "Coordinate cultural festivals and civic-day events",
+      "Support youth through programs, workshops, and seminars",
+      "Promote Ghanaian-Canadian businesses through expos and workshops",
+      "Advance peace through respect, conflict resolution, and mutual understanding",
+      "Offer space for mentorship, reflection, and growth",
+      "Showcase local Ghanaian-Canadian businesses and organizations",
+      "Grow civic voice, Black wealth, and community wellness",
     ],
     team: [
       {

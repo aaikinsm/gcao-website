@@ -38,6 +38,8 @@ function fileFrom(formData: FormData) {
 function revalidateEvents(slug?: string) {
   revalidatePath("/preview/sankofa/events");
   revalidatePath("/preview/sankofa-light/events");
+  revalidatePath("/preview/sankofa");
+  revalidatePath("/preview/sankofa-light");
   if (slug) {
     revalidatePath(`/preview/sankofa/events/${slug}`);
     revalidatePath(`/preview/sankofa-light/events/${slug}`);

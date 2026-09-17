@@ -4,6 +4,7 @@ import { PreviewBanner } from "@/components/shared/PreviewBanner";
 import { SiteImage } from "@/components/shared/SiteImage";
 import { SankofaFooter } from "@/components/previews/SankofaFooter";
 import { SankofaHeader } from "@/components/previews/SankofaHeader";
+import { SankofaKenteHero } from "@/components/previews/SankofaKenteHero";
 import { sankofaThemes, type SankofaTheme } from "@/components/previews/sankofaTheme";
 import { siteContent } from "@/lib/content";
 
@@ -54,20 +55,18 @@ export function SankofaPrograms({ theme, optionLabel, basePath }: SankofaProgram
         menuBgClass={t.menuBg}
       />
 
-      <section className={`border-b px-6 pb-16 pt-36 md:px-10 md:pb-20 md:pt-40 ${t.aboutHero}`}>
-        <div className="mx-auto max-w-4xl">
-          <p className={`text-[11px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>
-            Programs
-          </p>
-          <h1
-            className="mt-5 text-4xl font-semibold tracking-[-0.03em] text-balance md:text-6xl"
-            style={display}
-          >
-            Programs at {siteContent.orgShort}
-          </h1>
-          <p className={`mt-6 max-w-2xl text-lg leading-relaxed ${t.sectionMuted}`}>{p.intro}</p>
-        </div>
-      </section>
+      <SankofaKenteHero theme={theme}>
+        <p className={`text-[11px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>
+          Programs
+        </p>
+        <h1
+          className="mt-5 text-4xl font-semibold tracking-[-0.03em] text-balance text-[#EFEDE4] md:text-6xl"
+          style={display}
+        >
+          Programs at {siteContent.orgShort}
+        </h1>
+        <p className="mt-6 max-w-2xl text-lg leading-relaxed text-[#EFEDE4]/75">{p.intro}</p>
+      </SankofaKenteHero>
 
       <nav
         aria-label="Program sections"

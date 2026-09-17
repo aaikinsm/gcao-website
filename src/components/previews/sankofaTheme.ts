@@ -45,6 +45,8 @@ export const sankofaThemes = {
     scrollFilled: "text-[#EFEDE4]",
     videoOverlay:
       "bg-gradient-to-t from-[#06110D] via-[#06110D]/70 to-[#06110D]/45",
+    kenteOverlay:
+      "bg-gradient-to-t from-[#06110D] via-[#06110D]/85 to-[#06110D]/65",
     aboutHero: "bg-[#0A1611]",
     card: "border-white/10 bg-white/[0.03]",
     cardMuted: "text-[#EFEDE4]/60",
@@ -93,6 +95,8 @@ export const sankofaThemes = {
     scrollFilled: "text-[#0F1B14]",
     videoOverlay:
       "bg-gradient-to-t from-[#0F1B14]/90 via-[#0F1B14]/55 to-[#0F1B14]/40",
+    kenteOverlay:
+      "bg-gradient-to-t from-[#0F1B14]/95 via-[#0F1B14]/75 to-[#0F1B14]/55",
     aboutHero: "bg-[#F3EEE3]",
     card: "border-black/10 bg-white",
     cardMuted: "text-[#0F1B14]/60",

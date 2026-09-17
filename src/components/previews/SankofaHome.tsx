@@ -9,9 +9,11 @@ import { VideoHero } from "@/components/shared/VideoHero";
 import { SankofaFooter } from "@/components/previews/SankofaFooter";
 import { SankofaHeader } from "@/components/previews/SankofaHeader";
 import { ServePanels } from "@/components/previews/ServePanels";
+import { UpcomingEventsSlider } from "@/components/previews/UpcomingEventsSlider";
 import { sankofaThemes, type SankofaTheme } from "@/components/previews/sankofaTheme";
 import { siteContent } from "@/lib/content";
-import { newsImages, siteImages } from "@/lib/images";
+import { newsImages } from "@/lib/images";
+import type { UpcomingEventSlide } from "@/lib/events";
 
 const sora = Sora({
   subsets: ["latin"],
@@ -45,9 +47,10 @@ interface SankofaHomeProps {
   theme: SankofaTheme;
   optionLabel: string;
   basePath: string;
+  upcomingEvents: UpcomingEventSlide[];
 }
 
-export function SankofaHome({ theme, optionLabel, basePath }: SankofaHomeProps) {
+export function SankofaHome({ theme, optionLabel, basePath, upcomingEvents }: SankofaHomeProps) {
   const t = sankofaThemes[theme];
   const isLight = theme === "light";
 
@@ -202,36 +205,18 @@ export function SankofaHome({ theme, optionLabel, basePath }: SankofaHomeProps) 
       </AnimatedSection>
 
       <AnimatedSection id="events" className="px-6 pb-32 md:px-10 md:pb-40" delay={80}>
-        <div
-          className={`group relative mx-auto max-w-6xl overflow-hidden rounded-[2rem] border ${t.panelBorder}`}
-        >
-          <SiteImage
-            {...siteImages.heroEvent}
-            className="absolute inset-0"
-            imageClassName="img-zoom"
-            overlay={t.eventOverlay}
-            sizes="100vw"
-          />
-          <div className="relative max-w-xl px-8 py-16 text-white md:px-14 md:py-20">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-[#FCD116]">
-              Upcoming
-            </p>
-            <h2 className="mt-5 text-3xl font-semibold tracking-tight md:text-4xl" style={display}>
-              {siteContent.featuredEvent.title}
-            </h2>
-            <p className={`mt-3 text-sm ${t.eventMeta}`}>{siteContent.featuredEvent.date}</p>
-            <p className={`mt-5 leading-relaxed ${t.eventBody}`}>
-              {siteContent.featuredEvent.description}
-            </p>
-            <p className={`mt-4 text-sm ${t.eventLoc}`}>{siteContent.featuredEvent.location}</p>
-            <a
-              href={`${basePath}/events`}
-              className="link-arrow mt-8 inline-flex items-center gap-2 text-sm font-semibold text-[#FCD116]"
-            >
-              View all events <span aria-hidden>→</span>
-            </a>
-          </div>
-        </div>
+        <UpcomingEventsSlider
+          events={upcomingEvents}
+          basePath={basePath}
+          tokens={{
+            panelBorder: t.panelBorder,
+            eventOverlay: t.eventOverlay,
+            eventMeta: t.eventMeta,
+            eventBody: t.eventBody,
+            eventLoc: t.eventLoc,
+            sectionMuted: t.sectionMuted,
+          }}
+        />
       </AnimatedSection>
 
       <AnimatedSection id="news" className="px-6 pb-32 md:px-10 md:pb-40" delay={80}>

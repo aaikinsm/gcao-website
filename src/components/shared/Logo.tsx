@@ -19,11 +19,11 @@ export function Logo({
   return (
     <Link href={href} className={`flex items-center gap-3 ${className}`}>
       <Image
-        src="/logo.jpg"
+        src="/logo.png"
         alt="GCAO logo"
         width={size}
         height={size}
-        className="rounded-full object-cover"
+        className="object-contain"
         priority
       />
       {showText && (
