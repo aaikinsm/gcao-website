@@ -8,7 +8,16 @@ import { siteImages } from "@/lib/images";
 
 const display = { fontFamily: "var(--font-sankofa), sans-serif" };
 
-type TeamMember = (typeof siteContent.about.teamGroups)[number]["members"][number];
+type TeamMember = {
+  name: string;
+  role: string;
+  image?: string;
+  alt?: string;
+};
+
+function hasPhoto(member: TeamMember): member is TeamMember & { image: string } {
+  return Boolean(member.image);
+}
 
 interface SankofaTeamProps {
   theme: SankofaTheme;
@@ -109,7 +118,9 @@ export function SankofaTeam({ theme }: SankofaTeamProps) {
         >
           {group.layout === "list" ? (
             <ul className="grid gap-3 sm:grid-cols-2">
-              {group.members.map((member) => (
+              {group.members.map((raw) => {
+                const member: TeamMember = raw;
+                return (
                 <li
                   key={member.name}
                   className={`flex items-center gap-4 rounded-2xl border px-4 py-3 ${t.card} ${t.panelBorder}`}
@@ -122,17 +133,20 @@ export function SankofaTeam({ theme }: SankofaTeamProps) {
                     <p className={`mt-0.5 text-sm ${t.cardMuted}`}>{member.role}</p>
                   </div>
                 </li>
-              ))}
+                );
+              })}
             </ul>
           ) : (
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              {group.members.map((member) => (
+              {group.members.map((raw) => {
+                const member: TeamMember = raw;
+                return (
                 <article
                   key={member.name}
                   className={`group overflow-hidden rounded-3xl border ${t.card} ${t.panelBorder}`}
                 >
                   <div className="relative aspect-[3/4] overflow-hidden">
-                    {member.image ? (
+                    {hasPhoto(member) ? (
                       <>
                         <SiteImage
                           src={member.image}
@@ -161,7 +175,8 @@ export function SankofaTeam({ theme }: SankofaTeamProps) {
                     <p className={`mt-2 text-sm ${t.cardMuted}`}>{member.role}</p>
                   </div>
                 </article>
-              ))}
+                );
+              })}
             </div>
           )}
         </div>
@@ -171,7 +186,7 @@ export function SankofaTeam({ theme }: SankofaTeamProps) {
 }
 
 function MemberAvatar({ member, overlay }: { member: TeamMember; overlay: string }) {
-  if (member.image) {
+  if (hasPhoto(member)) {
     return (
       <SiteImage
         src={member.image}
