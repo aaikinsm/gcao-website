@@ -47,6 +47,7 @@ const EVENT_COLUMNS = [
 const NEWS_COLUMNS = [
   "title",
   "slug",
+  "kind",
   "category",
   "excerpt",
   "body",

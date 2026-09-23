@@ -32,3 +32,18 @@ export async function saveCmsImage(file: File | null, existingUrl?: string) {
   await writeFile(dest, Buffer.from(await file.arrayBuffer()));
   return `/images/uploads/${filename}`;
 }
+
+export async function saveCmsImageBuffer(
+  bytes: Buffer,
+  ext: "png" | "jpg" | "webp",
+  label = "generated",
+) {
+  if (bytes.length > MAX_BYTES) {
+    throw new Error("Image must be 4MB or smaller.");
+  }
+  const filename = `${Date.now()}-${slugify(label).slice(0, 40)}.${ext}`;
+  const dir = path.join(process.cwd(), "public", "images", "uploads");
+  await mkdir(dir, { recursive: true });
+  await writeFile(path.join(dir, filename), bytes);
+  return `/images/uploads/${filename}`;
+}

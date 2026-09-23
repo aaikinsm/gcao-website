@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { CmsShell, PrimaryLink } from "@/components/cms/CmsShell";
 import { formatEventDateRange, getAllEvents } from "@/lib/events";
-import { getAllNews } from "@/lib/news";
+import { getAllNews, newsKindLabel } from "@/lib/news";
 
 export const dynamic = "force-dynamic";
 
@@ -14,12 +14,12 @@ export default async function CmsDashboardPage() {
     <CmsShell
       current="overview"
       title="Content"
-      description="Add and update events and news. Published events show on the Sankofa events pages right away."
-      action={<PrimaryLink href="/cms/events/new">New event</PrimaryLink>}
+      description="Create a post from a form, a flyer, or a few notes. You review every draft before it is published."
+      action={<PrimaryLink href="/cms/new">New post</PrimaryLink>}
     >
       <div className="grid gap-6 md:grid-cols-2">
         <Link
-          href="/cms/events"
+          href="/cms/posts?filter=events"
           className="rounded-[2rem] border border-black/10 bg-white p-8 transition-colors hover:border-[#006B3F]/40"
         >
           <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-[#006B3F]">Events</p>
@@ -27,23 +27,19 @@ export default async function CmsDashboardPage() {
           <p className="mt-2 text-sm text-[#0F1B14]/50">{publishedEvents} published</p>
         </Link>
         <Link
-          href="/cms/news"
+          href="/cms/posts"
           className="rounded-[2rem] border border-black/10 bg-white p-8 transition-colors hover:border-[#006B3F]/40"
         >
-          <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-[#006B3F]">News</p>
+          <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-[#006B3F]">Updates</p>
           <p className="mt-4 text-4xl font-semibold tracking-tight">{news.length}</p>
           <p className="mt-2 text-sm text-[#0F1B14]/50">{publishedNews} published</p>
         </Link>
       </div>
 
-      <div className="mt-6 flex flex-wrap gap-3">
-        <PrimaryLink href="/cms/news/new">New article</PrimaryLink>
-      </div>
-
       <div className="mt-12 grid gap-10 lg:grid-cols-2">
         <RecentList
           heading="Recent events"
-          href="/cms/events"
+          href="/cms/posts?filter=events"
           items={events.slice(0, 5).map((event) => ({
             href: `/cms/events/${event.id}`,
             title: event.title,
@@ -51,12 +47,12 @@ export default async function CmsDashboardPage() {
           }))}
         />
         <RecentList
-          heading="Recent news"
-          href="/cms/news"
+          heading="Recent updates"
+          href="/cms/posts"
           items={news.slice(0, 5).map((item) => ({
             href: `/cms/news/${item.id}`,
             title: item.title,
-            meta: `${item.status} · ${item.category}`,
+            meta: `${item.status} · ${newsKindLabel(item.kind)}`,
           }))}
         />
       </div>

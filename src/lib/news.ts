@@ -1,22 +1,15 @@
 import type { ResultSetHeader, RowDataPacket } from "mysql2";
 import { getPool } from "@/lib/db";
 import { slugify } from "@/lib/slug";
+import { parseNewsKind, type GcaoNews, type NewsKind } from "@/lib/news-types";
 
-export type GcaoNews = {
-  id: number;
-  title: string;
-  slug: string;
-  category: string;
-  excerpt: string;
-  body: string;
-  imageUrl: string;
-  publishedAt: Date;
-  status: "draft" | "published";
-};
+export type { GcaoNews, NewsKind } from "@/lib/news-types";
+export { NEWS_KINDS, newsKindLabel, parseNewsKind } from "@/lib/news-types";
 
 export type NewsInput = {
   title: string;
   slug: string;
+  kind: NewsKind;
   category: string;
   excerpt: string;
   body: string;
@@ -29,6 +22,7 @@ type NewsRow = RowDataPacket & {
   id: number;
   title: string;
   slug: string;
+  kind?: string;
   category: string;
   excerpt: string;
   body: string;
@@ -36,6 +30,21 @@ type NewsRow = RowDataPacket & {
   published_at: Date | string;
   status: "draft" | "published";
 };
+
+const NEWS_SELECT = `id, title, slug, kind, category, excerpt, body, image_url, published_at, status`;
+
+let kindColumnReady = false;
+
+export async function ensureNewsKindColumn() {
+  if (kindColumnReady) return;
+  const [rows] = await getPool().query<RowDataPacket[]>("SHOW COLUMNS FROM news LIKE 'kind'");
+  if (rows.length === 0) {
+    await getPool().query(
+      "ALTER TABLE news ADD COLUMN kind VARCHAR(20) NOT NULL DEFAULT 'news'",
+    );
+  }
+  kindColumnReady = true;
+}
 
 function asDate(value: Date | string | null | undefined): Date | null {
   if (!value) return null;
@@ -51,6 +60,7 @@ function mapNews(row: NewsRow): GcaoNews | null {
     id: row.id,
     title: row.title,
     slug: row.slug,
+    kind: parseNewsKind(row.kind),
     category: row.category,
     excerpt: row.excerpt,
     body: row.body,
@@ -82,8 +92,9 @@ async function newsSlugTaken(slug: string, excludeId?: number) {
 
 export async function getAllNews(): Promise<GcaoNews[]> {
   try {
+    await ensureNewsKindColumn();
     const [rows] = await getPool().query<NewsRow[]>(
-      `SELECT id, title, slug, category, excerpt, body, image_url, published_at, status
+      `SELECT ${NEWS_SELECT}
        FROM news
        ORDER BY published_at DESC`,
     );
@@ -94,11 +105,27 @@ export async function getAllNews(): Promise<GcaoNews[]> {
   }
 }
 
+export async function getPublishedNews(): Promise<GcaoNews[]> {
+  try {
+    await ensureNewsKindColumn();
+    const [rows] = await getPool().query<NewsRow[]>(
+      `SELECT ${NEWS_SELECT}
+       FROM news
+       WHERE status = 'published'
+       ORDER BY published_at DESC`,
+    );
+    return rows.map(mapNews).filter((item): item is GcaoNews => item !== null);
+  } catch (error) {
+    console.error("Failed to load published news", error);
+    return [];
+  }
+}
+
 export async function getNewsById(id: number): Promise<GcaoNews | null> {
   try {
+    await ensureNewsKindColumn();
     const [rows] = await getPool().query<NewsRow[]>(
-      `SELECT id, title, slug, category, excerpt, body, image_url, published_at, status
-       FROM news WHERE id = ? LIMIT 1`,
+      `SELECT ${NEWS_SELECT} FROM news WHERE id = ? LIMIT 1`,
       [id],
     );
     return rows[0] ? mapNews(rows[0]) : null;
@@ -108,13 +135,29 @@ export async function getNewsById(id: number): Promise<GcaoNews | null> {
   }
 }
 
+export async function getNewsBySlug(slug: string): Promise<GcaoNews | null> {
+  try {
+    await ensureNewsKindColumn();
+    const [rows] = await getPool().query<NewsRow[]>(
+      `SELECT ${NEWS_SELECT} FROM news WHERE slug = ? AND status = 'published' LIMIT 1`,
+      [slug],
+    );
+    return rows[0] ? mapNews(rows[0]) : null;
+  } catch (error) {
+    console.error("Failed to load news", slug, error);
+    return null;
+  }
+}
+
 export async function createNews(input: NewsInput) {
+  await ensureNewsKindColumn();
   const [result] = await getPool().execute<ResultSetHeader>(
-    `INSERT INTO news (title, slug, category, excerpt, body, image_url, published_at, status)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+    `INSERT INTO news (title, slug, kind, category, excerpt, body, image_url, published_at, status)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     [
       input.title,
       input.slug,
+      input.kind,
       input.category,
       input.excerpt,
       input.body,
@@ -127,13 +170,15 @@ export async function createNews(input: NewsInput) {
 }
 
 export async function updateNews(id: number, input: NewsInput) {
+  await ensureNewsKindColumn();
   await getPool().execute(
     `UPDATE news
-     SET title = ?, slug = ?, category = ?, excerpt = ?, body = ?, image_url = ?, published_at = ?, status = ?
+     SET title = ?, slug = ?, kind = ?, category = ?, excerpt = ?, body = ?, image_url = ?, published_at = ?, status = ?
      WHERE id = ?`,
     [
       input.title,
       input.slug,
+      input.kind,
       input.category,
       input.excerpt,
       input.body,

@@ -11,24 +11,24 @@ const sora = Sora({
 const display = { fontFamily: "var(--font-sankofa), sans-serif" };
 
 const nav = [
-  { label: "Overview", href: "/cms" },
-  { label: "Events", href: "/cms/events" },
-  { label: "News", href: "/cms/news" },
-];
+  { label: "Overview", href: "/cms", current: "overview" },
+  { label: "All posts", href: "/cms/posts", current: "posts" },
+  { label: "New post", href: "/cms/new", current: "new" },
+] as const;
 
 interface CmsShellProps {
   title: string;
   description?: string;
   action?: ReactNode;
   children: ReactNode;
-  current: "overview" | "events" | "news";
+  current: "overview" | "posts" | "new" | "events" | "news";
 }
 
 export function CmsShell({ title, description, action, children, current }: CmsShellProps) {
   return (
     <div className={`${sora.variable} min-h-screen bg-[#FFFBF2] text-[#0F1B14]`}>
       <div className="bg-[#0F1B14] px-4 py-2.5 text-center text-xs font-semibold tracking-wide text-[#FCD116] md:text-sm">
-        Public — anyone can post until login is added.
+        Public — anyone can post until login is added. AI needs a local OpenAI key and never publishes on its own.
       </div>
 
       <header className="border-b border-black/10 bg-white/80 backdrop-blur-xl">
@@ -37,9 +37,8 @@ export function CmsShell({ title, description, action, children, current }: CmsS
           <nav className="flex flex-wrap items-center gap-1">
             {nav.map((item) => {
               const active =
-                (current === "overview" && item.href === "/cms") ||
-                (current === "events" && item.href === "/cms/events") ||
-                (current === "news" && item.href === "/cms/news");
+                current === item.current ||
+                (item.current === "posts" && (current === "events" || current === "news"));
               return (
                 <Link
                   key={item.href}

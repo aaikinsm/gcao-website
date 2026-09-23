@@ -17,7 +17,7 @@ export default async function CmsEventsPage({
       current="events"
       title="Events"
       description="Create dated gatherings. Published items appear on the public events pages."
-      action={<PrimaryLink href="/cms/events/new">New event</PrimaryLink>}
+      action={<PrimaryLink href="/cms/new">New post</PrimaryLink>}
     >
       <CmsNotice saved={query.saved === "1"} deleted={query.deleted === "1"} noun="Event" />
       <CmsEntryList

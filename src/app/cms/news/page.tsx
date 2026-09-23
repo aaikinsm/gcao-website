@@ -1,6 +1,6 @@
 import { CmsEntryList } from "@/components/cms/CmsEntryList";
 import { CmsNotice, CmsShell, PrimaryLink } from "@/components/cms/CmsShell";
-import { getAllNews } from "@/lib/news";
+import { getAllNews, newsKindLabel } from "@/lib/news";
 import { toDatetimeLocalValue } from "@/lib/slug";
 
 export const dynamic = "force-dynamic";
@@ -17,8 +17,8 @@ export default async function CmsNewsPage({
     <CmsShell
       current="news"
       title="News"
-      description="Editorial recaps and community stories. Public news pages will use these rows later."
-      action={<PrimaryLink href="/cms/news/new">New article</PrimaryLink>}
+      description="News, notices, and stories. Published items appear on the public Updates pages."
+      action={<PrimaryLink href="/cms/new">New post</PrimaryLink>}
     >
       <CmsNotice saved={query.saved === "1"} deleted={query.deleted === "1"} noun="Article" />
       <CmsEntryList
@@ -29,7 +29,7 @@ export default async function CmsNewsPage({
           href: `/cms/news/${item.id}`,
           status: item.status,
           imageUrl: item.imageUrl,
-          meta: `${item.category} · ${toDatetimeLocalValue(item.publishedAt).replace("T", " ")}`,
+          meta: `${newsKindLabel(item.kind)} · ${toDatetimeLocalValue(item.publishedAt).replace("T", " ")}`,
         }))}
       />
     </CmsShell>

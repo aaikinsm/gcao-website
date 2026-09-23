@@ -6,7 +6,7 @@ export default function CmsNewNewsPage() {
     <CmsShell
       current="news"
       title="New article"
-      description="Write a recap or announcement. The URL slug updates from the title until you edit it."
+      description="Write an update. Suggest a category after you have a title and body, or pick News, Notice, or Story."
     >
       <NewsForm />
     </CmsShell>

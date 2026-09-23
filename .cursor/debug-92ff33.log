@@ -1,0 +1,3 @@
+{"sessionId":"92ff33","runId":"pre-fix","hypothesisId":"A","location":"ComposeChooser.tsx:readFile","message":"flyer selected before server action","data":{"name":"Screenshot 2026-09-21 at 9.45.31 PM.png","type":"image/png","size":2887216,"over1mb":true},"timestamp":1790042040928}
+{"sessionId":"92ff33","runId":"pre-fix","hypothesisId":"E","location":"actions.ts:extractFromUploadAction","message":"server action entered","data":{"hasFile":true,"size":2887216,"type":"image/png","openai":true},"timestamp":1790042040973}
+{"sessionId":"92ff33","runId":"pre-fix","hypothesisId":"E","location":"ComposeChooser.tsx:readFile:success","message":"server action returned","data":{"hasError":false,"postType":"event"},"timestamp":1790042048448}

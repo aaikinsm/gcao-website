@@ -6,6 +6,7 @@ import { SiteImage } from "@/components/shared/SiteImage";
 import { SankofaFooter } from "@/components/previews/SankofaFooter";
 import { SankofaHeader } from "@/components/previews/SankofaHeader";
 import { SankofaKenteHero } from "@/components/previews/SankofaKenteHero";
+import { SankofaTeam } from "@/components/previews/SankofaTeam";
 import { sankofaThemes, type SankofaTheme } from "@/components/previews/sankofaTheme";
 import { siteContent } from "@/lib/content";
 import { siteImages } from "@/lib/images";
@@ -174,36 +175,9 @@ export function SankofaAbout({ theme, optionLabel, basePath }: SankofaAboutProps
             Leadership & stewards
           </h2>
           <p className={`mt-4 max-w-xl text-sm ${t.sectionMuted}`}>
-            Executives and group leaders serving the GTA community.
+            Executives, wing leaders, staff, and advisory board members serving the community.
           </p>
-          <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {siteContent.about.team.map((member) => (
-              <article
-                key={member.name}
-                className={`group overflow-hidden rounded-3xl border ${t.card} ${t.panelBorder}`}
-              >
-                <div className="relative aspect-[3/4] overflow-hidden">
-                  <SiteImage
-                    src={member.image}
-                    alt={member.alt}
-                    className="absolute inset-0 h-full w-full"
-                    imageClassName="img-zoom"
-                    sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                  />
-                  <div
-                    className={`pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 ${hoverOverlay}`}
-                    aria-hidden
-                  />
-                </div>
-                <div className="p-6">
-                  <h3 className="text-lg font-semibold tracking-tight" style={display}>
-                    {member.name}
-                  </h3>
-                  <p className={`mt-2 text-sm ${t.cardMuted}`}>{member.role}</p>
-                </div>
-              </article>
-            ))}
-          </div>
+          <SankofaTeam theme={theme} />
         </div>
       </AnimatedSection>
 
