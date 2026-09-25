@@ -28,6 +28,7 @@ import {
   rewriteDraft,
   type AiDraftFields,
 } from "@/lib/openai";
+import { richTextIsEmpty, toEditorHtml } from "@/lib/rich-text";
 import { formDateTimeToMysql, slugify } from "@/lib/slug";
 import { saveCmsImage, saveCmsImageBuffer } from "@/lib/uploads";
 
@@ -84,7 +85,7 @@ function toComposeResult(draft: AiDraftFields): AiComposeResult {
     kind: draft.kind,
     title: draft.title,
     excerpt: draft.excerpt,
-    body: draft.body,
+    body: toEditorHtml(draft.body),
     location: draft.location,
     startsAt: draft.startsAt,
     endsAt: draft.endsAt,
@@ -100,26 +101,6 @@ export async function aiStatusAction() {
 export async function extractFromUploadAction(formData: FormData): Promise<AiComposeResult> {
   assertCmsAllowed();
   const file = fileFrom(formData, "source");
-  // #region agent log
-  fetch("http://127.0.0.1:7577/ingest/3cd8e77a-a5fb-4443-b01a-544eaa94c981", {
-    method: "POST",
-    headers: { "Content-Type": "application/json", "X-Debug-Session-Id": "92ff33" },
-    body: JSON.stringify({
-      sessionId: "92ff33",
-      runId: "pre-fix",
-      hypothesisId: "E",
-      location: "actions.ts:extractFromUploadAction",
-      message: "server action entered",
-      data: {
-        hasFile: Boolean(file && file.size > 0),
-        size: file?.size ?? 0,
-        type: file?.type ?? "",
-        openai: openaiConfigured(),
-      },
-      timestamp: Date.now(),
-    }),
-  }).catch(() => {});
-  // #endregion
   if (!openaiConfigured()) return { error: "AI is not set up on this computer." };
 
   if (!file || file.size === 0) return { error: "Choose a flyer or PDF first." };
@@ -136,21 +117,10 @@ export async function extractFromUploadAction(formData: FormData): Promise<AiCom
     if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) {
       return { error: "Use a JPG, PNG, WebP, or PDF." };
     }
-    return toComposeResult(await draftFromImage(bytes, file.type));
+    const imageUrl = await saveCmsImage(file);
+    return { ...toComposeResult(await draftFromImage(bytes, file.type)), imageUrl };
   } catch (error) {
     return { error: error instanceof Error ? error.message : "Could not read that file." };
-  }
-}
-
-export async function draftFromNotesAction(formData: FormData): Promise<AiComposeResult> {
-  assertCmsAllowed();
-  if (!openaiConfigured()) return { error: "AI is not set up on this computer." };
-  const notes = text(formData, "notes");
-  if (notes.length < 8) return { error: "Add a few more notes so there is something to draft." };
-  try {
-    return toComposeResult(await draftFromSource(notes));
-  } catch (error) {
-    return { error: error instanceof Error ? error.message : "Could not draft from those notes." };
   }
 }
 
@@ -214,7 +184,7 @@ export async function saveEventAction(
   const title = text(formData, "title");
   const location = text(formData, "location");
   const excerpt = text(formData, "excerpt");
-  const body = text(formData, "body");
+  const body = toEditorHtml(text(formData, "body"));
   const startsAt = formDateTimeToMysql(text(formData, "starts_at"));
   const endsAt = formDateTimeToMysql(text(formData, "ends_at"));
   const requestedSlug = slugify(text(formData, "slug") || title);
@@ -223,7 +193,7 @@ export async function saveEventAction(
   if (!startsAt) return { error: "Choose a start date and time." };
   if (!location) return { error: "Add a location." };
   if (!excerpt) return { error: "Add a short excerpt." };
-  if (!body) return { error: "Add the event details." };
+  if (richTextIsEmpty(body)) return { error: "Add the event details." };
 
   const existing = id ? await getEventById(id) : null;
   if (id && !existing) return { error: "That event could not be found." };
@@ -277,7 +247,7 @@ export async function saveNewsAction(
   const kind = parseNewsKind(text(formData, "kind"));
   const category = text(formData, "category") || "Community";
   const excerpt = text(formData, "excerpt");
-  const body = text(formData, "body");
+  const body = toEditorHtml(text(formData, "body"));
   const publishedAt = formDateTimeToMysql(text(formData, "published_at"));
   const requestedSlug = slugify(text(formData, "slug") || title);
 
@@ -287,7 +257,7 @@ export async function saveNewsAction(
   }
   if (!publishedAt) return { error: "Choose a published date." };
   if (!excerpt) return { error: "Add a short excerpt." };
-  if (!body) return { error: "Add the article body." };
+  if (richTextIsEmpty(body)) return { error: "Add the article body." };
 
   const existing = id ? await getNewsById(id) : null;
   if (id && !existing) return { error: "That article could not be found." };

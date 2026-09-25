@@ -9,6 +9,7 @@ import {
   saveNewsAction,
   type CmsActionState,
 } from "@/app/cms/actions";
+import { FormattedField } from "@/components/cms/FormattedField";
 import { ImagePicker } from "@/components/cms/ImagePicker";
 import { DeleteButton } from "@/components/cms/DeleteButton";
 import type { ArticleDraft } from "@/lib/cms-draft";
@@ -111,23 +112,28 @@ export function NewsForm({ article, draft }: { article?: GcaoNews; draft?: Artic
       )}
 
       {aiEnabled && (
-        <div className="flex flex-wrap gap-3">
-          <button
-            type="button"
-            onClick={() => void runRewrite()}
-            disabled={Boolean(aiBusy)}
-            className="rounded-full border border-black/10 px-4 py-2 text-sm font-semibold hover:border-[#006B3F]/40 disabled:opacity-50"
-          >
-            {aiBusy === "rewrite" ? "Rewriting…" : "Rewrite with AI"}
-          </button>
-          <button
-            type="button"
-            onClick={() => void runClassify()}
-            disabled={Boolean(aiBusy)}
-            className="rounded-full border border-black/10 px-4 py-2 text-sm font-semibold hover:border-[#006B3F]/40 disabled:opacity-50"
-          >
-            {aiBusy === "kind" ? "Suggesting…" : "Suggest category"}
-          </button>
+        <div>
+          <div className="flex flex-wrap gap-3">
+            <button
+              type="button"
+              onClick={() => void runRewrite()}
+              disabled={Boolean(aiBusy)}
+              className="rounded-full border border-black/10 px-4 py-2 text-sm font-semibold hover:border-[#006B3F]/40 disabled:opacity-50"
+            >
+              {aiBusy === "rewrite" ? "Rewriting…" : "Rewrite with AI"}
+            </button>
+            <button
+              type="button"
+              onClick={() => void runClassify()}
+              disabled={Boolean(aiBusy)}
+              className="rounded-full border border-black/10 px-4 py-2 text-sm font-semibold hover:border-[#006B3F]/40 disabled:opacity-50"
+            >
+              {aiBusy === "kind" ? "Suggesting…" : "Suggest category"}
+            </button>
+          </div>
+          <p className="mt-2 text-sm text-[#0F1B14]/55">
+            Rough notes in the body are enough. Rewrite will polish them.
+          </p>
         </div>
       )}
 
@@ -231,20 +237,13 @@ export function NewsForm({ article, draft }: { article?: GcaoNews; draft?: Artic
         />
       </div>
 
-      <div>
-        <label className={label} htmlFor="body">
-          Article
-        </label>
-        <textarea
-          id="body"
-          name="body"
-          required
-          rows={8}
-          value={body}
-          onChange={(e) => setBody(e.target.value)}
-          className={field}
-        />
-      </div>
+      <FormattedField
+        id="body"
+        name="body"
+        label="Article"
+        value={body}
+        onChange={setBody}
+      />
 
       <ImagePicker
         existingUrl={article?.imageUrl}

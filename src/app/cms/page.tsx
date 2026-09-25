@@ -14,7 +14,7 @@ export default async function CmsDashboardPage() {
     <CmsShell
       current="overview"
       title="Content"
-      description="Create a post from a form, a flyer, or a few notes. You review every draft before it is published."
+      description="Create a post from the form or a flyer. You review every draft before it is published."
       action={<PrimaryLink href="/cms/new">New post</PrimaryLink>}
     >
       <div className="grid gap-6 md:grid-cols-2">

@@ -6,7 +6,7 @@ export default function CmsNewPostPage() {
     <CmsShell
       current="new"
       title="New post"
-      description="Write it yourself, upload a flyer, or add a few notes. You always review the draft before it goes live."
+      description="Write it yourself or upload a flyer. You always review the draft before it goes live."
     >
       <ComposeChooser />
     </CmsShell>

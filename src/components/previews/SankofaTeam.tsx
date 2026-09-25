@@ -40,14 +40,17 @@ function KentePlaceholder({
   overlay,
   className,
   initialsClassName,
+  showInitials = true,
 }: {
   name: string;
   overlay: string;
   className?: string;
   initialsClassName?: string;
+  showInitials?: boolean;
 }) {
+  const positioned = /(?:^|\s)(?:absolute|fixed|sticky)(?:\s|$)/.test(className ?? "");
   return (
-    <div className={`relative overflow-hidden ${className ?? ""}`}>
+    <div className={`${positioned ? "" : "relative"} overflow-hidden ${className ?? ""}`}>
       <SiteImage
         src={siteImages.aboutKente.src}
         alt=""
@@ -55,13 +58,15 @@ function KentePlaceholder({
         overlay={overlay}
         sizes="(min-width: 1280px) 25vw, (min-width: 640px) 50vw, 100vw"
       />
-      <span
-        className={`absolute inset-0 z-10 flex items-center justify-center font-semibold tracking-wide text-[#EFEDE4] ${initialsClassName ?? "text-2xl md:text-3xl"}`}
-        style={display}
-        aria-hidden
-      >
-        {memberInitials(name)}
-      </span>
+      {showInitials && (
+        <span
+          className={`absolute inset-0 z-10 flex items-center justify-center font-semibold tracking-wide text-[#EFEDE4] ${initialsClassName ?? "text-2xl md:text-3xl"}`}
+          style={display}
+          aria-hidden
+        >
+          {memberInitials(name)}
+        </span>
+      )}
     </div>
   );
 }
@@ -165,6 +170,7 @@ export function SankofaTeam({ theme }: SankofaTeamProps) {
                         name={member.name}
                         overlay={t.kenteOverlay}
                         className="absolute inset-0"
+                        showInitials={false}
                       />
                     )}
                   </div>

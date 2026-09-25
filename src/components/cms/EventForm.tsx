@@ -8,6 +8,7 @@ import {
   saveEventAction,
   type CmsActionState,
 } from "@/app/cms/actions";
+import { FormattedField } from "@/components/cms/FormattedField";
 import { ImagePicker } from "@/components/cms/ImagePicker";
 import { DeleteButton } from "@/components/cms/DeleteButton";
 import type { EventDraft } from "@/lib/cms-draft";
@@ -101,15 +102,20 @@ export function EventForm({ event, draft }: { event?: GcaoEvent; draft?: EventDr
       )}
 
       {aiEnabled && (
-        <div className="flex flex-wrap gap-3">
-          <button
-            type="button"
-            onClick={() => void runRewrite()}
-            disabled={Boolean(aiBusy)}
-            className="rounded-full border border-black/10 px-4 py-2 text-sm font-semibold hover:border-[#006B3F]/40 disabled:opacity-50"
-          >
-            {aiBusy === "rewrite" ? "Rewriting…" : "Rewrite with AI"}
-          </button>
+        <div>
+          <div className="flex flex-wrap gap-3">
+            <button
+              type="button"
+              onClick={() => void runRewrite()}
+              disabled={Boolean(aiBusy)}
+              className="rounded-full border border-black/10 px-4 py-2 text-sm font-semibold hover:border-[#006B3F]/40 disabled:opacity-50"
+            >
+              {aiBusy === "rewrite" ? "Rewriting…" : "Rewrite with AI"}
+            </button>
+          </div>
+          <p className="mt-2 text-sm text-[#0F1B14]/55">
+            Rough notes in the body are enough. Rewrite will polish them.
+          </p>
         </div>
       )}
 
@@ -204,20 +210,13 @@ export function EventForm({ event, draft }: { event?: GcaoEvent; draft?: EventDr
         />
       </div>
 
-      <div>
-        <label className={label} htmlFor="body">
-          Details
-        </label>
-        <textarea
-          id="body"
-          name="body"
-          required
-          rows={8}
-          value={body}
-          onChange={(e) => setBody(e.target.value)}
-          className={field}
-        />
-      </div>
+      <FormattedField
+        id="body"
+        name="body"
+        label="Details"
+        value={body}
+        onChange={setBody}
+      />
 
       <ImagePicker
         existingUrl={event?.imageUrl}

@@ -5,6 +5,7 @@ import { SiteImage } from "@/components/shared/SiteImage";
 import { SankofaFooter } from "@/components/previews/SankofaFooter";
 import { SankofaHeader } from "@/components/previews/SankofaHeader";
 import { sankofaThemes, type SankofaTheme } from "@/components/previews/sankofaTheme";
+import { FormattedBody } from "@/components/shared/FormattedBody";
 import { formatEventDateRange, type GcaoEvent } from "@/lib/events";
 
 const sora = Sora({
@@ -29,10 +30,6 @@ export function SankofaEventDetail({
 }: SankofaEventDetailProps) {
   const t = sankofaThemes[theme];
   const isLight = theme === "light";
-  const paragraphs = event.body
-    .split(/\n\n+/)
-    .map((p) => p.trim())
-    .filter(Boolean);
 
   return (
     <div className={`${sora.variable} ${t.page}`}>
@@ -84,11 +81,10 @@ export function SankofaEventDetail({
       <article className="px-6 py-16 md:px-10 md:py-24">
         <div className="mx-auto max-w-3xl">
           <p className={`text-lg leading-relaxed ${t.sectionMuted}`}>{event.excerpt}</p>
-          <div className={`mt-10 space-y-6 text-base leading-relaxed ${t.cardMuted}`}>
-            {paragraphs.map((paragraph) => (
-              <p key={paragraph.slice(0, 48)}>{paragraph}</p>
-            ))}
-          </div>
+          <FormattedBody
+            text={event.body}
+            className={`mt-10 text-base leading-relaxed ${t.cardMuted}`}
+          />
           <Link
             href={`${basePath}/events`}
             className={`link-arrow mt-14 inline-flex items-center gap-2 text-sm font-semibold ${

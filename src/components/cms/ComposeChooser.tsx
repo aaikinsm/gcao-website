@@ -1,18 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import {
-  aiStatusAction,
-  draftFromNotesAction,
-  extractFromUploadAction,
-} from "@/app/cms/actions";
+import { aiStatusAction, extractFromUploadAction } from "@/app/cms/actions";
 import { EventForm } from "@/components/cms/EventForm";
 import { NewsForm } from "@/components/cms/NewsForm";
 import type { AiComposeResult, ArticleDraft, EventDraft } from "@/lib/cms-draft";
 
-type StartMethod = "write" | "flyer" | "notes";
+type StartMethod = "write" | "flyer";
 type WriteType = "event" | "update";
-type Screen = "start" | "write-type" | "flyer" | "notes" | "form";
+type Screen = "start" | "write-type" | "flyer" | "form";
 
 const card =
   "rounded-[2rem] border border-black/10 bg-white p-6 text-left transition-colors hover:border-[#006B3F]/40 md:p-8";
@@ -22,7 +18,6 @@ export function ComposeChooser() {
   const [writeType, setWriteType] = useState<WriteType>("update");
   const [eventDraft, setEventDraft] = useState<EventDraft>({});
   const [articleDraft, setArticleDraft] = useState<ArticleDraft>({ kind: "news" });
-  const [notes, setNotes] = useState("");
   const [aiEnabled, setAiEnabled] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
@@ -66,82 +61,20 @@ export function ComposeChooser() {
     setError("");
     if (method === "write") setScreen("write-type");
     if (method === "flyer") setScreen("flyer");
-    if (method === "notes") setScreen("notes");
   };
 
   const readFile = async (form: HTMLFormElement) => {
     setBusy(true);
     setError("");
     const data = new FormData(form);
-    const file = data.get("source");
-    const fileMeta =
-      file instanceof File
-        ? { name: file.name, type: file.type, size: file.size, over1mb: file.size > 1_000_000 }
-        : { name: "", type: typeof file, size: 0, over1mb: false };
-    // #region agent log
-    fetch("http://127.0.0.1:7577/ingest/3cd8e77a-a5fb-4443-b01a-544eaa94c981", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "X-Debug-Session-Id": "92ff33" },
-      body: JSON.stringify({
-        sessionId: "92ff33",
-        runId: "pre-fix",
-        hypothesisId: "A",
-        location: "ComposeChooser.tsx:readFile",
-        message: "flyer selected before server action",
-        data: fileMeta,
-        timestamp: Date.now(),
-      }),
-    }).catch(() => {});
-    // #endregion
     try {
       const result = await extractFromUploadAction(data);
-      // #region agent log
-      fetch("http://127.0.0.1:7577/ingest/3cd8e77a-a5fb-4443-b01a-544eaa94c981", {
-        method: "POST",
-        headers: { "Content-Type": "application/json", "X-Debug-Session-Id": "92ff33" },
-        body: JSON.stringify({
-          sessionId: "92ff33",
-          runId: "pre-fix",
-          hypothesisId: "E",
-          location: "ComposeChooser.tsx:readFile:success",
-          message: "server action returned",
-          data: { hasError: Boolean(result.error), postType: result.postType ?? null },
-          timestamp: Date.now(),
-        }),
-      }).catch(() => {});
-      // #endregion
       setBusy(false);
       applyResult(result);
     } catch (error) {
-      const message = error instanceof Error ? error.message : String(error);
-      // #region agent log
-      fetch("http://127.0.0.1:7577/ingest/3cd8e77a-a5fb-4443-b01a-544eaa94c981", {
-        method: "POST",
-        headers: { "Content-Type": "application/json", "X-Debug-Session-Id": "92ff33" },
-        body: JSON.stringify({
-          sessionId: "92ff33",
-          runId: "pre-fix",
-          hypothesisId: "E",
-          location: "ComposeChooser.tsx:readFile:catch",
-          message: "server action threw before handler",
-          data: { message: message.slice(0, 240) },
-          timestamp: Date.now(),
-        }),
-      }).catch(() => {});
-      // #endregion
       setBusy(false);
-      setError(message);
+      setError(error instanceof Error ? error.message : String(error));
     }
-  };
-
-  const draftNotes = async () => {
-    setBusy(true);
-    setError("");
-    const data = new FormData();
-    data.set("notes", notes);
-    const result = await draftFromNotesAction(data);
-    setBusy(false);
-    applyResult(result);
   };
 
   if (screen === "form") {
@@ -157,11 +90,14 @@ export function ComposeChooser() {
       )}
 
       {screen === "start" && (
-        <div className="grid gap-4 md:grid-cols-3">
+        <div className="grid gap-4 md:grid-cols-2">
           <button type="button" className={card} onClick={() => pickStart("write")}>
-            <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-[#006B3F]">Write it</p>
-            <p className="mt-3 text-xl font-semibold tracking-tight">Fill in the form yourself</p>
-            <p className="mt-2 text-sm text-[#0F1B14]/55">Use the current fields. No AI required.</p>
+            <IconPencil />
+            <p className="mt-4 text-[11px] font-semibold uppercase tracking-[0.28em] text-[#006B3F]">Write it</p>
+            <p className="mt-3 text-xl font-semibold tracking-tight">Fill the form, or jot notes</p>
+            <p className="mt-2 text-sm text-[#0F1B14]/55">
+              Use the fields yourself, or drop rough notes and use Rewrite with AI.
+            </p>
           </button>
           <button
             type="button"
@@ -169,29 +105,14 @@ export function ComposeChooser() {
             onClick={() => pickStart("flyer")}
             disabled={!aiEnabled}
           >
-            <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-[#006B3F]">
+            <IconImage />
+            <p className="mt-4 text-[11px] font-semibold uppercase tracking-[0.28em] text-[#006B3F]">
               Upload a flyer
             </p>
             <p className="mt-3 text-xl font-semibold tracking-tight">Read a photo or PDF</p>
             <p className="mt-2 text-sm text-[#0F1B14]/55">
               {aiEnabled
                 ? "We’ll draft the post from the flyer. You still review and publish."
-                : "Add an OpenAI key on this computer to use this."}
-            </p>
-          </button>
-          <button
-            type="button"
-            className={card}
-            onClick={() => pickStart("notes")}
-            disabled={!aiEnabled}
-          >
-            <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-[#006B3F]">
-              Describe it
-            </p>
-            <p className="mt-3 text-xl font-semibold tracking-tight">A few notes, then a draft</p>
-            <p className="mt-2 text-sm text-[#0F1B14]/55">
-              {aiEnabled
-                ? "We’ll write polished copy and suggest News, Notice, or Story."
                 : "Add an OpenAI key on this computer to use this."}
             </p>
           </button>
@@ -270,37 +191,29 @@ export function ComposeChooser() {
           </button>
         </form>
       )}
-
-      {screen === "notes" && (
-        <div className="rounded-[2rem] border border-black/10 bg-white p-6 md:p-10">
-          <button
-            type="button"
-            onClick={() => setScreen("start")}
-            className="mb-6 text-sm font-semibold text-[#006B3F]"
-          >
-            ← Back
-          </button>
-          <label className="block text-sm font-medium" htmlFor="notes">
-            What should this post say?
-            <textarea
-              id="notes"
-              value={notes}
-              onChange={(e) => setNotes(e.target.value)}
-              rows={8}
-              className="mt-3 w-full rounded-2xl border border-black/10 px-4 py-3 outline-none ring-[#006B3F]/30 focus:ring-2"
-              placeholder="Seniors picnic at the Resource Hub, Saturday afternoon, bring a dish…"
-            />
-          </label>
-          <button
-            type="button"
-            onClick={() => void draftNotes()}
-            disabled={busy}
-            className="btn-premium mt-8 rounded-full bg-[#FCD116] px-6 py-3 text-sm font-semibold text-[#06110D] disabled:opacity-60"
-          >
-            {busy ? "Drafting…" : "Draft this"}
-          </button>
-        </div>
-      )}
     </div>
+  );
+}
+
+function IconPencil() {
+  return (
+    <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#006B3F]/10 text-[#006B3F]" aria-hidden>
+      <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="1.8">
+        <path d="M4 20h4l10.5-10.5a2.1 2.1 0 0 0-3-3L5 17v3z" />
+        <path d="M13.5 6.5l3 3" />
+      </svg>
+    </span>
+  );
+}
+
+function IconImage() {
+  return (
+    <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#006B3F]/10 text-[#006B3F]" aria-hidden>
+      <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="1.8">
+        <rect x="3" y="5" width="18" height="14" rx="2" />
+        <circle cx="8.5" cy="10" r="1.5" />
+        <path d="M21 16l-5.5-5.5L7 19" />
+      </svg>
+    </span>
   );
 }

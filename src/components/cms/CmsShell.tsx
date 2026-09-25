@@ -27,10 +27,6 @@ interface CmsShellProps {
 export function CmsShell({ title, description, action, children, current }: CmsShellProps) {
   return (
     <div className={`${sora.variable} min-h-screen bg-[#FFFBF2] text-[#0F1B14]`}>
-      <div className="bg-[#0F1B14] px-4 py-2.5 text-center text-xs font-semibold tracking-wide text-[#FCD116] md:text-sm">
-        Public — anyone can post until login is added. AI needs a local OpenAI key and never publishes on its own.
-      </div>
-
       <header className="border-b border-black/10 bg-white/80 backdrop-blur-xl">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-6 py-4 md:px-10">
           <Logo href="/cms" size={40} textClassName="text-[#0F1B14]" />
