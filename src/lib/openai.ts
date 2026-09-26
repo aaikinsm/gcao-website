@@ -1,5 +1,5 @@
 import { parseNewsKind, type NewsKind } from "@/lib/news-types";
-import { toEditorHtml } from "@/lib/rich-text";
+import { richTextPlain, toEditorHtml } from "@/lib/rich-text";
 
 export type AiPostType = "event" | "update";
 
@@ -22,6 +22,7 @@ kind is only for updates: "news" (report of something that happened or is underw
 category is one of Health, Community, Culture.
 When postType is "event": fill excerpt with one or two sentences from the source; fill location with the venue and address only if printed; fill startsAt from the printed start date and time; fill endsAt only if an end time or range is printed. If a fact is missing, leave that field empty. Do not invent a venue or date.
 startsAt and endsAt must be empty or datetime-local form YYYY-MM-DDTHH:mm in America/Toronto.
+title is required plain text for the headline, with no HTML. Do not put the headline only inside body.
 Write polished, warm, clear English. Body must be an HTML subset using only <p>, <br>, <strong>, <em>, <u>, <ul>, and <li>. Use <strong> for emphasis, <em> for italics, <u> for underline, and <ul><li> for lists when the source has them. Do not use markdown like **bold** or "- " lines.`;
 
 function apiKey() {
@@ -163,16 +164,35 @@ function normalizeDate(value: unknown) {
   return formatLocal(resolveYear(named.month, named.day, named.year), named.month, named.day, clock.hour, clock.minute);
 }
 
+function plainTitle(value: string) {
+  return richTextPlain(value).replace(/\s+/g, " ").trim();
+}
+
+function titleFromBody(body: string) {
+  const match = body.match(/<(p|li)>([\s\S]*?)<\/\1>/i);
+  if (!match) return { title: "", body };
+  const title = plainTitle(match[2]);
+  if (!title) return { title: "", body };
+  const rest = body
+    .replace(match[0], "")
+    .replace(/<ul>\s*<\/ul>/gi, "")
+    .trim();
+  if (!rest) return { title, body };
+  return { title, body: rest };
+}
+
 export function normalizeAiDraft(raw: unknown): AiDraftFields {
   const data = raw && typeof raw === "object" ? (raw as Record<string, unknown>) : {};
   const postType = data.postType === "event" ? "event" : "update";
   const category = String(data.category ?? "Community");
+  const html = toEditorHtml(String(data.body ?? ""));
+  const lifted = plainTitle(String(data.title ?? "")) ? { title: plainTitle(String(data.title ?? "")), body: html } : titleFromBody(html);
   return {
     postType,
     kind: parseNewsKind(String(data.kind ?? "news")),
-    title: String(data.title ?? "").trim(),
+    title: lifted.title,
     excerpt: String(data.excerpt ?? "").trim(),
-    body: toEditorHtml(String(data.body ?? "")),
+    body: lifted.body,
     location: String(data.location ?? "").trim(),
     startsAt: normalizeDate(data.startsAt),
     endsAt: normalizeDate(data.endsAt),

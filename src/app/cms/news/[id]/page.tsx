@@ -15,7 +15,7 @@ export default async function CmsEditNewsPage({
   if (!article) notFound();
 
   return (
-    <CmsShell current="news" title="Edit article" description={article.title}>
+    <CmsShell current="news" title="Edit article" compact>
       <NewsForm article={article} />
     </CmsShell>
   );

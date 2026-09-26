@@ -22,9 +22,10 @@ interface CmsShellProps {
   action?: ReactNode;
   children: ReactNode;
   current: "overview" | "posts" | "new" | "events" | "news";
+  compact?: boolean;
 }
 
-export function CmsShell({ title, description, action, children, current }: CmsShellProps) {
+export function CmsShell({ title, description, action, children, current, compact = false }: CmsShellProps) {
   return (
     <div className={`${sora.variable} min-h-screen bg-[#FFFBF2] text-[#0F1B14]`}>
       <header className="border-b border-black/10 bg-white/80 backdrop-blur-xl">
@@ -60,26 +61,35 @@ export function CmsShell({ title, description, action, children, current }: CmsS
       </header>
 
       <main className="mx-auto max-w-6xl px-6 py-10 md:px-10 md:py-14">
-        <div className="flex flex-wrap items-end justify-between gap-4">
-          <div>
+        {compact ? (
+          <>
             <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-[#006B3F]">
               GCAO CMS
             </p>
-            <h1
-              className="mt-3 text-3xl font-semibold tracking-[-0.03em] md:text-5xl"
-              style={display}
-            >
-              {title}
-            </h1>
-            {description && (
-              <p className="mt-3 max-w-2xl text-base leading-relaxed text-[#0F1B14]/60">
-                {description}
+            <h1 className="sr-only">{title}</h1>
+          </>
+        ) : (
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-[#006B3F]">
+                GCAO CMS
               </p>
-            )}
+              <h1
+                className="mt-3 text-3xl font-semibold tracking-[-0.03em] md:text-5xl"
+                style={display}
+              >
+                {title}
+              </h1>
+              {description && (
+                <p className="mt-3 max-w-2xl text-base leading-relaxed text-[#0F1B14]/60">
+                  {description}
+                </p>
+              )}
+            </div>
+            {action}
           </div>
-          {action}
-        </div>
-        <div className="mt-10">{children}</div>
+        )}
+        <div className={compact ? "mt-6" : "mt-10"}>{children}</div>
       </main>
 
       <footer className="border-t border-black/10 px-6 py-8 text-center text-xs text-[#0F1B14]/45 md:px-10">

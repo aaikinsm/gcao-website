@@ -15,7 +15,7 @@ export default async function CmsEditEventPage({
   if (!event) notFound();
 
   return (
-    <CmsShell current="events" title="Edit event" description={event.title}>
+    <CmsShell current="events" title="Edit event" compact>
       <EventForm event={event} />
     </CmsShell>
   );
