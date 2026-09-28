@@ -52,13 +52,23 @@ function PanelVideo({
     const wrap = wrapRef.current;
     if (!video || !wrap) return;
 
+    const panel = wrap.closest("button");
     video.muted = true;
-    video.playbackRate = 0.75;
+
+    const setRate = (rate: number) => {
+      video.playbackRate = rate;
+    };
+    setRate(0.5);
+
+    const onEnter = () => setRate(1);
+    const onLeave = () => setRate(0.5);
+    panel?.addEventListener("mouseenter", onEnter);
+    panel?.addEventListener("mouseleave", onLeave);
 
     const io = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          void video.play().catch(() => {});
+          void video.play().then(() => setRate(panel?.matches(":hover") ? 1 : 0.5)).catch(() => {});
         } else {
           video.pause();
         }
@@ -66,7 +76,11 @@ function PanelVideo({
       { threshold: 0.2 },
     );
     io.observe(wrap);
-    return () => io.disconnect();
+    return () => {
+      panel?.removeEventListener("mouseenter", onEnter);
+      panel?.removeEventListener("mouseleave", onLeave);
+      io.disconnect();
+    };
   }, [reducedMotion, src]);
 
   return (
@@ -120,7 +134,7 @@ export function ServePanels({ panels, tokens: t }: ServePanelsProps) {
             type="button"
             aria-expanded={expanded}
             onClick={() => toggle(panel.title)}
-            className={`group relative flex-1 overflow-hidden rounded-3xl border text-left transition-all duration-700 ease-out md:h-full md:hover:flex-[2.4] ${
+            className={`group relative shrink-0 overflow-hidden rounded-3xl border text-left transition-all duration-700 ease-out md:h-full md:flex-1 md:hover:flex-[2.4] ${
               expanded ? "h-80" : "h-52"
             } ${t.panelBorder}`}
           >

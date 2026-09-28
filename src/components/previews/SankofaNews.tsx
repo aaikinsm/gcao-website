@@ -9,7 +9,7 @@ import { SankofaFooter } from "@/components/previews/SankofaFooter";
 import { SankofaHeader } from "@/components/previews/SankofaHeader";
 import { SankofaKenteHero } from "@/components/previews/SankofaKenteHero";
 import { sankofaThemes, type SankofaTheme } from "@/components/previews/sankofaTheme";
-import { NEWS_KINDS, newsKindLabel, type GcaoNews, type NewsKind } from "@/lib/news-types";
+import { NEWS_KINDS, newsKindLabel, newsTypeLabel, type GcaoNews, type NewsKind } from "@/lib/news-types";
 import { siteContent } from "@/lib/content";
 
 const sora = Sora({
@@ -133,7 +133,7 @@ export function SankofaNews({ theme, optionLabel, basePath, articles }: SankofaN
                     </div>
                     <div className="p-6 md:p-8">
                       <p className={`text-sm ${t.sectionMuted}`}>
-                        {newsKindLabel(article.kind)} · {dateFmt.format(article.publishedAt)}
+                        {newsTypeLabel(article.kind, article.category)} · {dateFmt.format(article.publishedAt)}
                       </p>
                       <h2
                         className={`mt-3 text-xl font-semibold tracking-tight transition-colors md:text-2xl ${titleHover}`}

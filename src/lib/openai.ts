@@ -1,4 +1,4 @@
-import { parseNewsKind, type NewsKind } from "@/lib/news-types";
+import { parseNewsGroup, parseNewsKind, type NewsKind } from "@/lib/news-types";
 import { richTextPlain, toEditorHtml } from "@/lib/rich-text";
 
 export type AiPostType = "event" | "update";
@@ -19,7 +19,7 @@ const SYSTEM = `You help GCAO staff draft public website copy for the Ghanaian-C
 Return only JSON. Do not invent phone numbers or personal email addresses. Official @gcaocanada.org addresses are fine if they appear in the source.
 postType is "event" when there is a specific gathering with a date and place; otherwise "update".
 kind is only for updates: "news" (report of something that happened or is underway), "notice" (short operational bulletin: hours, deadline, registration, closure), or "story" (longer feature, tribute, or leadership voice). If unsure, use "news".
-category is one of Health, Community, Culture.
+category is empty unless the source is clearly about one group: "Women's", "Men's", "Youth", or "Welfare". Do not guess a group.
 When postType is "event": fill excerpt with one or two sentences from the source; fill location with the venue and address only if printed; fill startsAt from the printed start date and time; fill endsAt only if an end time or range is printed. If a fact is missing, leave that field empty. Do not invent a venue or date.
 startsAt and endsAt must be empty or datetime-local form YYYY-MM-DDTHH:mm in America/Toronto.
 title is required plain text for the headline, with no HTML. Do not put the headline only inside body.
@@ -43,7 +43,7 @@ function emptyDraft(): AiDraftFields {
     location: "",
     startsAt: "",
     endsAt: "",
-    category: "Community",
+    category: "",
   };
 }
 
@@ -184,7 +184,7 @@ function titleFromBody(body: string) {
 export function normalizeAiDraft(raw: unknown): AiDraftFields {
   const data = raw && typeof raw === "object" ? (raw as Record<string, unknown>) : {};
   const postType = data.postType === "event" ? "event" : "update";
-  const category = String(data.category ?? "Community");
+  const category = parseNewsGroup(String(data.category ?? ""));
   const html = toEditorHtml(String(data.body ?? ""));
   const lifted = plainTitle(String(data.title ?? "")) ? { title: plainTitle(String(data.title ?? "")), body: html } : titleFromBody(html);
   return {
@@ -196,7 +196,7 @@ export function normalizeAiDraft(raw: unknown): AiDraftFields {
     location: String(data.location ?? "").trim(),
     startsAt: normalizeDate(data.startsAt),
     endsAt: normalizeDate(data.endsAt),
-    category: ["Health", "Community", "Culture"].includes(category) ? category : "Community",
+    category,
   };
 }
 

@@ -159,7 +159,7 @@ export function SankofaHome({ theme, optionLabel, basePath, upcomingEvents }: Sa
 
       <AnimatedSection id="programs" className="px-6 pb-32 md:px-10 md:pb-40" delay={80}>
         <div className="mx-auto max-w-6xl">
-          <div className="flex flex-wrap items-end justify-between gap-6">
+          <div className="flex flex-col items-start gap-6 md:flex-row md:flex-wrap md:items-end md:justify-between">
             <div>
               <p className={`text-[11px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>
                 Programs
@@ -171,7 +171,7 @@ export function SankofaHome({ theme, optionLabel, basePath, upcomingEvents }: Sa
                 How we serve
               </h2>
             </div>
-            <div className="flex flex-col items-start gap-3 sm:items-end">
+            <div className="flex flex-col items-start gap-3 md:items-end">
               <p className={`max-w-xs text-sm ${t.sectionMuted}`}>
                 <AnimatedHeadline
                   before="Built for"

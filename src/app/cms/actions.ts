@@ -28,6 +28,7 @@ import {
   rewriteDraft,
   type AiDraftFields,
 } from "@/lib/openai";
+import { parseNewsGroup } from "@/lib/news-types";
 import { richTextIsEmpty, toEditorHtml } from "@/lib/rich-text";
 import { formDateTimeToMysql, slugify } from "@/lib/slug";
 import { saveCmsImage, saveCmsImageBuffer } from "@/lib/uploads";
@@ -245,16 +246,13 @@ export async function saveNewsAction(
   const id = idRaw ? Number(idRaw) : null;
   const title = text(formData, "title");
   const kind = parseNewsKind(text(formData, "kind"));
-  const category = text(formData, "category") || "Community";
+  const category = parseNewsGroup(text(formData, "category"));
   const excerpt = text(formData, "excerpt");
   const body = toEditorHtml(text(formData, "body"));
   const publishedAt = formDateTimeToMysql(text(formData, "published_at"));
   const requestedSlug = slugify(text(formData, "slug") || title);
 
   if (title.length < 3) return { error: "Add a title of at least 3 characters." };
-  if (!["Health", "Community", "Culture"].includes(category)) {
-    return { error: "Choose a topic." };
-  }
   if (!publishedAt) return { error: "Choose a published date." };
   if (!excerpt) return { error: "Add a short excerpt." };
   if (richTextIsEmpty(body)) return { error: "Add the article body." };

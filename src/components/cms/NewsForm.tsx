@@ -13,7 +13,15 @@ import { FormattedField } from "@/components/cms/FormattedField";
 import { ImagePicker } from "@/components/cms/ImagePicker";
 import { DeleteButton } from "@/components/cms/DeleteButton";
 import type { ArticleDraft } from "@/lib/cms-draft";
-import { NEWS_KINDS, newsKindLabel, type GcaoNews, type NewsKind } from "@/lib/news-types";
+import {
+  NEWS_GROUPS,
+  NEWS_KINDS,
+  newsKindLabel,
+  parseNewsGroup,
+  type GcaoNews,
+  type NewsGroup,
+  type NewsKind,
+} from "@/lib/news-types";
 import { slugify, toDatetimeLocalValue } from "@/lib/slug";
 
 const field =
@@ -29,6 +37,9 @@ export function NewsForm({ article, draft }: { article?: GcaoNews; draft?: Artic
   const [slug, setSlug] = useState(article?.slug ?? "");
   const [slugTouched, setSlugTouched] = useState(Boolean(article));
   const [kind, setKind] = useState<NewsKind>(article?.kind ?? draft?.kind ?? "news");
+  const [group, setGroup] = useState<NewsGroup | "">(
+    parseNewsGroup(article?.category ?? draft?.category),
+  );
   const [excerpt, setExcerpt] = useState(article?.excerpt ?? draft?.excerpt ?? "");
   const [body, setBody] = useState(article?.body ?? draft?.body ?? "");
   const [imageUrl, setImageUrl] = useState(draft?.imageUrl ?? article?.imageUrl ?? "");
@@ -62,6 +73,7 @@ export function NewsForm({ article, draft }: { article?: GcaoNews; draft?: Artic
     if (result.excerpt) setExcerpt(result.excerpt);
     if (result.body) setBody(result.body);
     if (result.kind) setKind(result.kind);
+    if (parseNewsGroup(result.category)) setGroup(parseNewsGroup(result.category));
   };
 
   const runClassify = async () => {
@@ -99,7 +111,7 @@ export function NewsForm({ article, draft }: { article?: GcaoNews; draft?: Artic
     <form action={formAction}>
       {article && <input type="hidden" name="id" value={article.id} />}
       <input type="hidden" name="kind" value={kind} />
-      <input type="hidden" name="category" value={article?.category ?? draft?.category ?? "Community"} />
+      <input type="hidden" name="category" value={group} />
       {state?.error && (
         <p className="mb-6 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800" role="alert">
           {state.error}
@@ -202,6 +214,20 @@ export function NewsForm({ article, draft }: { article?: GcaoNews; draft?: Artic
             )}
           </fieldset>
 
+          <fieldset>
+            <legend className={label}>Group</legend>
+            <div className="mt-3 flex flex-wrap gap-2">
+              <GroupChip selected={group === ""} onClick={() => setGroup("")}>
+                None
+              </GroupChip>
+              {NEWS_GROUPS.map((value) => (
+                <GroupChip key={value} selected={group === value} onClick={() => setGroup(value)}>
+                  {value}
+                </GroupChip>
+              ))}
+            </div>
+          </fieldset>
+
           <div>
             <label className={label} htmlFor="published_at">
               Published
@@ -266,5 +292,27 @@ export function NewsForm({ article, draft }: { article?: GcaoNews; draft?: Artic
         </aside>
       </div>
     </form>
+  );
+}
+
+function GroupChip({
+  selected,
+  onClick,
+  children,
+}: {
+  selected: boolean;
+  onClick: () => void;
+  children: string;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={`rounded-full border px-4 py-2 text-sm font-medium ${
+        selected ? "border-[#006B3F] bg-[#006B3F] text-white" : "border-black/10 hover:border-[#006B3F]/40"
+      }`}
+    >
+      {children}
+    </button>
   );
 }

@@ -12,6 +12,20 @@ export function newsKindLabel(kind: NewsKind) {
   return "News";
 }
 
+export const NEWS_GROUPS = ["Women's", "Men's", "Youth", "Welfare"] as const;
+export type NewsGroup = (typeof NEWS_GROUPS)[number];
+
+export function parseNewsGroup(value: string | null | undefined): NewsGroup | "" {
+  if (value === "Women's" || value === "Men's" || value === "Youth" || value === "Welfare") return value;
+  return "";
+}
+
+export function newsTypeLabel(kind: NewsKind, category: string) {
+  const group = parseNewsGroup(category);
+  const type = newsKindLabel(kind);
+  return group ? `${type} · ${group}` : type;
+}
+
 export type GcaoNews = {
   id: number;
   title: string;

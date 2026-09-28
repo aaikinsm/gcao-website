@@ -6,7 +6,7 @@ import { SankofaFooter } from "@/components/previews/SankofaFooter";
 import { SankofaHeader } from "@/components/previews/SankofaHeader";
 import { sankofaThemes, type SankofaTheme } from "@/components/previews/sankofaTheme";
 import { FormattedBody } from "@/components/shared/FormattedBody";
-import { newsKindLabel, type GcaoNews } from "@/lib/news-types";
+import { newsTypeLabel, type GcaoNews } from "@/lib/news-types";
 
 const sora = Sora({
   subsets: ["latin"],
@@ -70,7 +70,7 @@ export function SankofaNewsDetail({
             ← All updates
           </Link>
           <p className="mt-8 text-[11px] font-semibold uppercase tracking-[0.28em] text-[#FCD116]">
-            {newsKindLabel(article.kind)}
+            {newsTypeLabel(article.kind, article.category)}
           </p>
           <h1
             className="mt-4 text-4xl font-semibold tracking-[-0.03em] text-balance text-white md:text-6xl"
