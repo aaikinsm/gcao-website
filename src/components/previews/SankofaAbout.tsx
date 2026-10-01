@@ -36,7 +36,7 @@ interface SankofaAboutProps {
 export function SankofaAbout({ theme, optionLabel, basePath }: SankofaAboutProps) {
   const t = sankofaThemes[theme];
   const isLight = theme === "light";
-  const donateHref = `${basePath}#donate`;
+  const donateHref = `${basePath}/donate`;
   const historyParagraphs = siteContent.about.history.split("\n\n");
   const hoverOverlay = isLight
     ? "bg-gradient-to-t from-[#006B3F]/55 via-[#006B3F]/15 to-transparent"

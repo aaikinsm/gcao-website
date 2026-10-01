@@ -276,7 +276,7 @@ export function SankofaHome({ theme, optionLabel, basePath, upcomingEvents }: Sa
             </p>
             <div className="mt-10 flex flex-wrap justify-center gap-4">
               <a
-                href="#contact"
+                href={`${basePath}/donate`}
                 className={`btn-premium rounded-full px-8 py-3.5 text-sm font-semibold ${t.ctaPrimary}`}
               >
                 Donate now

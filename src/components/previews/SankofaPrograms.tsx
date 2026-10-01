@@ -32,7 +32,7 @@ export function SankofaPrograms({ theme, optionLabel, basePath }: SankofaProgram
   const t = sankofaThemes[theme];
   const isLight = theme === "light";
   const p = siteContent.programsPage;
-  const donateHref = `${basePath}#donate`;
+  const donateHref = `${basePath}/donate`;
   const inquireHref = `mailto:${siteContent.contact.email}`;
   const chipHover = isLight
     ? "hover:border-[#006B3F] hover:text-[#006B3F]"

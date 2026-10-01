@@ -28,7 +28,7 @@ export function SankofaHeader({
   const [mounted, setMounted] = useState(false);
   const isLight = theme === "light";
   const nav = getSankofaNav(basePath);
-  const donateHref = `${basePath}#donate`;
+  const donateHref = `${basePath}/donate`;
 
   useEffect(() => {
     setMounted(true);
