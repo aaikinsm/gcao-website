@@ -2,6 +2,7 @@ import type { ResultSetHeader, RowDataPacket } from "mysql2";
 import { getPool } from "@/lib/db";
 import { slugify } from "@/lib/slug";
 import { parseNewsKind, type GcaoNews, type NewsKind } from "@/lib/news-types";
+import { ensurePendingStatus, parsePostStatus, type PostStatus } from "@/lib/post-status";
 
 export type { GcaoNews, NewsKind } from "@/lib/news-types";
 export { NEWS_KINDS, newsKindLabel, parseNewsKind } from "@/lib/news-types";
@@ -15,7 +16,7 @@ export type NewsInput = {
   body: string;
   imageUrl: string;
   publishedAt: string;
-  status: "draft" | "published";
+  status: PostStatus;
 };
 
 type NewsRow = RowDataPacket & {
@@ -28,7 +29,7 @@ type NewsRow = RowDataPacket & {
   body: string;
   image_url: string;
   published_at: Date | string;
-  status: "draft" | "published";
+  status: string;
 };
 
 const NEWS_SELECT = `id, title, slug, kind, category, excerpt, body, image_url, published_at, status`;
@@ -66,7 +67,7 @@ function mapNews(row: NewsRow): GcaoNews | null {
     body: row.body,
     imageUrl: row.image_url,
     publishedAt,
-    status: row.status,
+    status: parsePostStatus(row.status),
   };
 }
 
@@ -93,6 +94,7 @@ async function newsSlugTaken(slug: string, excludeId?: number) {
 export async function getAllNews(): Promise<GcaoNews[]> {
   try {
     await ensureNewsKindColumn();
+    await ensurePendingStatus();
     const [rows] = await getPool().query<NewsRow[]>(
       `SELECT ${NEWS_SELECT}
        FROM news
@@ -151,6 +153,7 @@ export async function getNewsBySlug(slug: string): Promise<GcaoNews | null> {
 
 export async function createNews(input: NewsInput) {
   await ensureNewsKindColumn();
+  await ensurePendingStatus();
   const [result] = await getPool().execute<ResultSetHeader>(
     `INSERT INTO news (title, slug, kind, category, excerpt, body, image_url, published_at, status)
      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
@@ -171,6 +174,7 @@ export async function createNews(input: NewsInput) {
 
 export async function updateNews(id: number, input: NewsInput) {
   await ensureNewsKindColumn();
+  await ensurePendingStatus();
   await getPool().execute(
     `UPDATE news
      SET title = ?, slug = ?, kind = ?, category = ?, excerpt = ?, body = ?, image_url = ?, published_at = ?, status = ?

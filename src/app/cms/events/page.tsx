@@ -26,6 +26,7 @@ export default async function CmsEventsPage({
           id: event.id,
           title: event.title,
           href: `/cms/events/${event.id}`,
+          previewHref: `/cms/events/${event.id}/preview`,
           status: event.status,
           imageUrl: event.imageUrl,
           meta: formatEventDateRange(event.startsAt, event.endsAt),

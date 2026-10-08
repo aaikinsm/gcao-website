@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import Link from "next/link";
 import { Sora } from "next/font/google";
 import { PreviewBanner } from "@/components/shared/PreviewBanner";
@@ -6,6 +7,7 @@ import { SankofaFooter } from "@/components/previews/SankofaFooter";
 import { SankofaHeader } from "@/components/previews/SankofaHeader";
 import { sankofaThemes, type SankofaTheme } from "@/components/previews/sankofaTheme";
 import { FormattedBody } from "@/components/shared/FormattedBody";
+import { ShareRow } from "@/components/shared/ShareRow";
 import { newsTypeLabel, type GcaoNews } from "@/lib/news-types";
 
 const sora = Sora({
@@ -27,6 +29,8 @@ interface SankofaNewsDetailProps {
   optionLabel: string;
   basePath: string;
   article: GcaoNews;
+  notice?: ReactNode;
+  shareUrl?: string;
 }
 
 export function SankofaNewsDetail({
@@ -34,13 +38,20 @@ export function SankofaNewsDetail({
   optionLabel,
   basePath,
   article,
+  notice,
+  shareUrl,
 }: SankofaNewsDetailProps) {
   const t = sankofaThemes[theme];
   const isLight = theme === "light";
 
   return (
     <div className={`${sora.variable} ${t.page}`}>
-      <PreviewBanner option={optionLabel} />
+      {notice ? (
+        <div className="sticky top-0 z-[70] flex h-9 items-center justify-center bg-[#FCD116] px-4 text-center text-xs font-medium text-[#06110D] sm:text-sm">
+          {notice}
+        </div>
+      ) : null}
+      <PreviewBanner option={optionLabel} topClass={notice ? "top-9" : "top-0"} />
 
       <SankofaHeader
         theme={theme}
@@ -50,9 +61,15 @@ export function SankofaNewsDetail({
         navClass={t.nav}
         donateClass={t.donateOutline}
         menuBgClass={t.menuBg}
+        topClass={notice ? "top-[72px]" : "top-[36px]"}
+        menuTopClass={notice ? "top-[calc(72px+4.25rem)]" : "top-[calc(36px+4.25rem)]"}
       />
 
-      <section className="relative min-h-[52vh] overflow-hidden pt-[calc(36px+4.25rem)]">
+      <section
+        className={`relative min-h-[52vh] overflow-hidden ${
+          notice ? "pt-[calc(72px+4.25rem)]" : "pt-[calc(36px+4.25rem)]"
+        }`}
+      >
         <SiteImage
           src={article.imageUrl}
           alt={article.title}
@@ -79,6 +96,7 @@ export function SankofaNewsDetail({
             {article.title}
           </h1>
           <p className={`mt-5 text-sm ${t.eventMeta}`}>{dateFmt.format(article.publishedAt)}</p>
+          {shareUrl ? <ShareRow url={shareUrl} title={article.title} /> : null}
         </div>
       </section>
 

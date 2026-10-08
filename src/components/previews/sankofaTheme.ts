@@ -112,7 +112,7 @@ export function getSankofaNav(basePath: string) {
     { label: "Programs", href: `${basePath}/programs` },
     { label: "Events", href: `${basePath}/events` },
     { label: "News", href: `${basePath}/news` },
-    { label: "Get Involved", href: `${basePath}#get-involved` },
+    { label: "Get Involved", href: `${basePath}/get-involved` },
     { label: "Contact", href: `${basePath}/contact` },
   ];
 }

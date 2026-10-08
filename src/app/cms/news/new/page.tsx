@@ -1,10 +1,12 @@
 import { NewsForm } from "@/components/cms/NewsForm";
 import { CmsShell } from "@/components/cms/CmsShell";
+import { assertCmsAllowed } from "@/lib/cms";
 
-export default function CmsNewNewsPage() {
+export default async function CmsNewNewsPage() {
+  const user = await assertCmsAllowed();
   return (
     <CmsShell current="news" title="New article" compact>
-      <NewsForm />
+      <NewsForm canPublish={user.role === "admin"} />
     </CmsShell>
   );
 }

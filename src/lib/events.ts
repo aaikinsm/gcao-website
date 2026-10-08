@@ -1,5 +1,6 @@
 import type { ResultSetHeader, RowDataPacket } from "mysql2";
 import { getPool } from "@/lib/db";
+import { ensurePendingStatus, parsePostStatus, type PostStatus } from "@/lib/post-status";
 import { slugify } from "@/lib/slug";
 
 export type GcaoEvent = {
@@ -12,7 +13,7 @@ export type GcaoEvent = {
   excerpt: string;
   body: string;
   imageUrl: string;
-  status: "draft" | "published";
+  status: PostStatus;
 };
 
 type EventRow = RowDataPacket & {
@@ -25,7 +26,7 @@ type EventRow = RowDataPacket & {
   excerpt: string;
   body: string;
   image_url: string;
-  status: "draft" | "published";
+  status: string;
 };
 
 const TORONTO = "America/Toronto";
@@ -64,7 +65,7 @@ function mapEvent(row: EventRow): GcaoEvent | null {
     excerpt: row.excerpt,
     body: row.body,
     imageUrl: row.image_url,
-    status: row.status,
+    status: parsePostStatus(row.status),
   };
 }
 
@@ -175,7 +176,7 @@ export type EventInput = {
   excerpt: string;
   body: string;
   imageUrl: string;
-  status: "draft" | "published";
+  status: PostStatus;
 };
 
 export async function uniqueEventSlug(base: string, excludeId?: number) {
@@ -200,6 +201,7 @@ async function eventSlugTaken(slug: string, excludeId?: number) {
 
 export async function getAllEvents(): Promise<GcaoEvent[]> {
   try {
+    await ensurePendingStatus();
     const [rows] = await getPool().query<EventRow[]>(
       `SELECT id, title, slug, starts_at, ends_at, location, excerpt, body, image_url, status
        FROM events
@@ -227,6 +229,7 @@ export async function getEventById(id: number): Promise<GcaoEvent | null> {
 }
 
 export async function createEvent(input: EventInput) {
+  await ensurePendingStatus();
   const [result] = await getPool().execute<ResultSetHeader>(
     `INSERT INTO events (title, slug, starts_at, ends_at, location, excerpt, body, image_url, status)
      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
@@ -246,6 +249,7 @@ export async function createEvent(input: EventInput) {
 }
 
 export async function updateEvent(id: number, input: EventInput) {
+  await ensurePendingStatus();
   await getPool().execute(
     `UPDATE events
      SET title = ?, slug = ?, starts_at = ?, ends_at = ?, location = ?, excerpt = ?, body = ?, image_url = ?, status = ?

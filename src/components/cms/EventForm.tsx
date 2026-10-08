@@ -11,6 +11,7 @@ import {
 import { FormattedField } from "@/components/cms/FormattedField";
 import { ImagePicker } from "@/components/cms/ImagePicker";
 import { DeleteButton } from "@/components/cms/DeleteButton";
+import { StatusField } from "@/components/cms/StatusField";
 import type { EventDraft } from "@/lib/cms-draft";
 import type { GcaoEvent } from "@/lib/events";
 import { slugify, toDatetimeLocalValue } from "@/lib/slug";
@@ -20,7 +21,15 @@ const field =
 const label = "text-sm font-medium text-[#0F1B14]";
 const display = { fontFamily: "var(--font-sankofa), sans-serif" };
 
-export function EventForm({ event, draft }: { event?: GcaoEvent; draft?: EventDraft }) {
+export function EventForm({
+  event,
+  draft,
+  canPublish = false,
+}: {
+  event?: GcaoEvent;
+  draft?: EventDraft;
+  canPublish?: boolean;
+}) {
   const [state, formAction, pending] = useActionState<CmsActionState, FormData>(
     saveEventAction,
     null,
@@ -201,7 +210,7 @@ export function EventForm({ event, draft }: { event?: GcaoEvent; draft?: EventDr
               value={location}
               onChange={(e) => setLocation(e.target.value)}
               className={field}
-              placeholder="GCAO Resource Hub, 65 Mayall Avenue"
+              placeholder="GCAO Resource Hub, 10 Belfield Rd, Toronto"
             />
           </div>
           <div>
@@ -220,35 +229,33 @@ export function EventForm({ event, draft }: { event?: GcaoEvent; draft?: EventDr
             />
           </div>
 
-          <fieldset>
-            <legend className={label}>Status</legend>
-            <div className="mt-3 flex flex-wrap gap-2">
-              {(["draft", "published"] as const).map((value) => (
-                <label
-                  key={value}
-                  className="flex cursor-pointer items-center gap-2 rounded-full border border-black/10 bg-[#FFFBF2] px-4 py-2 text-sm capitalize"
-                >
-                  <input
-                    type="radio"
-                    name="status"
-                    value={value}
-                    defaultChecked={(event?.status ?? "draft") === value}
-                  />
-                  {value}
-                </label>
-              ))}
-            </div>
-          </fieldset>
+          <StatusField canPublish={canPublish} status={event?.status} />
 
           <div className="flex flex-wrap items-center justify-between gap-4 pt-2">
-            {event ? <DeleteButton id={event.id} kind="event" title={event.title} /> : <span />}
-            <button
-              type="submit"
-              disabled={pending}
-              className="btn-premium rounded-full bg-[#FCD116] px-6 py-3 text-sm font-semibold text-[#06110D] disabled:opacity-60"
-            >
-              {pending ? "Saving…" : "Save event"}
-            </button>
+            {event && (canPublish || event.status !== "published") ? (
+              <DeleteButton id={event.id} kind="event" title={event.title} />
+            ) : (
+              <span />
+            )}
+            <div className="flex flex-wrap items-center gap-3">
+              {event ? (
+                <a
+                  href={`/cms/events/${event.id}/preview`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded-full border border-black/10 px-5 py-3 text-sm font-semibold text-[#0F1B14] hover:border-[#006B3F]/40"
+                >
+                  Preview
+                </a>
+              ) : null}
+              <button
+                type="submit"
+                disabled={pending}
+                className="btn-premium rounded-full bg-[#FCD116] px-6 py-3 text-sm font-semibold text-[#06110D] disabled:opacity-60"
+              >
+                {pending ? "Saving…" : "Save event"}
+              </button>
+            </div>
           </div>
         </aside>
       </div>

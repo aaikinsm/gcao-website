@@ -1,3 +1,5 @@
+import type { PostStatus } from "@/lib/post-status";
+
 export const NEWS_KINDS = ["news", "notice", "story"] as const;
 export type NewsKind = (typeof NEWS_KINDS)[number];
 
@@ -36,5 +38,5 @@ export type GcaoNews = {
   body: string;
   imageUrl: string;
   publishedAt: Date;
-  status: "draft" | "published";
+  status: PostStatus;
 };

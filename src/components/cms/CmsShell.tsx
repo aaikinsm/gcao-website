@@ -1,7 +1,10 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { Sora } from "next/font/google";
+import { signOutAction } from "@/app/cms/auth-actions";
 import { Logo } from "@/components/shared/Logo";
+import { getCmsUser } from "@/lib/cms";
+import { redirect } from "next/navigation";
 
 const sora = Sora({
   subsets: ["latin"],
@@ -14,6 +17,7 @@ const nav = [
   { label: "Overview", href: "/cms", current: "overview" },
   { label: "All posts", href: "/cms/posts", current: "posts" },
   { label: "New post", href: "/cms/new", current: "new" },
+  { label: "Members", href: "/cms/members", current: "members" },
 ] as const;
 
 interface CmsShellProps {
@@ -21,18 +25,22 @@ interface CmsShellProps {
   description?: string;
   action?: ReactNode;
   children: ReactNode;
-  current: "overview" | "posts" | "new" | "events" | "news";
+  current: "overview" | "posts" | "new" | "events" | "news" | "members";
   compact?: boolean;
 }
 
-export function CmsShell({ title, description, action, children, current, compact = false }: CmsShellProps) {
+export async function CmsShell({ title, description, action, children, current, compact = false }: CmsShellProps) {
+  const user = await getCmsUser();
+  if (!user) redirect("/cms/login");
+  if (!user.name) redirect("/cms/name");
+  const links = nav.filter((item) => item.current !== "members" || user.role === "admin");
   return (
     <div className={`${sora.variable} min-h-screen bg-[#FFFBF2] text-[#0F1B14]`}>
       <header className="border-b border-black/10 bg-white/80 backdrop-blur-xl">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-6 py-4 md:px-10">
           <Logo href="/cms" size={40} textClassName="text-[#0F1B14]" />
           <nav className="flex flex-wrap items-center gap-1">
-            {nav.map((item) => {
+            {links.map((item) => {
               const active =
                 current === item.current ||
                 (item.current === "posts" && (current === "events" || current === "news"));
@@ -56,6 +64,17 @@ export function CmsShell({ title, description, action, children, current, compac
             >
               View site
             </Link>
+            <span className="ml-2 max-w-[12rem] truncate text-sm text-[#0F1B14]/60">
+              {user.name || user.email}
+            </span>
+            <form action={signOutAction}>
+              <button
+                type="submit"
+                className="rounded-full px-4 py-2 text-sm font-medium text-[#0F1B14]/70 hover:bg-black/5"
+              >
+                Sign out
+              </button>
+            </form>
           </nav>
         </div>
       </header>

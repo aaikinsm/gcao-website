@@ -13,7 +13,7 @@ type Screen = "start" | "write-type" | "flyer" | "form";
 const card =
   "rounded-[2rem] border border-black/10 bg-white p-6 text-left transition-colors hover:border-[#006B3F]/40 md:p-8";
 
-export function ComposeChooser() {
+export function ComposeChooser({ canPublish = false }: { canPublish?: boolean }) {
   const [screen, setScreen] = useState<Screen>("start");
   const [writeType, setWriteType] = useState<WriteType>("update");
   const [eventDraft, setEventDraft] = useState<EventDraft>({});
@@ -78,7 +78,11 @@ export function ComposeChooser() {
   };
 
   if (screen === "form") {
-    return writeType === "event" ? <EventForm draft={eventDraft} /> : <NewsForm draft={articleDraft} />;
+    return writeType === "event" ? (
+      <EventForm draft={eventDraft} canPublish={canPublish} />
+    ) : (
+      <NewsForm draft={articleDraft} canPublish={canPublish} />
+    );
   }
 
   return (

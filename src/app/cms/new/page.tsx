@@ -1,14 +1,16 @@
 import { ComposeChooser } from "@/components/cms/ComposeChooser";
 import { CmsShell } from "@/components/cms/CmsShell";
+import { assertCmsAllowed } from "@/lib/cms";
 
-export default function CmsNewPostPage() {
+export default async function CmsNewPostPage() {
+  const user = await assertCmsAllowed();
   return (
     <CmsShell
       current="new"
       title="New post"
-      description="Write it yourself or upload a flyer. You always review the draft before it goes live."
+      description="Write it yourself or upload a flyer. An admin publishes it before it goes live."
     >
-      <ComposeChooser />
+      <ComposeChooser canPublish={user.role === "admin"} />
     </CmsShell>
   );
 }

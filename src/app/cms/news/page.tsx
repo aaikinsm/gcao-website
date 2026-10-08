@@ -27,6 +27,7 @@ export default async function CmsNewsPage({
           id: item.id,
           title: item.title,
           href: `/cms/news/${item.id}`,
+          previewHref: `/cms/news/${item.id}/preview`,
           status: item.status,
           imageUrl: item.imageUrl,
           meta: `${newsKindLabel(item.kind)} · ${toDatetimeLocalValue(item.publishedAt).replace("T", " ")}`,

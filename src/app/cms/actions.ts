@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { assertCmsAllowed } from "@/lib/cms";
+import { countAdmins, getUserRole, setUserRole } from "@/lib/members";
 import type { AiComposeResult } from "@/lib/cms-draft";
 import {
   createEvent,
@@ -30,6 +31,7 @@ import {
 } from "@/lib/openai";
 import { parseNewsGroup } from "@/lib/news-types";
 import { richTextIsEmpty, toEditorHtml } from "@/lib/rich-text";
+import { parsePostStatus, resolvePostStatus } from "@/lib/post-status";
 import { formDateTimeToMysql, slugify } from "@/lib/slug";
 import { saveCmsImage, saveCmsImageBuffer } from "@/lib/uploads";
 
@@ -39,8 +41,8 @@ function text(formData: FormData, key: string) {
   return String(formData.get(key) ?? "").trim();
 }
 
-function statusFrom(formData: FormData): "draft" | "published" {
-  return text(formData, "status") === "published" ? "published" : "draft";
+function statusFrom(formData: FormData) {
+  return parsePostStatus(text(formData, "status"));
 }
 
 function fileFrom(formData: FormData, key = "image") {
@@ -95,12 +97,12 @@ function toComposeResult(draft: AiDraftFields): AiComposeResult {
 }
 
 export async function aiStatusAction() {
-  assertCmsAllowed();
+  await assertCmsAllowed();
   return { enabled: openaiConfigured() };
 }
 
 export async function extractFromUploadAction(formData: FormData): Promise<AiComposeResult> {
-  assertCmsAllowed();
+  await assertCmsAllowed();
   const file = fileFrom(formData, "source");
   if (!openaiConfigured()) return { error: "AI is not set up on this computer." };
 
@@ -126,7 +128,7 @@ export async function extractFromUploadAction(formData: FormData): Promise<AiCom
 }
 
 export async function rewritePostAction(formData: FormData): Promise<AiComposeResult> {
-  assertCmsAllowed();
+  await assertCmsAllowed();
   if (!openaiConfigured()) return { error: "AI is not set up on this computer." };
   try {
     const postType = text(formData, "postType") === "event" ? "event" : "update";
@@ -145,7 +147,7 @@ export async function rewritePostAction(formData: FormData): Promise<AiComposeRe
 }
 
 export async function classifyArticleAction(formData: FormData): Promise<AiComposeResult> {
-  assertCmsAllowed();
+  await assertCmsAllowed();
   if (!openaiConfigured()) return { error: "AI is not set up on this computer." };
   try {
     const kind = await classifyArticleKind({
@@ -160,7 +162,7 @@ export async function classifyArticleAction(formData: FormData): Promise<AiCompo
 }
 
 export async function generatePostImageAction(formData: FormData): Promise<AiComposeResult> {
-  assertCmsAllowed();
+  await assertCmsAllowed();
   if (!openaiConfigured()) return { error: "AI is not set up on this computer." };
   const title = text(formData, "title");
   const excerpt = text(formData, "excerpt");
@@ -178,7 +180,7 @@ export async function saveEventAction(
   _prev: CmsActionState,
   formData: FormData,
 ): Promise<CmsActionState> {
-  assertCmsAllowed();
+  const user = await assertCmsAllowed();
 
   const idRaw = text(formData, "id");
   const id = idRaw ? Number(idRaw) : null;
@@ -213,7 +215,7 @@ export async function saveEventAction(
       excerpt,
       body,
       imageUrl,
-      status: statusFrom(formData),
+      status: resolvePostStatus(statusFrom(formData), user.role === "admin", existing?.status),
     };
 
     if (existing) await updateEvent(existing.id, input);
@@ -229,8 +231,11 @@ export async function saveEventAction(
 }
 
 export async function deleteEventAction(id: number) {
-  assertCmsAllowed();
+  const user = await assertCmsAllowed();
   const existing = await getEventById(id);
+  if (existing?.status === "published" && user.role !== "admin") {
+    redirect("/cms/posts?error=published");
+  }
   await deleteEvent(id);
   revalidateEvents(existing?.slug);
   redirect("/cms/posts?deleted=1");
@@ -240,7 +245,7 @@ export async function saveNewsAction(
   _prev: CmsActionState,
   formData: FormData,
 ): Promise<CmsActionState> {
-  assertCmsAllowed();
+  const user = await assertCmsAllowed();
 
   const idRaw = text(formData, "id");
   const id = idRaw ? Number(idRaw) : null;
@@ -274,7 +279,7 @@ export async function saveNewsAction(
       body,
       imageUrl,
       publishedAt,
-      status: statusFrom(formData),
+      status: resolvePostStatus(statusFrom(formData), user.role === "admin", existing?.status),
     };
 
     if (existing) await updateNews(existing.id, input);
@@ -290,9 +295,32 @@ export async function saveNewsAction(
 }
 
 export async function deleteNewsAction(id: number) {
-  assertCmsAllowed();
+  const user = await assertCmsAllowed();
   const existing = await getNewsById(id);
+  if (existing?.status === "published" && user.role !== "admin") {
+    redirect("/cms/posts?error=published");
+  }
   await deleteNews(id);
   revalidateNews(existing?.slug);
   redirect("/cms/posts?deleted=1");
+}
+
+export async function setMemberRoleAction(formData: FormData) {
+  const actor = await assertCmsAllowed();
+  if (actor.role !== "admin") redirect("/cms");
+
+  const userId = text(formData, "userId");
+  const role = text(formData, "role") === "admin" ? "admin" : "member";
+  if (!userId) redirect("/cms/members?error=missing");
+
+  if (role === "member") {
+    const current = await getUserRole(userId);
+    if (current === "admin" && (await countAdmins()) <= 1) {
+      redirect("/cms/members?error=last-admin");
+    }
+  }
+
+  await setUserRole(userId, role);
+  revalidatePath("/cms/members");
+  redirect("/cms/members?saved=1");
 }

@@ -13,6 +13,8 @@ interface SankofaHeaderProps {
   navClass: string;
   donateClass: string;
   menuBgClass: string;
+  topClass?: string;
+  menuTopClass?: string;
 }
 
 export function SankofaHeader({
@@ -23,6 +25,8 @@ export function SankofaHeader({
   navClass,
   donateClass,
   menuBgClass,
+  topClass = "top-[36px]",
+  menuTopClass = "top-[calc(36px+4.25rem)]",
 }: SankofaHeaderProps) {
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -43,14 +47,18 @@ export function SankofaHeader({
 
   const close = () => setOpen(false);
 
-  const links = [...nav, { label: "Donate", href: donateHref }];
+  const links = [
+    ...nav,
+    { label: "Members", href: "/cms/login" },
+    { label: "Donate", href: donateHref },
+  ];
 
   const mobileMenu =
     open && mounted
       ? createPortal(
           <div
             id="sankofa-mobile-menu"
-            className={`fixed inset-x-0 bottom-0 top-[calc(36px+4.25rem)] z-[60] overflow-y-auto border-t px-6 py-8 pb-[max(2rem,env(safe-area-inset-bottom))] md:hidden ${menuBgClass} ${
+            className={`fixed inset-x-0 bottom-0 z-[60] overflow-y-auto border-t px-6 py-8 pb-[max(2rem,env(safe-area-inset-bottom))] md:hidden ${menuTopClass} ${menuBgClass} ${
               isLight ? "border-black/10" : "border-white/10"
             }`}
           >
@@ -79,7 +87,7 @@ export function SankofaHeader({
 
   return (
     <>
-      <header className={`fixed left-0 right-0 top-[36px] z-50 border-b backdrop-blur-xl ${headerClass}`}>
+      <header className={`fixed left-0 right-0 z-50 border-b backdrop-blur-xl ${topClass} ${headerClass}`}>
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-4 md:px-10">
           <Logo size={42} textClassName={logoTextClass} href={basePath} />
 
@@ -95,7 +103,13 @@ export function SankofaHeader({
             ))}
           </nav>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3 sm:gap-4">
+            <a
+              href="/cms/login"
+              className={`nav-link hidden text-[12px] font-medium md:inline lg:text-[13px] ${navClass}`}
+            >
+              Members
+            </a>
             <a
               href={donateHref}
               className={`btn-premium hidden rounded-full px-5 py-2 text-xs font-semibold transition-colors sm:inline-flex ${donateClass}`}

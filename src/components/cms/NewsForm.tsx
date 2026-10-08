@@ -12,6 +12,7 @@ import {
 import { FormattedField } from "@/components/cms/FormattedField";
 import { ImagePicker } from "@/components/cms/ImagePicker";
 import { DeleteButton } from "@/components/cms/DeleteButton";
+import { StatusField } from "@/components/cms/StatusField";
 import type { ArticleDraft } from "@/lib/cms-draft";
 import {
   NEWS_GROUPS,
@@ -28,7 +29,15 @@ const field =
   "mt-2 w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-[#0F1B14] outline-none ring-[#006B3F]/30 focus:ring-2";
 const label = "text-sm font-medium text-[#0F1B14]";
 const display = { fontFamily: "var(--font-sankofa), sans-serif" };
-export function NewsForm({ article, draft }: { article?: GcaoNews; draft?: ArticleDraft }) {
+export function NewsForm({
+  article,
+  draft,
+  canPublish = false,
+}: {
+  article?: GcaoNews;
+  draft?: ArticleDraft;
+  canPublish?: boolean;
+}) {
   const [state, formAction, pending] = useActionState<CmsActionState, FormData>(
     saveNewsAction,
     null,
@@ -259,35 +268,33 @@ export function NewsForm({ article, draft }: { article?: GcaoNews; draft?: Artic
             />
           </div>
 
-          <fieldset>
-            <legend className={label}>Status</legend>
-            <div className="mt-3 flex flex-wrap gap-2">
-              {(["draft", "published"] as const).map((value) => (
-                <label
-                  key={value}
-                  className="flex cursor-pointer items-center gap-2 rounded-full border border-black/10 bg-[#FFFBF2] px-4 py-2 text-sm capitalize"
-                >
-                  <input
-                    type="radio"
-                    name="status"
-                    value={value}
-                    defaultChecked={(article?.status ?? "draft") === value}
-                  />
-                  {value}
-                </label>
-              ))}
-            </div>
-          </fieldset>
+          <StatusField canPublish={canPublish} status={article?.status} />
 
           <div className="flex flex-wrap items-center justify-between gap-4 pt-2">
-            {article ? <DeleteButton id={article.id} kind="news" title={article.title} /> : <span />}
-            <button
-              type="submit"
-              disabled={pending}
-              className="btn-premium rounded-full bg-[#FCD116] px-6 py-3 text-sm font-semibold text-[#06110D] disabled:opacity-60"
-            >
-              {pending ? "Saving…" : "Save article"}
-            </button>
+            {article && (canPublish || article.status !== "published") ? (
+              <DeleteButton id={article.id} kind="news" title={article.title} />
+            ) : (
+              <span />
+            )}
+            <div className="flex flex-wrap items-center gap-3">
+              {article ? (
+                <a
+                  href={`/cms/news/${article.id}/preview`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded-full border border-black/10 px-5 py-3 text-sm font-semibold text-[#0F1B14] hover:border-[#006B3F]/40"
+                >
+                  Preview
+                </a>
+              ) : null}
+              <button
+                type="submit"
+                disabled={pending}
+                className="btn-premium rounded-full bg-[#FCD116] px-6 py-3 text-sm font-semibold text-[#06110D] disabled:opacity-60"
+              >
+                {pending ? "Saving…" : "Save article"}
+              </button>
+            </div>
           </div>
         </aside>
       </div>

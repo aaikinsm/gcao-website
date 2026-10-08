@@ -282,7 +282,7 @@ export function SankofaHome({ theme, optionLabel, basePath, upcomingEvents }: Sa
                 Donate now
               </a>
               <a
-                href="#contact"
+                href={`${basePath}/get-involved#volunteer`}
                 className={`btn-premium rounded-full px-8 py-3.5 text-sm font-semibold transition-colors ${t.donateSecondary}`}
               >
                 Volunteer

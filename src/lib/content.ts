@@ -7,7 +7,7 @@ export const siteContent = {
   mission:
     "To enhance the living standards of Ghanaian-Canadians in Ontario through social, cultural, and educational programs, and through other diaspora initiatives.",
   contact: {
-    address: "65 Mayall Avenue, North York, ON M3L 1E7",
+    address: "10 Belfield Rd, Toronto M9W 4J1",
     hours: "11AM – 4PM (EST), Monday – Friday",
     phone: "1-416-243-2003",
     phoneAlt: "+1-647-895-5073",
@@ -78,7 +78,7 @@ export const siteContent = {
       title: "Resource Hub Programs Update",
       category: "Programs",
       excerpt:
-        "Youth & Adult programs, Homework Club, Women Support, Men Engagement, and Seniors services continue at our North York Resource Hub.",
+        "Youth & Adult programs, Homework Club, Women Support, Men Engagement, and Seniors services continue at our Resource Hub.",
       tag: "Programs",
     },
   ],
@@ -245,7 +245,7 @@ export const siteContent = {
       {
         title: "Resource Hub",
         description:
-          "Keep programs, tutoring, settlement support, and community space open at 65 Mayall Avenue.",
+          "Keep programs, tutoring, settlement support, and community space open at 10 Belfield Rd.",
         cta: "Donate to the Hub",
       },
       {

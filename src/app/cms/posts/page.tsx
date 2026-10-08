@@ -9,6 +9,7 @@ export const dynamic = "force-dynamic";
 
 const filters = [
   { id: "all", label: "All" },
+  { id: "pending", label: "Needs approval" },
   { id: "events", label: "Events" },
   { id: "news", label: "News" },
   { id: "notice", label: "Notices" },
@@ -20,7 +21,7 @@ type Filter = (typeof filters)[number]["id"];
 export default async function CmsPostsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ saved?: string; deleted?: string; filter?: string }>;
+  searchParams: Promise<{ saved?: string; deleted?: string; filter?: string; error?: string }>;
 }) {
   const query = await searchParams;
   const filter = (filters.some((item) => item.id === query.filter) ? query.filter : "all") as Filter;
@@ -30,6 +31,7 @@ export default async function CmsPostsPage({
     id: event.id,
     title: event.title,
     href: `/cms/events/${event.id}`,
+    previewHref: `/cms/events/${event.id}/preview`,
     status: event.status,
     imageUrl: event.imageUrl,
     group: "events" as const,
@@ -40,6 +42,7 @@ export default async function CmsPostsPage({
     id: item.id + 100000,
     title: item.title,
     href: `/cms/news/${item.id}`,
+    previewHref: `/cms/news/${item.id}/preview`,
     status: item.status,
     imageUrl: item.imageUrl,
     group: item.kind,
@@ -47,6 +50,7 @@ export default async function CmsPostsPage({
   }));
 
   const items = [...eventItems, ...newsItems].filter((item) => {
+    if (filter === "pending") return item.status === "pending";
     if (filter === "all") return true;
     if (filter === "events") return item.group === "events";
     return item.group === filter;
@@ -60,6 +64,11 @@ export default async function CmsPostsPage({
       action={<PrimaryLink href="/cms/new">New post</PrimaryLink>}
     >
       <CmsNotice saved={query.saved === "1"} deleted={query.deleted === "1"} noun="Post" />
+      {query.error === "published" && (
+        <p className="mb-8 rounded-2xl border border-red-200 bg-red-50 px-5 py-3 text-sm text-red-700">
+          Only an admin can delete a published post.
+        </p>
+      )}
       <div className="mb-8 flex flex-wrap gap-2">
         {filters.map((item) => {
           const href = item.id === "all" ? "/cms/posts" : `/cms/posts?filter=${item.id}`;

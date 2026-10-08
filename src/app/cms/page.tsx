@@ -1,23 +1,32 @@
 import Link from "next/link";
 import { CmsShell, PrimaryLink } from "@/components/cms/CmsShell";
+import { getCmsUser } from "@/lib/cms";
 import { formatEventDateRange, getAllEvents } from "@/lib/events";
+import { countAdmins } from "@/lib/members";
 import { getAllNews, newsKindLabel } from "@/lib/news";
 
 export const dynamic = "force-dynamic";
 
 export default async function CmsDashboardPage() {
-  const [events, news] = await Promise.all([getAllEvents(), getAllNews()]);
+  const user = await getCmsUser();
+  const [events, news, admins] = await Promise.all([getAllEvents(), getAllNews(), countAdmins()]);
   const publishedEvents = events.filter((event) => event.status === "published").length;
   const publishedNews = news.filter((item) => item.status === "published").length;
+  const pending = [...events, ...news].filter((item) => item.status === "pending").length;
 
   return (
     <CmsShell
       current="overview"
       title="Content"
-      description="Create a post from the form or a flyer. You review every draft before it is published."
+      description="Members save drafts or send them for approval. Admins publish posts before they appear on the site."
       action={<PrimaryLink href="/cms/new">New post</PrimaryLink>}
     >
-      <div className="grid gap-6 md:grid-cols-2">
+      {user && user.role !== "admin" && admins === 0 && (
+        <p className="mb-8 rounded-2xl border border-[#FCD116] bg-[#FCD116]/30 px-5 py-3 text-sm text-[#0F1B14]">
+          No admin is set yet. Add your email to ADMIN_EMAILS and sign in again so you can publish.
+        </p>
+      )}
+      <div className="grid gap-6 md:grid-cols-3">
         <Link
           href="/cms/posts?filter=events"
           className="rounded-[2rem] border border-black/10 bg-white p-8 transition-colors hover:border-[#006B3F]/40"
@@ -33,6 +42,16 @@ export default async function CmsDashboardPage() {
           <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-[#006B3F]">Updates</p>
           <p className="mt-4 text-4xl font-semibold tracking-tight">{news.length}</p>
           <p className="mt-2 text-sm text-[#0F1B14]/50">{publishedNews} published</p>
+        </Link>
+        <Link
+          href="/cms/posts?filter=pending"
+          className="rounded-[2rem] border border-black/10 bg-white p-8 transition-colors hover:border-[#006B3F]/40"
+        >
+          <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-[#006B3F]">
+            Waiting for approval
+          </p>
+          <p className="mt-4 text-4xl font-semibold tracking-tight">{pending}</p>
+          <p className="mt-2 text-sm text-[#0F1B14]/50">Not on the site yet</p>
         </Link>
       </div>
 
