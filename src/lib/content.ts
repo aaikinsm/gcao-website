@@ -155,7 +155,12 @@ export const siteContent = {
             image: "/images/team/larry-kutuadu.jpg",
             alt: "Portrait of Larry Kutuadu, GCAO Treasurer",
           },
-          { name: "Joachim Duodu", role: "Technology Director" },
+          {
+            name: "Joachim Duodu",
+            role: "Technology Director",
+            image: "/images/team/joachim-duodu.jpg",
+            alt: "Portrait of Joachim Duodu, GCAO Technology Director",
+          },
           {
             name: "Emmanuel Quaye",
             role: "External Outreach Director",
@@ -207,7 +212,7 @@ export const siteContent = {
           {
             name: "Michael Ampah Baiden",
             role: "Youth and Young Adult Leader",
-            image: "/images/team/michael-ampah-baiden.jpeg",
+            image: "/images/team/michael-ampah-baiden.jpg",
             alt: "Portrait of Michael Ampah Baiden, GCAO Youth and Young Adult Leader",
           },
           {
@@ -278,8 +283,8 @@ export const siteContent = {
       schedule: "Every Sunday afternoon from 3:30 p.m. to 5:00 p.m.",
       contact: "asp@gcaocanada.org",
       contactLabel: "Mr. Eyiah",
-      image: "/images/programs/homework.jpg",
-      alt: "GCAO Homework Club online classes",
+      image: "/images/programs/homework-club.jpg",
+      alt: "Students writing together at a classroom table",
     },
     community: {
       title: "Youth · Seniors · Women · Men",
@@ -378,8 +383,8 @@ export const siteContent = {
         "Network with think tanks in Canada and beyond",
         "Collate ideas and develop policies for Canadian–Ghanaian challenges",
       ],
-      image: "/images/programs/grocery.jpg",
-      alt: "GCAO community food program volunteers",
+      image: "/images/programs/dett.jpg",
+      alt: "Ghanaian-Canadian Diaspora Engagement Think Tank logo",
     },
   },
 };

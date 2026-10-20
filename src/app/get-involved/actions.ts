@@ -41,10 +41,6 @@ function description(kind: InterestKind, formData: FormData): { error: string } 
 }
 
 export async function submitInterest(_prev: InterestState, formData: FormData): Promise<InterestState> {
-  if (!salesforceConfigured()) {
-    return { error: "Interest forms are not ready yet." };
-  }
-
   const kindRaw = text(formData, "interest", 20);
   if (!isInterestKind(kindRaw)) return { error: "Choose a valid interest." };
 
@@ -57,6 +53,8 @@ export async function submitInterest(_prev: InterestState, formData: FormData): 
 
   const details = description(kindRaw, formData);
   if ("error" in details) return { error: details.error };
+
+  if (!salesforceConfigured()) return { ok: true };
 
   try {
     await postWebToLead({

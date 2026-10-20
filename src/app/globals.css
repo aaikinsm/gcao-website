@@ -200,6 +200,15 @@
   }
 }
 
+@keyframes kenteDrift {
+  from {
+    transform: scale(1.15) translateX(-4%);
+  }
+  to {
+    transform: scale(1.15) translateX(4%);
+  }
+}
+
 .animate-ken-burns {
   animation: kenBurns 22s ease-out both;
 }
@@ -210,6 +219,10 @@
 
 .animate-ring-spin {
   animation: ringSpin 38s linear infinite;
+}
+
+.animate-kente-drift {
+  animation: kenteDrift 40s ease-in-out infinite alternate;
 }
 
 .animate-blur-in {
@@ -275,6 +288,7 @@
   .animate-ken-burns,
   .animate-float,
   .animate-ring-spin,
+  .animate-kente-drift,
   .animate-marker,
   .animate-blur-in,
   .text-shimmer,

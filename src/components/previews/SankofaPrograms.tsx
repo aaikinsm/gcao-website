@@ -243,7 +243,7 @@ export function SankofaPrograms({ theme, optionLabel, basePath }: SankofaProgram
             <SiteImage
               src={p.dett.image}
               alt={p.dett.alt}
-              className="aspect-[4/3]"
+              className="aspect-[13/5]"
               imageClassName="img-zoom"
               sizes="(min-width: 1024px) 45vw, 100vw"
             />

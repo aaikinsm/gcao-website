@@ -4,16 +4,16 @@ export const siteImages = {
     alt: "GCAO Women's Wing celebrating Black History Month",
   },
   heroCommunity: {
-    src: "/images/programs/homework.jpg",
-    alt: "GCAO Homework Club students in an online class",
+    src: "/images/programs/homework-club.jpg",
+    alt: "Students writing together at a classroom table",
   },
   heroGathering: {
     src: "/images/vigil.jpg",
     alt: "GCAO community standing together outdoors",
   },
   heroEvent: {
-    src: "/images/programs/homework.jpg",
-    alt: "GCAO Homework Club students in an online class",
+    src: "/images/programs/homework-club.jpg",
+    alt: "Students writing together at a classroom table",
   },
   heroWide: {
     src: "/images/heritage-wide.jpg",

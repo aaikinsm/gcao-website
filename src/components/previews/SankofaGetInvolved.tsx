@@ -6,7 +6,6 @@ import { SankofaFooter } from "@/components/previews/SankofaFooter";
 import { SankofaHeader } from "@/components/previews/SankofaHeader";
 import { SankofaKenteHero } from "@/components/previews/SankofaKenteHero";
 import { sankofaThemes, type SankofaTheme } from "@/components/previews/sankofaTheme";
-import { salesforceConfigured } from "@/lib/salesforce";
 
 const sora = Sora({
   subsets: ["latin"],
@@ -113,7 +112,6 @@ interface SankofaGetInvolvedProps {
 export function SankofaGetInvolved({ theme, optionLabel, basePath }: SankofaGetInvolvedProps) {
   const t = sankofaThemes[theme];
   const isLight = theme === "light";
-  const configured = salesforceConfigured();
   const iconBox = isLight
     ? "bg-[#006B3F]/10 text-[#006B3F]"
     : "bg-[#FCD116]/10 text-[#FCD116]";
@@ -205,7 +203,7 @@ export function SankofaGetInvolved({ theme, optionLabel, basePath }: SankofaGetI
             </p>
           </div>
           <div className={`rounded-[2rem] border p-6 md:p-10 ${t.card}`}>
-            <GetInvolvedForm kind="Volunteer" isLight={isLight} configured={configured} />
+            <GetInvolvedForm kind="Volunteer" isLight={isLight} />
           </div>
         </div>
       </AnimatedSection>
@@ -230,7 +228,7 @@ export function SankofaGetInvolved({ theme, optionLabel, basePath }: SankofaGetI
             </p>
           </div>
           <div className={`rounded-[2rem] border p-6 md:p-10 ${t.card}`}>
-            <GetInvolvedForm kind="Membership" isLight={isLight} configured={configured} />
+            <GetInvolvedForm kind="Membership" isLight={isLight} />
           </div>
         </div>
       </AnimatedSection>
@@ -254,7 +252,7 @@ export function SankofaGetInvolved({ theme, optionLabel, basePath }: SankofaGetI
             </p>
           </div>
           <div className={`rounded-[2rem] border p-6 md:p-10 ${t.card}`}>
-            <GetInvolvedForm kind="Jobs" isLight={isLight} configured={configured} />
+            <GetInvolvedForm kind="Jobs" isLight={isLight} />
           </div>
         </div>
       </AnimatedSection>

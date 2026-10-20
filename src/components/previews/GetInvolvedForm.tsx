@@ -13,15 +13,7 @@ const ROLES = [
 ];
 const AVAILABILITY = ["Weekdays", "Weekends", "Evenings", "Flexible"];
 
-export function GetInvolvedForm({
-  kind,
-  isLight,
-  configured,
-}: {
-  kind: InterestKind;
-  isLight: boolean;
-  configured: boolean;
-}) {
+export function GetInvolvedForm({ kind, isLight }: { kind: InterestKind; isLight: boolean }) {
   const [state, action, pending] = useActionState<InterestState, FormData>(submitInterest, null);
   const label = isLight ? "text-[#0F1B14]/55" : "text-[#EFEDE4]/55";
   const field =
@@ -30,14 +22,6 @@ export function GetInvolvedForm({
       ? "border-black/15 placeholder:text-[#0F1B14]/30 focus:border-[#006B3F]"
       : "border-white/20 placeholder:text-[#EFEDE4]/30 focus:border-[#FCD116]");
   const button = isLight ? "bg-[#006B3F] text-white" : "bg-[#FCD116] text-[#06110D]";
-
-  if (!configured) {
-    return (
-      <p className={`text-sm leading-relaxed ${label}`}>
-        Interest forms are not ready yet. Add the Salesforce Web-to-Lead settings, then reload this page.
-      </p>
-    );
-  }
 
   if (state && "ok" in state) {
     return (

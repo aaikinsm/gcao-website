@@ -78,7 +78,7 @@ const events = [
     excerpt:
       "Free Sunday homework support for ages 6–18 plus Twi language classes for all ages at the Resource Hub.",
     body: "The GCAO Homework Club is now open. We invite children in need of homework support to join, as well as those who want to learn the Twi language. Additionally, we welcome tutors and instructors interested in volunteering. The Twi program is open to all ages and teaches the basics of the language, helping participants to understand and speak Twi. This program is free for all Ghanaians. Sessions run every Sunday from 3:30 p.m. to 5:00 p.m. at the GCAO Resource Hub, 65 Mayall Avenue, North York.",
-    image_url: "/images/programs/homework.jpg",
+    image_url: "/images/programs/homework-club.jpg",
     status: "published",
   },
   {

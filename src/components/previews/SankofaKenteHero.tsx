@@ -19,6 +19,7 @@ export function SankofaKenteHero({ theme, children }: SankofaKenteHeroProps) {
         src={siteImages.aboutKente.src}
         alt=""
         className="absolute inset-0"
+        imageClassName="animate-kente-drift"
         overlay={t.kenteOverlay}
         sizes="100vw"
         priority
