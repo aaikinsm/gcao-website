@@ -30,7 +30,7 @@ export default async function MemberNamePage({
       <main className="mx-auto flex min-h-screen max-w-lg flex-col justify-center px-6 py-16">
         <Logo href="/preview/sankofa" size={48} textClassName="text-[#0F1B14]" />
         <p className="mt-10 text-[11px] font-semibold uppercase tracking-[0.28em] text-[#006B3F]">
-          GCAO members
+          GCAO editors
         </p>
         <h1 className="mt-3 text-4xl font-semibold tracking-[-0.03em]" style={display}>
           What should we call you?

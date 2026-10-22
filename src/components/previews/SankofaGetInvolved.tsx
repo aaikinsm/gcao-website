@@ -146,8 +146,7 @@ export function SankofaGetInvolved({ theme, optionLabel, basePath }: SankofaGetI
           There is a place for you here
         </h1>
         <p className="mt-6 max-w-2xl text-lg leading-relaxed text-[#EFEDE4]/75">
-          Volunteer with GCAO, ask about membership, or leave your details for future roles. You can
-          also{" "}
+          Volunteer with GCAO or ask about membership. You can also{" "}
           <a href={`${basePath}/donate`} className="underline decoration-1 underline-offset-4">
             donate
           </a>{" "}
@@ -223,8 +222,7 @@ export function SankofaGetInvolved({ theme, optionLabel, basePath }: SankofaGetI
               </h2>
             </div>
             <p className={`mt-6 max-w-md text-base leading-relaxed ${t.sectionMuted}`}>
-              Association membership is separate from the Members sign-in used to draft posts. Leave
-              your details and we will tell you how to join when membership opens.
+              Leave your details and we will tell you how to join when membership opens.
             </p>
           </div>
           <div className={`rounded-[2rem] border p-6 md:p-10 ${t.card}`}>
@@ -234,30 +232,25 @@ export function SankofaGetInvolved({ theme, optionLabel, basePath }: SankofaGetI
       </AnimatedSection>
 
       <AnimatedSection id="jobs" className={`border-t px-6 py-24 md:px-10 md:py-32 ${t.panelBorder}`}>
-        <div className="mx-auto grid max-w-6xl gap-16 lg:grid-cols-2 lg:gap-20">
-          <div>
-            <p className={`text-[11px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>
-              Jobs
-            </p>
-            <div className="mt-4 flex items-center gap-4">
-              <span className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl ${iconBox}`}>
-                <Mark name="briefcase" className="h-6 w-6" />
-              </span>
-              <h2 className="text-3xl font-semibold tracking-tight md:text-5xl" style={display}>
-                No openings are listed yet
-              </h2>
-            </div>
-            <p className={`mt-6 max-w-md text-base leading-relaxed ${t.sectionMuted}`}>
-              When a role is posted, we will contact people who have already told us what they do.
-            </p>
+        <div className="mx-auto max-w-6xl">
+          <p className={`text-[11px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>
+            Jobs
+          </p>
+          <div className="mt-4 flex items-center gap-4">
+            <span className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl ${iconBox}`}>
+              <Mark name="briefcase" className="h-6 w-6" />
+            </span>
+            <h2 className="text-3xl font-semibold tracking-tight md:text-5xl" style={display}>
+              No openings are listed yet
+            </h2>
           </div>
-          <div className={`rounded-[2rem] border p-6 md:p-10 ${t.card}`}>
-            <GetInvolvedForm kind="Jobs" isLight={isLight} />
-          </div>
+          <p className={`mt-6 max-w-md text-base leading-relaxed ${t.sectionMuted}`}>
+            Roles will appear here when they are posted.
+          </p>
         </div>
       </AnimatedSection>
 
-      <SankofaFooter theme={theme} tokens={t} />
+      <SankofaFooter theme={theme} tokens={t} basePath={basePath} />
     </div>
   );
 }

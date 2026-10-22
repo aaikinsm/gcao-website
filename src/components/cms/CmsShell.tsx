@@ -17,7 +17,7 @@ const nav = [
   { label: "Overview", href: "/cms", current: "overview" },
   { label: "All posts", href: "/cms/posts", current: "posts" },
   { label: "New post", href: "/cms/new", current: "new" },
-  { label: "Members", href: "/cms/members", current: "members" },
+  { label: "Editors", href: "/cms/members", current: "members" },
 ] as const;
 
 interface CmsShellProps {
@@ -59,7 +59,7 @@ export async function CmsShell({ title, description, action, children, current, 
               );
             })}
             <Link
-              href="/preview/sankofa/events"
+              href="/preview/sankofa"
               className="ml-2 rounded-full border border-[#006B3F] px-4 py-2 text-sm font-semibold text-[#006B3F] hover:bg-[#006B3F] hover:text-white"
             >
               View site
@@ -110,11 +110,6 @@ export async function CmsShell({ title, description, action, children, current, 
         )}
         <div className={compact ? "mt-6" : "mt-10"}>{children}</div>
       </main>
-
-      <footer className="border-t border-black/10 px-6 py-8 text-center text-xs text-[#0F1B14]/45 md:px-10">
-        Images save to this server’s disk. Uploads will not persist on Vercel serverless — MySQL
-        rows still will.
-      </footer>
     </div>
   );
 }

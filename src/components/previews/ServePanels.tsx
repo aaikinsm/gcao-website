@@ -140,20 +140,23 @@ export function ServePanels({ panels, tokens: t }: ServePanelsProps) {
           >
             <PanelVideo src={panel.video} poster={panel.poster} reducedMotion={reducedMotion} />
             <div className={`absolute inset-0 ${t.panelOverlay}`} />
-            <div className="absolute inset-x-0 bottom-0 p-6 text-white md:p-7">
-              <h3
-                className={`text-xl font-semibold tracking-tight transition-colors md:text-2xl ${t.panelHover}`}
-                style={display}
-              >
-                {panel.title}
-              </h3>
-              <p
-                className={`mt-3 max-w-sm text-sm leading-relaxed transition-all duration-500 md:max-h-0 md:overflow-hidden md:opacity-0 md:group-hover:max-h-40 md:group-hover:opacity-100 ${
-                  expanded ? "max-h-40 opacity-100" : "max-h-0 overflow-hidden opacity-0"
-                } ${t.panelDesc}`}
-              >
-                {panel.description}
-              </p>
+            <div className="absolute inset-x-0 bottom-0">
+              <div aria-hidden className="serve-text-scrim pointer-events-none absolute inset-x-0 -top-[4.5rem] bottom-0" />
+              <div className="relative p-6 text-white md:p-7">
+                <h3
+                  className={`text-xl font-semibold tracking-tight transition-colors md:text-2xl ${t.panelHover}`}
+                  style={display}
+                >
+                  {panel.title}
+                </h3>
+                <p
+                  className={`mt-3 max-w-sm text-sm leading-relaxed transition-all duration-500 md:max-h-0 md:overflow-hidden md:opacity-0 md:group-hover:max-h-40 md:group-hover:opacity-100 ${
+                    expanded ? "max-h-40 opacity-100" : "max-h-0 overflow-hidden opacity-0"
+                  } ${t.panelDesc}`}
+                >
+                  {panel.description}
+                </p>
+              </div>
             </div>
             <span
               className={`absolute right-6 top-6 h-8 w-8 rounded-full border text-center text-sm leading-7 transition-transform duration-500 md:group-hover:rotate-45 ${

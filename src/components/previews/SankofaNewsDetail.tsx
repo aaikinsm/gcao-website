@@ -118,7 +118,7 @@ export function SankofaNewsDetail({
         </div>
       </article>
 
-      <SankofaFooter theme={theme} tokens={t} />
+      <SankofaFooter theme={theme} tokens={t} basePath={basePath} />
     </div>
   );
 }

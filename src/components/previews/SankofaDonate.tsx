@@ -59,7 +59,7 @@ export function SankofaDonate({ theme, optionLabel, basePath }: SankofaDonatePro
         </div>
       </section>
 
-      <SankofaFooter theme={theme} tokens={t} />
+      <SankofaFooter theme={theme} tokens={t} basePath={basePath} />
     </div>
   );
 }

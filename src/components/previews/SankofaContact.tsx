@@ -267,7 +267,7 @@ export function SankofaContact({ theme, optionLabel, basePath }: SankofaContactP
         </div>
       </AnimatedSection>
 
-      <SankofaFooter theme={theme} tokens={t} />
+      <SankofaFooter theme={theme} tokens={t} basePath={basePath} />
     </div>
   );
 }

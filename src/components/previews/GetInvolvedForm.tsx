@@ -97,13 +97,6 @@ export function GetInvolvedForm({ kind, isLight }: { kind: InterestKind; isLight
         </label>
       )}
 
-      {kind === "Jobs" && (
-        <label className="mt-8 block text-sm">
-          <span className={label}>What kind of role are you looking for?</span>
-          <input name="role" type="text" required className={field} />
-        </label>
-      )}
-
       {state && "error" in state && (
         <p className="mt-6 text-sm text-red-700">{state.error}</p>
       )}

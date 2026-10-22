@@ -49,7 +49,7 @@ export function SankofaHeader({
 
   const links = [
     ...nav,
-    { label: "Members", href: "/cms/login" },
+    { label: "Editors", href: "/cms/login" },
     { label: "Donate", href: donateHref },
   ];
 
@@ -108,7 +108,7 @@ export function SankofaHeader({
               href="/cms/login"
               className={`nav-link hidden text-[12px] font-medium md:inline lg:text-[13px] ${navClass}`}
             >
-              Members
+              Editors
             </a>
             <a
               href={donateHref}

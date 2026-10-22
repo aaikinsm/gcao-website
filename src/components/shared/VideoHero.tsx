@@ -21,7 +21,7 @@ export function VideoHero({
   poster,
   youtubeId = "XJ7tzm23NUo",
   className = "",
-  overlayClassName = "bg-gradient-to-t from-[#06110D] via-[#06110D]/70 to-[#06110D]/45",
+  overlayClassName = "bg-[linear-gradient(to_bottom,rgba(6,17,13,0.42)_0%,rgba(6,17,13,0.22)_16%,rgba(0,0,0,0.85)_85%,rgba(0,0,0,0.96)_100%)]",
   children,
 }: VideoHeroProps) {
   const videoRef = useRef<HTMLVideoElement>(null);

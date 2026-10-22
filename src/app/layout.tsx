@@ -14,9 +14,9 @@ const playfair = Playfair_Display({
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL?.trim() || "http://localhost:3000"),
-  title: "GCAO Website Design Previews",
+  title: "Ghanaian-Canadian Association of Ontario",
   description:
-    "Design preview options for the Ghanaian-Canadian Association of Ontario website redesign.",
+    "The Ghanaian-Canadian Association of Ontario strengthens communities through social, cultural, and educational programs.",
 };
 
 export default function RootLayout({

@@ -39,4 +39,5 @@ export type GcaoNews = {
   imageUrl: string;
   publishedAt: Date;
   status: PostStatus;
+  authorName: string | null;
 };

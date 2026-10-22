@@ -26,22 +26,9 @@ export default async function CmsLoginPage({
 
   const query = await searchParams;
   const signInHint = (await cookies()).get("gcao-signin-error")?.value;
-  // #region agent log
-  fetch("http://127.0.0.1:7577/ingest/3cd8e77a-a5fb-4443-b01a-544eaa94c981", { method: "POST", headers: { "Content-Type": "application/json", "X-Debug-Session-Id": "92ff33" }, body: JSON.stringify({ sessionId: "92ff33", runId: "post-fix", hypothesisId: "A", location: "src/app/cms/login/page.tsx", message: "Login page error", data: { error: query.error ?? null, sent: query.sent ?? null, signInHint: signInHint ?? null, emailReady: Boolean(process.env.AUTH_RESEND_KEY && process.env.AUTH_EMAIL_FROM), secretReady: Boolean(process.env.AUTH_SECRET) }, timestamp: Date.now() }) }).catch(() => {});
-  // #endregion
   const googleReady = Boolean(process.env.AUTH_GOOGLE_ID && process.env.AUTH_GOOGLE_SECRET);
   const emailReady = Boolean(process.env.AUTH_RESEND_KEY && process.env.AUTH_EMAIL_FROM);
   const secretReady = Boolean(process.env.AUTH_SECRET);
-  const missing = [
-    !secretReady ? "AUTH_SECRET" : "",
-    !process.env.AUTH_GOOGLE_ID || !process.env.AUTH_GOOGLE_SECRET
-      ? "AUTH_GOOGLE_ID and AUTH_GOOGLE_SECRET"
-      : "",
-    !process.env.AUTH_RESEND_KEY || !process.env.AUTH_EMAIL_FROM
-      ? "AUTH_RESEND_KEY and AUTH_EMAIL_FROM"
-      : "",
-    !process.env.ADMIN_EMAILS ? "ADMIN_EMAILS" : "",
-  ].filter(Boolean);
 
   return (
     <div className={`${sora.variable} min-h-screen bg-[#FFFBF2] text-[#0F1B14]`}>
@@ -51,7 +38,7 @@ export default async function CmsLoginPage({
           GCAO CMS
         </p>
         <h1 className="mt-3 text-4xl font-semibold tracking-[-0.03em]" style={display}>
-          Member sign-in
+          Editor sign-in
         </h1>
         <p className="mt-3 text-base leading-relaxed text-[#0F1B14]/60">
           Sign in to draft posts. An admin publishes them before they appear on the site.
@@ -108,25 +95,8 @@ export default async function CmsLoginPage({
           </div>
         ) : (
           <p className="mt-8 rounded-2xl border border-black/10 bg-white px-5 py-4 text-sm leading-relaxed text-[#0F1B14]/70">
-            Sign-in is not configured yet. Add the missing keys to .env.local and restart the site.
+            Sign-in is unavailable.
           </p>
-        )}
-
-        {missing.length > 0 && (
-          <div className="mt-6 rounded-2xl border border-black/10 bg-white/70 px-5 py-4 text-sm text-[#0F1B14]/70">
-            <p className="font-medium text-[#0F1B14]">Still needed in .env.local</p>
-            <ul className="mt-2 list-disc space-y-1 pl-5">
-              {missing.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
-            {!process.env.ADMIN_EMAILS && (
-              <p className="mt-3">
-                Put your email in ADMIN_EMAILS so that account becomes an admin the next time you sign
-                in. Until then, nobody can publish.
-              </p>
-            )}
-          </div>
         )}
       </main>
     </div>
@@ -137,11 +107,8 @@ function loginError(code: string, hint?: string) {
   if (code === "email") return "Enter a valid email address.";
   if (code === "Verification") return "That sign-in link has expired. Request a new one.";
   if (code === "AccessDenied") return "That account cannot sign in.";
-  if (code === "Configuration" && hint === "resend-unverified") {
-    return "Resend is still in test mode. It will only email the address on your Resend account until you verify gcaocanada.org and set AUTH_EMAIL_FROM to an address on that domain. For a test, set AUTH_EMAIL_FROM to GCAO <onboarding@resend.dev> and request the link with your Resend account email.";
-  }
-  if (code === "Configuration" && hint === "resend-failed") {
-    return "The sign-in email could not be sent. Check the Resend from-address and API key, then try again.";
+  if (code === "Configuration" && (hint === "resend-unverified" || hint === "resend-failed")) {
+    return "The sign-in email could not be sent.";
   }
   if (code === "Configuration") return "Sign-in is not set up yet.";
   if (code === "OAuthAccountNotLinked") {

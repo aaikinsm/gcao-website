@@ -219,7 +219,7 @@ export async function saveEventAction(
     };
 
     if (existing) await updateEvent(existing.id, input);
-    else await createEvent(input);
+    else await createEvent({ ...input, authorName: user.name });
 
     revalidateEvents(slug);
     if (existing && existing.slug !== slug) revalidateEvents(existing.slug);
@@ -283,7 +283,7 @@ export async function saveNewsAction(
     };
 
     if (existing) await updateNews(existing.id, input);
-    else await createNews(input);
+    else await createNews({ ...input, authorName: user.name });
 
     revalidateNews(slug);
     if (existing && existing.slug !== slug) revalidateNews(existing.slug);

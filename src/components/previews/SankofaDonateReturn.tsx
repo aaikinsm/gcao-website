@@ -79,7 +79,7 @@ export async function SankofaDonateReturn({
         )}
       </SankofaKenteHero>
 
-      <SankofaFooter theme={theme} tokens={t} />
+      <SankofaFooter theme={theme} tokens={t} basePath={basePath} />
     </div>
   );
 }

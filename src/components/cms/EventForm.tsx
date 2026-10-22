@@ -230,6 +230,9 @@ export function EventForm({
           </div>
 
           <StatusField canPublish={canPublish} status={event?.status} />
+          {event?.authorName ? (
+            <p className="text-sm text-[#0F1B14]/55">Written by {event.authorName}</p>
+          ) : null}
 
           <div className="flex flex-wrap items-center justify-between gap-4 pt-2">
             {event && (canPublish || event.status !== "published") ? (

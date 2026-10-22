@@ -74,7 +74,9 @@ export function SankofaHome({ theme, optionLabel, basePath, upcomingEvents }: Sa
         youtubeId="Nw4i4UDQvPE"
         overlayClassName={t.videoOverlay}
       >
-        <div className="mx-auto w-full max-w-4xl px-6 text-center md:px-10">
+        <div className="relative mx-auto w-[min(56rem,calc(100%-2rem))] px-6 py-10 text-center md:px-10 md:py-12">
+          <div aria-hidden className="hero-text-scrim pointer-events-none absolute -inset-x-8 -inset-y-10" />
+          <div className="relative">
           <p
             className={`animate-fade-in text-[11px] font-semibold uppercase tracking-[0.32em] ${t.eyebrow}`}
           >
@@ -111,6 +113,7 @@ export function SankofaHome({ theme, optionLabel, basePath, upcomingEvents }: Sa
             >
               See programs <span aria-hidden>→</span>
             </a>
+          </div>
           </div>
         </div>
       </VideoHero>
@@ -292,7 +295,7 @@ export function SankofaHome({ theme, optionLabel, basePath, upcomingEvents }: Sa
         </div>
       </AnimatedSection>
 
-      <SankofaFooter theme={theme} tokens={t} />
+      <SankofaFooter theme={theme} tokens={t} basePath={basePath} />
     </div>
   );
 }

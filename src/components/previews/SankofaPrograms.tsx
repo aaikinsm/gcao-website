@@ -327,7 +327,7 @@ export function SankofaPrograms({ theme, optionLabel, basePath }: SankofaProgram
         </div>
       </AnimatedSection>
 
-      <SankofaFooter theme={theme} tokens={t} />
+      <SankofaFooter theme={theme} tokens={t} basePath={basePath} />
     </div>
   );
 }

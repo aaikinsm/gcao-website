@@ -269,6 +269,9 @@ export function NewsForm({
           </div>
 
           <StatusField canPublish={canPublish} status={article?.status} />
+          {article?.authorName ? (
+            <p className="text-sm text-[#0F1B14]/55">Written by {article.authorName}</p>
+          ) : null}
 
           <div className="flex flex-wrap items-center justify-between gap-4 pt-2">
             {article && (canPublish || article.status !== "published") ? (

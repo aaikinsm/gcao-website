@@ -151,7 +151,7 @@ export function SankofaNews({ theme, optionLabel, basePath, articles }: SankofaN
         </div>
       </section>
 
-      <SankofaFooter theme={theme} tokens={t} />
+      <SankofaFooter theme={theme} tokens={t} basePath={basePath} />
     </div>
   );
 }

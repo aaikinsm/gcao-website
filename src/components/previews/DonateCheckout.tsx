@@ -104,7 +104,7 @@ export function DonateCheckout({ basePath, isLight, configured }: DonateCheckout
 
       {!configured && (
         <p className={`mt-8 text-sm leading-relaxed ${muted}`}>
-          Stripe is not configured yet. Add the test keys to the site environment, then reload this page.
+          Donations are unavailable right now.
         </p>
       )}
 

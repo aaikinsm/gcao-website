@@ -91,6 +91,12 @@ export function SankofaEvents({ theme, optionLabel, basePath, events }: SankofaE
               {item.label}
             </a>
           ))}
+          <Link
+            href={`${basePath}/gallery`}
+            className={`shrink-0 rounded-full border px-4 py-2 text-sm font-medium transition-colors ${t.panelBorder} ${chipHover}`}
+          >
+            Photo gallery
+          </Link>
         </div>
       </nav>
 
@@ -128,7 +134,7 @@ export function SankofaEvents({ theme, optionLabel, basePath, events }: SankofaE
         </>
       )}
 
-      <SankofaFooter theme={theme} tokens={t} />
+      <SankofaFooter theme={theme} tokens={t} basePath={basePath} />
     </div>
   );
 }

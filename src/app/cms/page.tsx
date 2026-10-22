@@ -1,15 +1,12 @@
 import Link from "next/link";
 import { CmsShell, PrimaryLink } from "@/components/cms/CmsShell";
-import { getCmsUser } from "@/lib/cms";
 import { formatEventDateRange, getAllEvents } from "@/lib/events";
-import { countAdmins } from "@/lib/members";
 import { getAllNews, newsKindLabel } from "@/lib/news";
 
 export const dynamic = "force-dynamic";
 
 export default async function CmsDashboardPage() {
-  const user = await getCmsUser();
-  const [events, news, admins] = await Promise.all([getAllEvents(), getAllNews(), countAdmins()]);
+  const [events, news] = await Promise.all([getAllEvents(), getAllNews()]);
   const publishedEvents = events.filter((event) => event.status === "published").length;
   const publishedNews = news.filter((item) => item.status === "published").length;
   const pending = [...events, ...news].filter((item) => item.status === "pending").length;
@@ -18,14 +15,9 @@ export default async function CmsDashboardPage() {
     <CmsShell
       current="overview"
       title="Content"
-      description="Members save drafts or send them for approval. Admins publish posts before they appear on the site."
+      description="Editors save drafts or send them for approval. Admins publish posts before they appear on the site."
       action={<PrimaryLink href="/cms/new">New post</PrimaryLink>}
     >
-      {user && user.role !== "admin" && admins === 0 && (
-        <p className="mb-8 rounded-2xl border border-[#FCD116] bg-[#FCD116]/30 px-5 py-3 text-sm text-[#0F1B14]">
-          No admin is set yet. Add your email to ADMIN_EMAILS and sign in again so you can publish.
-        </p>
-      )}
       <div className="grid gap-6 md:grid-cols-3">
         <Link
           href="/cms/posts?filter=events"
@@ -62,7 +54,7 @@ export default async function CmsDashboardPage() {
           items={events.slice(0, 5).map((event) => ({
             href: `/cms/events/${event.id}`,
             title: event.title,
-            meta: `${event.status} · ${formatEventDateRange(event.startsAt, event.endsAt)}`,
+            meta: `${event.status} · ${formatEventDateRange(event.startsAt, event.endsAt)}${event.authorName ? ` · ${event.authorName}` : ""}`,
           }))}
         />
         <RecentList
@@ -71,7 +63,7 @@ export default async function CmsDashboardPage() {
           items={news.slice(0, 5).map((item) => ({
             href: `/cms/news/${item.id}`,
             title: item.title,
-            meta: `${item.status} · ${newsKindLabel(item.kind)}`,
+            meta: `${item.status} · ${newsKindLabel(item.kind)}${item.authorName ? ` · ${item.authorName}` : ""}`,
           }))}
         />
       </div>

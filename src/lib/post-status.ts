@@ -43,3 +43,26 @@ async function widenStatusColumns() {
     }
   }
 }
+
+let authorReady: Promise<void> | null = null;
+
+export function ensureAuthorColumns() {
+  authorReady ??= addAuthorColumns().catch((error) => {
+    authorReady = null;
+    throw error;
+  });
+  return authorReady;
+}
+
+async function addAuthorColumns() {
+  for (const table of ["news", "events"] as const) {
+    const [rows] = await getPool().query<RowDataPacket[]>(
+      `SHOW COLUMNS FROM \`${table}\` LIKE 'author_name'`,
+    );
+    if (rows.length === 0) {
+      await getPool().query(
+        `ALTER TABLE \`${table}\` ADD COLUMN author_name VARCHAR(255) NULL`,
+      );
+    }
+  }
+}

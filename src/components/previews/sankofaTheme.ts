@@ -22,7 +22,7 @@ export const sankofaThemes = {
     sectionMuted: "text-[#EFEDE4]/45",
     panelBorder: "border-white/10",
     panelOverlay:
-      "bg-gradient-to-t from-[#06110D] via-[#06110D]/55 to-[#06110D]/10",
+      "bg-gradient-to-t from-[#06110D]/50 via-[#06110D]/20 to-transparent",
     panelDesc: "text-[#EFEDE4]/70",
     panelHover: "group-hover:text-[#FCD116]",
     panelPlus: "border-[#FCD116]/50 text-[#FCD116]",
@@ -44,7 +44,7 @@ export const sankofaThemes = {
     scrollMuted: "text-white/25",
     scrollFilled: "text-[#EFEDE4]",
     videoOverlay:
-      "bg-gradient-to-t from-[#06110D] via-[#06110D]/70 to-[#06110D]/45",
+      "bg-[linear-gradient(to_bottom,rgba(6,17,13,0.42)_0%,rgba(6,17,13,0.22)_26%,rgba(0,0,0,0.9)_78%,rgba(0,0,0,0.96)_100%)]",
     kenteOverlay:
       "bg-gradient-to-t from-[#06110D] via-[#06110D]/85 to-[#06110D]/65",
     aboutHero: "bg-[#0A1611]",
@@ -72,7 +72,7 @@ export const sankofaThemes = {
     sectionMuted: "text-[#0F1B14]/50",
     panelBorder: "border-black/10",
     panelOverlay:
-      "bg-gradient-to-t from-[#0F1B14] via-[#0F1B14]/50 to-transparent",
+      "bg-gradient-to-t from-[#0F1B14]/45 via-[#0F1B14]/15 to-transparent",
     panelDesc: "text-white/75",
     panelHover: "group-hover:text-[#FCD116]",
     panelPlus: "border-[#FCD116]/60 text-[#FCD116]",
@@ -94,7 +94,7 @@ export const sankofaThemes = {
     scrollMuted: "text-[#0F1B14]/25",
     scrollFilled: "text-[#0F1B14]",
     videoOverlay:
-      "bg-gradient-to-t from-[#0F1B14]/90 via-[#0F1B14]/55 to-[#0F1B14]/40",
+      "bg-[linear-gradient(to_bottom,rgba(6,17,13,0.42)_0%,rgba(6,17,13,0.22)_16%,rgba(0,0,0,0.9)_68%,rgba(0,0,0,0.96)_100%)]",
     kenteOverlay:
       "bg-gradient-to-t from-[#0F1B14]/95 via-[#0F1B14]/75 to-[#0F1B14]/55",
     aboutHero: "bg-[#F3EEE3]",

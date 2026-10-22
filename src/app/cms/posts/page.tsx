@@ -35,7 +35,7 @@ export default async function CmsPostsPage({
     status: event.status,
     imageUrl: event.imageUrl,
     group: "events" as const,
-    meta: `Event · ${formatEventDateRange(event.startsAt, event.endsAt)}`,
+    meta: `Event · ${formatEventDateRange(event.startsAt, event.endsAt)}${event.authorName ? ` · ${event.authorName}` : ""}`,
   }));
 
   const newsItems = news.map((item) => ({
@@ -46,7 +46,7 @@ export default async function CmsPostsPage({
     status: item.status,
     imageUrl: item.imageUrl,
     group: item.kind,
-    meta: `${newsKindLabel(item.kind)} · ${toDatetimeLocalValue(item.publishedAt).replace("T", " ")}`,
+    meta: `${newsKindLabel(item.kind)} · ${toDatetimeLocalValue(item.publishedAt).replace("T", " ")}${item.authorName ? ` · ${item.authorName}` : ""}`,
   }));
 
   const items = [...eventItems, ...newsItems].filter((item) => {

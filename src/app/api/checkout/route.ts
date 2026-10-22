@@ -8,7 +8,7 @@ const THEMES = ["/preview/sankofa-light", "/preview/sankofa"] as const;
 export async function POST(request: Request) {
   const stripe = getStripe();
   if (!stripe) {
-    return NextResponse.json({ error: "Stripe is not configured yet." }, { status: 503 });
+    return NextResponse.json({ error: "Donations are unavailable right now." }, { status: 503 });
   }
 
   const body = await request.json().catch(() => null);

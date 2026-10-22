@@ -21,7 +21,7 @@ export default async function CmsMembersPage({
   return (
     <CmsShell
       current="members"
-      title="Members"
+      title="Editors"
       description="Anyone who signs in can draft posts. Admins are the ones who publish them."
     >
       {query.saved === "1" && (
@@ -31,7 +31,7 @@ export default async function CmsMembersPage({
       )}
       {query.error === "last-admin" && (
         <p className="mb-8 rounded-2xl border border-red-200 bg-red-50 px-5 py-3 text-sm text-red-700">
-          The last admin cannot be changed to a regular member.
+          The last admin cannot be changed to an editor.
         </p>
       )}
       {members.length === 0 ? (
@@ -43,7 +43,7 @@ export default async function CmsMembersPage({
             return (
               <li key={member.id} className="flex flex-wrap items-center justify-between gap-4 px-5 py-4">
                 <div className="min-w-0">
-                  <p className="truncate font-medium">{member.name || "Member"}</p>
+                  <p className="truncate font-medium">{member.name || "Editor"}</p>
                   <p className="truncate text-sm text-[#0F1B14]/50">{member.email}</p>
                 </div>
                 <form action={setMemberRoleAction} className="flex items-center gap-2">
@@ -54,7 +54,7 @@ export default async function CmsMembersPage({
                     disabled={lastAdmin}
                     className="rounded-full border border-black/10 bg-[#FFFBF2] px-4 py-2 text-sm disabled:opacity-60"
                   >
-                    <option value="member">Member</option>
+                    <option value="member">Editor</option>
                     <option value="admin">Admin</option>
                   </select>
                   <button

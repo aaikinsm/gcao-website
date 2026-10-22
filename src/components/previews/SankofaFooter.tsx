@@ -7,9 +7,10 @@ const display = { fontFamily: "var(--font-sankofa), sans-serif" };
 interface SankofaFooterProps {
   theme: SankofaTheme;
   tokens: SankofaThemeTokens;
+  basePath: string;
 }
 
-export function SankofaFooter({ theme, tokens: t }: SankofaFooterProps) {
+export function SankofaFooter({ theme, tokens: t, basePath }: SankofaFooterProps) {
   return (
     <footer id="contact" className={`border-t ${t.footer}`}>
       <div className="mx-auto max-w-6xl px-6 py-16 md:px-10 md:py-20">
@@ -41,7 +42,7 @@ export function SankofaFooter({ theme, tokens: t }: SankofaFooterProps) {
             {footerLinks.map((link) => (
               <a
                 key={link.href}
-                href={link.href}
+                href={link.label === "Gallery" ? `${basePath}/gallery` : link.href}
                 className={`text-sm transition-colors ${t.footerLink}`}
               >
                 {link.label}

@@ -1,6 +1,6 @@
 import type { ResultSetHeader, RowDataPacket } from "mysql2";
 import { getPool } from "@/lib/db";
-import { ensurePendingStatus, parsePostStatus, type PostStatus } from "@/lib/post-status";
+import { ensureAuthorColumns, ensurePendingStatus, parsePostStatus, type PostStatus } from "@/lib/post-status";
 import { slugify } from "@/lib/slug";
 
 export type GcaoEvent = {
@@ -14,6 +14,7 @@ export type GcaoEvent = {
   body: string;
   imageUrl: string;
   status: PostStatus;
+  authorName: string | null;
 };
 
 type EventRow = RowDataPacket & {
@@ -27,6 +28,7 @@ type EventRow = RowDataPacket & {
   body: string;
   image_url: string;
   status: string;
+  author_name?: string | null;
 };
 
 const TORONTO = "America/Toronto";
@@ -66,6 +68,7 @@ function mapEvent(row: EventRow): GcaoEvent | null {
     body: row.body,
     imageUrl: row.image_url,
     status: parsePostStatus(row.status),
+    authorName: row.author_name?.trim() || null,
   };
 }
 
@@ -177,6 +180,7 @@ export type EventInput = {
   body: string;
   imageUrl: string;
   status: PostStatus;
+  authorName?: string | null;
 };
 
 export async function uniqueEventSlug(base: string, excludeId?: number) {
@@ -202,8 +206,9 @@ async function eventSlugTaken(slug: string, excludeId?: number) {
 export async function getAllEvents(): Promise<GcaoEvent[]> {
   try {
     await ensurePendingStatus();
+    await ensureAuthorColumns();
     const [rows] = await getPool().query<EventRow[]>(
-      `SELECT id, title, slug, starts_at, ends_at, location, excerpt, body, image_url, status
+      `SELECT id, title, slug, starts_at, ends_at, location, excerpt, body, image_url, status, author_name
        FROM events
        ORDER BY starts_at DESC`,
     );
@@ -216,8 +221,9 @@ export async function getAllEvents(): Promise<GcaoEvent[]> {
 
 export async function getEventById(id: number): Promise<GcaoEvent | null> {
   try {
+    await ensureAuthorColumns();
     const [rows] = await getPool().query<EventRow[]>(
-      `SELECT id, title, slug, starts_at, ends_at, location, excerpt, body, image_url, status
+      `SELECT id, title, slug, starts_at, ends_at, location, excerpt, body, image_url, status, author_name
        FROM events WHERE id = ? LIMIT 1`,
       [id],
     );
@@ -230,9 +236,10 @@ export async function getEventById(id: number): Promise<GcaoEvent | null> {
 
 export async function createEvent(input: EventInput) {
   await ensurePendingStatus();
+  await ensureAuthorColumns();
   const [result] = await getPool().execute<ResultSetHeader>(
-    `INSERT INTO events (title, slug, starts_at, ends_at, location, excerpt, body, image_url, status)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    `INSERT INTO events (title, slug, starts_at, ends_at, location, excerpt, body, image_url, status, author_name)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     [
       input.title,
       input.slug,
@@ -243,6 +250,7 @@ export async function createEvent(input: EventInput) {
       input.body,
       input.imageUrl,
       input.status,
+      input.authorName?.trim() || null,
     ],
   );
   return result.insertId;

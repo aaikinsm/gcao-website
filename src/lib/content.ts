@@ -148,7 +148,12 @@ export const siteContent = {
             image: "/images/team/maureen-boateng.jpg",
             alt: "Portrait of Maureen Boateng, GCAO Executive Secretary",
           },
-          { name: "Felix S. Agbogah", role: "Finance Director" },
+          {
+            name: "Felix S. Agbogah",
+            role: "Finance Director",
+            image: "/images/team/felix-agbogah.jpg",
+            alt: "Portrait of Felix S. Agbogah, GCAO Finance Director",
+          },
           {
             name: "Larry Kutuadu",
             role: "Treasurer",
