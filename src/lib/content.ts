@@ -10,7 +10,6 @@ export const siteContent = {
     address: "10 Belfield Rd, Toronto M9W 4J1",
     hours: "11AM – 4PM (EST), Monday – Friday",
     phone: "1-416-243-2003",
-    phoneAlt: "+1-647-895-5073",
     email: "info@gcaocanada.org",
     social: [
       { label: "Facebook", href: "https://www.facebook.com/GCAOpage" },
@@ -105,18 +104,27 @@ export const siteContent = {
       "GCAO is a non-profit umbrella for Ghanaian-Canadian people, faith groups, professionals, and community organizations in the Greater Toronto Area.",
     history:
       "GCAO began in the 1970s as Ghanaians arrived in Canada to study and work. The association grew to support newcomers in school and careers, and still does today.\n\nWe partner with community agencies and all levels of government on social policy and programs that improve daily life for Ghanaian residents in Canada.",
-    objectives: [
-      "Foster acceptance, understanding, and goodwill across multicultural Canada",
-      "Build resource centres for social, educational, and welfare programs",
-      "Advocate on social welfare, civic engagement, and community development",
-      "Engage youth and elders in citizenship and community-building",
-      "Coordinate cultural festivals and civic-day events",
-      "Support youth through programs, workshops, and seminars",
-      "Promote Ghanaian-Canadian businesses through expos and workshops",
-      "Advance peace through respect, conflict resolution, and mutual understanding",
-      "Offer space for mentorship, reflection, and growth",
-      "Showcase local Ghanaian-Canadian businesses and organizations",
-      "Grow civic voice, Black wealth, and community wellness",
+    values: [
+      {
+        name: "Community",
+        text: "We serve one another, across generations and associations.",
+      },
+      {
+        name: "Heritage",
+        text: "We carry Ghanaian identity and pride into Canadian life.",
+      },
+      {
+        name: "Wellbeing",
+        text: "We support the whole person: health, dignity, and belonging.",
+      },
+      {
+        name: "Excellence",
+        text: "We hold ourselves to high standards in how we deliver and steward.",
+      },
+      {
+        name: "Collaboration",
+        text: "We build with partners, funders, and the wider community.",
+      },
     ],
     teamGroups: [
       {
@@ -269,13 +277,13 @@ export const siteContent = {
   programsPage: {
     intro:
       "Social, cultural, educational, and wellness programs serving Ghanaian-Canadians across Ontario — from after-school learning to seniors, family wings, mental health training, and diaspora advocacy.",
-    homework: {
-      title: "Homework Club",
+    education: {
+      title: "Education and mentorship",
       eyebrow: "Education",
       summary:
-        "One of GCAO’s first programs, the Homework Club is an after-school program for elementary to high school students aged 6 to 18. It supports homework completion and broader skill development, run by registered and retired teachers and experienced community members.",
+        "Learning and mentorship for elementary to high school students aged 6 to 18, led by registered and retired teachers and experienced community members. The Homework Club is one part of this work: after-school support alongside mentorship, summer programs, and cultural learning.",
       context:
-        "Nearly 50% of Ontario students have failed to meet standards in math and English on EQAO assessments. The Homework Club offers valuable support for working parents and new immigrant families who may face economic or language barriers.",
+        "Nearly 50% of Ontario students have failed to meet standards in math and English on EQAO assessments. This program supports working parents and new immigrant families who may face economic or language barriers.",
       mission:
         "To develop a creative, respectful, and intellectual learning environment for the Ghanaian-Canadian community — empowering young leaders to mentor and assist the next generation.",
       offers: [
@@ -390,6 +398,28 @@ export const siteContent = {
       ],
       image: "/images/programs/dett.jpg",
       alt: "Ghanaian-Canadian Diaspora Engagement Think Tank logo",
+    },
+    chamber: {
+      title: "Ghanaian-Canadian Chamber of Commerce",
+      eyebrow: "Chamber of Commerce",
+      summary:
+        "A voluntary, non-profit organization anchored under GCAO that promotes business, trade, tourism, and investment between Canada and Ghana through networking, advocacy, partnership, and education.",
+      mission:
+        "To assemble a platform for professionals and business entrepreneurs in the Ghanaian community in Canada, so they can address business and public issues, create opportunities, and take part in economic growth in Ghana and Canada.",
+      vision:
+        "To build capacity, stir interest, and open opportunities for Ghanaian-Canadians, and to foster trade and investment between Canada and Ghana. The Chamber aims to bring together other Africa-affiliated chambers around a shared economic vision.",
+      values:
+        "Respect, honesty, trust, transparency, inclusiveness, excellence, quality, and accountability to members and the communities served.",
+      membership:
+        "Open to any professional, organization, or association involved in business, trade, and commerce with an interest in the socio-economic wellbeing of Ghanaians in Canada and Ghana.",
+      benefits: [
+        "A professional and business networking platform",
+        "Access to the Diaspora Engagement Think Tank skills bank",
+        "An exclusive member directory",
+        "Mentorship for youth and new business entrepreneurs",
+        "Free advertisement in GCCC newsletters and on the website",
+        "A point of contact for investment in Ghana and for Ghanaian professionals in Canada",
+      ],
     },
   },
 };

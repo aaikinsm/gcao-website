@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 
+import { newsCover } from "@/lib/news-types";
 import type { PostStatus } from "@/lib/post-status";
 
 export type CmsListItem = {
@@ -13,6 +14,7 @@ export type CmsListItem = {
   status: PostStatus;
   meta: string;
   imageUrl: string;
+  kind?: string;
 };
 
 export function CmsEntryList({
@@ -42,18 +44,22 @@ export function CmsEntryList({
         <p className="mt-10 text-[#0F1B14]/50">{empty}</p>
       ) : (
         <ul className="mt-8 space-y-4">
-          {filtered.map((item) => (
+          {filtered.map((item) => {
+            const cover = newsCover(item.kind, item.imageUrl);
+            return (
             <li
               key={item.id}
               className="flex items-stretch overflow-hidden rounded-3xl border border-black/10 bg-white transition-colors hover:border-[#006B3F]/40"
             >
               <Link href={item.href} className="flex min-w-0 flex-1 gap-4 p-3 md:p-4">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={item.imageUrl}
-                  alt=""
-                  className="h-20 w-28 shrink-0 rounded-2xl object-cover md:h-24 md:w-36"
-                />
+                {cover ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={cover}
+                    alt=""
+                    className="h-20 w-28 shrink-0 rounded-2xl object-cover md:h-24 md:w-36"
+                  />
+                ) : null}
                 <div className="min-w-0 py-1">
                   <p className="truncate text-lg font-semibold tracking-tight">{item.title}</p>
                   <p className="mt-1 text-sm text-[#0F1B14]/50">{item.meta}</p>
@@ -79,7 +85,8 @@ export function CmsEntryList({
                 Preview
               </a>
             </li>
-          ))}
+            );
+          })}
         </ul>
       )}
     </div>

@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { looksLikeHtml, RICH_TEXT_EDITOR_CLASS, sanitizeRichText } from "@/lib/rich-text";
+import { looksLikeHtml, RICH_TEXT_EDITOR_CLASS, sanitizeAdminHtml, sanitizeRichText } from "@/lib/rich-text";
 
 function inlineBold(text: string): ReactNode[] {
   return text.split(/(\*\*[^*]+\*\*)/g).map((part, index) => {
@@ -9,18 +9,24 @@ function inlineBold(text: string): ReactNode[] {
   });
 }
 
+const wideClass =
+  "[&_h2]:mt-8 [&_h2]:text-2xl [&_h2]:font-semibold [&_h3]:mt-6 [&_h3]:text-xl [&_h3]:font-semibold [&_ol]:list-decimal [&_ol]:space-y-2 [&_ol]:pl-6 [&_img]:my-4 [&_img]:max-w-full [&_img]:rounded-2xl [&_iframe]:my-6 [&_iframe]:aspect-video [&_iframe]:w-full [&_iframe]:rounded-2xl [&_table]:w-full [&_blockquote]:border-l-2 [&_blockquote]:pl-4";
+
 export function FormattedBody({
   text,
   className = "",
+  html = false,
 }: {
   text: string;
   className?: string;
+  html?: boolean;
 }) {
-  if (looksLikeHtml(text)) {
+  const wide = html || /<\/?(h2|h3|table|img|iframe|blockquote)\b/i.test(text);
+  if (wide || looksLikeHtml(text)) {
     return (
       <div
-        className={`${RICH_TEXT_EDITOR_CLASS} ${className}`}
-        dangerouslySetInnerHTML={{ __html: sanitizeRichText(text) }}
+        className={`${RICH_TEXT_EDITOR_CLASS} ${wide ? wideClass : ""} ${className}`}
+        dangerouslySetInnerHTML={{ __html: wide ? sanitizeAdminHtml(text) : sanitizeRichText(text) }}
       />
     );
   }

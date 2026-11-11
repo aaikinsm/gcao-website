@@ -23,7 +23,7 @@ export default async function CmsDashboardPage() {
           href="/cms/posts?filter=events"
           className="rounded-[2rem] border border-black/10 bg-white p-8 transition-colors hover:border-[#006B3F]/40"
         >
-          <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-[#006B3F]">Events</p>
+          <p className="text-[13px] font-semibold uppercase tracking-[0.28em] text-[#006B3F]">Events</p>
           <p className="mt-4 text-4xl font-semibold tracking-tight">{events.length}</p>
           <p className="mt-2 text-sm text-[#0F1B14]/50">{publishedEvents} published</p>
         </Link>
@@ -31,7 +31,7 @@ export default async function CmsDashboardPage() {
           href="/cms/posts"
           className="rounded-[2rem] border border-black/10 bg-white p-8 transition-colors hover:border-[#006B3F]/40"
         >
-          <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-[#006B3F]">Updates</p>
+          <p className="text-[13px] font-semibold uppercase tracking-[0.28em] text-[#006B3F]">Updates</p>
           <p className="mt-4 text-4xl font-semibold tracking-tight">{news.length}</p>
           <p className="mt-2 text-sm text-[#0F1B14]/50">{publishedNews} published</p>
         </Link>
@@ -39,7 +39,7 @@ export default async function CmsDashboardPage() {
           href="/cms/posts?filter=pending"
           className="rounded-[2rem] border border-black/10 bg-white p-8 transition-colors hover:border-[#006B3F]/40"
         >
-          <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-[#006B3F]">
+          <p className="text-[13px] font-semibold uppercase tracking-[0.28em] text-[#006B3F]">
             Waiting for approval
           </p>
           <p className="mt-4 text-4xl font-semibold tracking-tight">{pending}</p>

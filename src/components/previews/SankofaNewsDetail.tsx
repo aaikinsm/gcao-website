@@ -7,8 +7,9 @@ import { SankofaFooter } from "@/components/previews/SankofaFooter";
 import { SankofaHeader } from "@/components/previews/SankofaHeader";
 import { sankofaThemes, type SankofaTheme } from "@/components/previews/sankofaTheme";
 import { FormattedBody } from "@/components/shared/FormattedBody";
+import { PostAttachmentsView, PostVideo } from "@/components/previews/PostMedia";
 import { ShareRow } from "@/components/shared/ShareRow";
-import { newsTypeLabel, type GcaoNews } from "@/lib/news-types";
+import { newsCover, newsTypeLabel, type GcaoNews } from "@/lib/news-types";
 
 const sora = Sora({
   subsets: ["latin"],
@@ -43,6 +44,7 @@ export function SankofaNewsDetail({
 }: SankofaNewsDetailProps) {
   const t = sankofaThemes[theme];
   const isLight = theme === "light";
+  const cover = newsCover(article.kind, article.imageUrl);
 
   return (
     <div className={`${sora.variable} ${t.page}`}>
@@ -66,27 +68,33 @@ export function SankofaNewsDetail({
       />
 
       <section
-        className={`relative min-h-[52vh] overflow-hidden ${
+        className={`relative overflow-hidden ${cover ? "min-h-[52vh]" : "bg-[#06110D]"} ${
           notice ? "pt-[calc(72px+4.25rem)]" : "pt-[calc(36px+4.25rem)]"
         }`}
       >
-        <SiteImage
-          src={article.imageUrl}
-          alt={article.title}
-          className="absolute inset-0"
-          imageClassName="object-cover"
-          overlay={t.eventOverlay}
-          sizes="100vw"
-          priority
-        />
-        <div className="relative mx-auto flex min-h-[52vh] max-w-4xl flex-col justify-end px-6 pb-16 pt-24 md:px-10 md:pb-20">
+        {cover ? (
+          <SiteImage
+            src={cover}
+            alt={article.title}
+            className="absolute inset-0"
+            imageClassName="object-cover"
+            overlay={t.eventOverlay}
+            sizes="100vw"
+            priority
+          />
+        ) : null}
+        <div
+          className={`relative mx-auto flex max-w-4xl flex-col justify-end px-6 pb-16 pt-24 md:px-10 md:pb-20 ${
+            cover ? "min-h-[52vh]" : ""
+          }`}
+        >
           <Link
             href={`${basePath}/news`}
             className="inline-flex w-fit items-center gap-2 text-sm font-semibold text-[#FCD116]"
           >
             ← All updates
           </Link>
-          <p className="mt-8 text-[11px] font-semibold uppercase tracking-[0.28em] text-[#FCD116]">
+          <p className="mt-8 text-[13px] font-semibold uppercase tracking-[0.28em] text-[#FCD116]">
             {newsTypeLabel(article.kind, article.category)}
           </p>
           <h1
@@ -102,10 +110,20 @@ export function SankofaNewsDetail({
 
       <article className="px-6 py-16 md:px-10 md:py-24">
         <div className="mx-auto max-w-3xl">
-          <p className={`text-lg leading-relaxed ${t.sectionMuted}`}>{article.excerpt}</p>
+          {article.kind === "publication" ? null : (
+            <p className={`text-lg leading-relaxed ${t.sectionMuted}`}>{article.excerpt}</p>
+          )}
+          <PostVideo youtubeId={article.youtubeId} />
           <FormattedBody
             text={article.body}
-            className={`mt-10 text-base leading-relaxed ${t.cardMuted}`}
+            html={article.bodyMode === "html"}
+            className={`mt-10 text-base leading-relaxed ${t.cardMuted} [&_a]:font-semibold [&_a]:underline ${
+              isLight ? "[&_a]:text-[#006B3F]" : "[&_a]:text-[#FCD116]"
+            }`}
+          />
+          <PostAttachmentsView
+            attachments={article.attachments}
+            linkClass={isLight ? "text-[#006B3F]" : "text-[#FCD116]"}
           />
           <Link
             href={`${basePath}/news`}

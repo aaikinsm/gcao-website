@@ -16,7 +16,7 @@ const sora = Sora({
 const display = { fontFamily: "var(--font-sankofa), sans-serif" };
 
 const programsNav = [
-  { label: "Homework Club", href: "#homework" },
+  { label: "Education and mentorship", href: "#education" },
   { label: "Youth · Seniors · Women · Men", href: "#community" },
   { label: "Health & wellness", href: "#health" },
   { label: "DETT", href: "#dett" },
@@ -56,7 +56,7 @@ export function SankofaPrograms({ theme, optionLabel, basePath }: SankofaProgram
       />
 
       <SankofaKenteHero theme={theme}>
-        <p className={`text-[11px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>
+        <p className={`text-[13px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>
           Programs
         </p>
         <h1
@@ -87,12 +87,12 @@ export function SankofaPrograms({ theme, optionLabel, basePath }: SankofaProgram
         </div>
       </nav>
 
-      <AnimatedSection id="homework" className={`border-b px-6 py-24 md:px-10 md:py-32 ${t.statsWrap}`}>
+      <AnimatedSection id="education" className={`scroll-mt-[11rem] border-b px-6 py-24 md:px-10 md:py-32 ${t.statsWrap}`}>
         <div className="mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-12">
           <div className="group relative overflow-hidden rounded-3xl lg:col-span-6">
             <SiteImage
-              src={p.homework.image}
-              alt={p.homework.alt}
+              src={p.education.image}
+              alt={p.education.alt}
               className="aspect-[4/3]"
               imageClassName="img-zoom"
               sizes="(min-width: 1024px) 45vw, 100vw"
@@ -103,19 +103,19 @@ export function SankofaPrograms({ theme, optionLabel, basePath }: SankofaProgram
             />
           </div>
           <div className="lg:col-span-6">
-            <p className={`text-[11px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>
-              {p.homework.eyebrow}
+            <p className={`text-[13px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>
+              {p.education.eyebrow}
             </p>
             <h2 className="mt-4 text-3xl font-semibold tracking-tight md:text-5xl" style={display}>
-              {p.homework.title}
+              {p.education.title}
             </h2>
-            <p className={`mt-6 text-base leading-relaxed ${t.cardMuted}`}>{p.homework.summary}</p>
-            <p className={`mt-4 text-base leading-relaxed ${t.cardMuted}`}>{p.homework.context}</p>
+            <p className={`mt-6 text-base leading-relaxed ${t.cardMuted}`}>{p.education.summary}</p>
+            <p className={`mt-4 text-base leading-relaxed ${t.cardMuted}`}>{p.education.context}</p>
             <p className="mt-8 text-lg leading-relaxed md:text-xl" style={display}>
-              {p.homework.mission}
+              {p.education.mission}
             </p>
             <ul className={`mt-8 grid gap-3 sm:grid-cols-2 ${t.cardMuted}`}>
-              {p.homework.offers.map((offer) => (
+              {p.education.offers.map((offer) => (
                 <li key={offer} className="flex gap-3 text-sm">
                   <span
                     className={`mt-2 h-1.5 w-1.5 shrink-0 rounded-full ${
@@ -128,12 +128,12 @@ export function SankofaPrograms({ theme, optionLabel, basePath }: SankofaProgram
               ))}
             </ul>
             <p className={`mt-8 text-sm ${t.sectionMuted}`}>
-              <span className="font-semibold">Schedule:</span> {p.homework.schedule}
+              <span className="font-semibold">Schedule:</span> {p.education.schedule}
             </p>
             <p className={`mt-2 text-sm ${t.sectionMuted}`}>
-              Sign up via {p.homework.contactLabel} at{" "}
-              <a className="underline underline-offset-4" href={`mailto:${p.homework.contact}`}>
-                {p.homework.contact}
+              Sign up via {p.education.contactLabel} at{" "}
+              <a className="underline underline-offset-4" href={`mailto:${p.education.contact}`}>
+                {p.education.contact}
               </a>
             </p>
           </div>
@@ -142,7 +142,7 @@ export function SankofaPrograms({ theme, optionLabel, basePath }: SankofaProgram
 
       <AnimatedSection id="community" className="px-6 py-24 md:px-10 md:py-32">
         <div className="mx-auto max-w-6xl">
-          <p className={`text-[11px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>
+          <p className={`text-[13px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>
             {p.community.eyebrow}
           </p>
           <h2 className="mt-4 max-w-3xl text-3xl font-semibold tracking-tight md:text-5xl" style={display}>
@@ -199,7 +199,7 @@ export function SankofaPrograms({ theme, optionLabel, basePath }: SankofaProgram
       <AnimatedSection id="health" className={`border-y px-6 py-24 md:px-10 md:py-32 ${t.statsWrap}`}>
         <div className="mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-12">
           <div className="order-2 lg:order-1 lg:col-span-6">
-            <p className={`text-[11px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>
+            <p className={`text-[13px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>
               {p.health.eyebrow}
             </p>
             <h2 className="mt-4 text-3xl font-semibold tracking-tight md:text-5xl" style={display}>
@@ -253,7 +253,7 @@ export function SankofaPrograms({ theme, optionLabel, basePath }: SankofaProgram
             />
           </div>
           <div className="lg:col-span-6">
-            <p className={`text-[11px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>
+            <p className={`text-[13px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>
               {p.dett.eyebrow}
             </p>
             <h2 className="mt-4 text-3xl font-semibold tracking-tight md:text-5xl" style={display}>
@@ -261,7 +261,7 @@ export function SankofaPrograms({ theme, optionLabel, basePath }: SankofaProgram
             </h2>
             <p className={`mt-6 text-base leading-relaxed ${t.cardMuted}`}>{p.dett.summary}</p>
             <div className="mt-8">
-              <p className={`text-[11px] font-semibold uppercase tracking-[0.22em] ${t.eyebrow}`}>
+              <p className={`text-[13px] font-semibold uppercase tracking-[0.22em] ${t.eyebrow}`}>
                 Mission
               </p>
               <p className="mt-3 text-lg leading-relaxed" style={display}>
@@ -269,13 +269,13 @@ export function SankofaPrograms({ theme, optionLabel, basePath }: SankofaProgram
               </p>
             </div>
             <div className="mt-6">
-              <p className={`text-[11px] font-semibold uppercase tracking-[0.22em] ${t.eyebrow}`}>
+              <p className={`text-[13px] font-semibold uppercase tracking-[0.22em] ${t.eyebrow}`}>
                 Vision
               </p>
               <p className={`mt-3 text-base leading-relaxed ${t.cardMuted}`}>{p.dett.vision}</p>
             </div>
             <div className="mt-6">
-              <p className={`text-[11px] font-semibold uppercase tracking-[0.22em] ${t.eyebrow}`}>
+              <p className={`text-[13px] font-semibold uppercase tracking-[0.22em] ${t.eyebrow}`}>
                 Membership
               </p>
               <p className={`mt-3 text-base leading-relaxed ${t.cardMuted}`}>{p.dett.membership}</p>
@@ -297,7 +297,58 @@ export function SankofaPrograms({ theme, optionLabel, basePath }: SankofaProgram
         </div>
       </AnimatedSection>
 
-      <AnimatedSection className="relative overflow-hidden px-6 pb-32 md:px-10 md:pb-40">
+      <AnimatedSection id="chamber" className={`scroll-mt-[11rem] border-t px-6 py-24 md:px-10 md:py-32 ${t.statsWrap}`}>
+        <div className="mx-auto max-w-3xl">
+          <p className={`text-[13px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>
+            {p.chamber.eyebrow}
+          </p>
+          <h2 className="mt-4 text-3xl font-semibold tracking-tight md:text-5xl" style={display}>
+            {p.chamber.title}
+          </h2>
+          <p className={`mt-6 text-base leading-relaxed ${t.cardMuted}`}>{p.chamber.summary}</p>
+          <div className="mt-8">
+            <p className={`text-[13px] font-semibold uppercase tracking-[0.22em] ${t.eyebrow}`}>
+              Mission
+            </p>
+            <p className="mt-3 text-lg leading-relaxed" style={display}>
+              {p.chamber.mission}
+            </p>
+          </div>
+          <div className="mt-6">
+            <p className={`text-[13px] font-semibold uppercase tracking-[0.22em] ${t.eyebrow}`}>
+              Vision
+            </p>
+            <p className={`mt-3 text-base leading-relaxed ${t.cardMuted}`}>{p.chamber.vision}</p>
+          </div>
+          <div className="mt-6">
+            <p className={`text-[13px] font-semibold uppercase tracking-[0.22em] ${t.eyebrow}`}>
+              Values
+            </p>
+            <p className={`mt-3 text-base leading-relaxed ${t.cardMuted}`}>{p.chamber.values}</p>
+          </div>
+          <div className="mt-6">
+            <p className={`text-[13px] font-semibold uppercase tracking-[0.22em] ${t.eyebrow}`}>
+              Membership
+            </p>
+            <p className={`mt-3 text-base leading-relaxed ${t.cardMuted}`}>{p.chamber.membership}</p>
+          </div>
+          <ul className={`mt-8 space-y-3 ${t.cardMuted}`}>
+            {p.chamber.benefits.map((item) => (
+              <li key={item} className="flex gap-3 text-sm">
+                <span
+                  className={`mt-2 h-1.5 w-1.5 shrink-0 rounded-full ${
+                    isLight ? "bg-[#006B3F]" : "bg-[#FCD116]"
+                  }`}
+                  aria-hidden
+                />
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </AnimatedSection>
+
+      <AnimatedSection className="relative overflow-hidden px-6 py-32 md:px-10 md:py-40">
         <div
           className={`relative mx-auto max-w-3xl overflow-hidden rounded-[2rem] border px-8 py-20 text-center md:px-12 md:py-24 ${t.donateBox}`}
         >

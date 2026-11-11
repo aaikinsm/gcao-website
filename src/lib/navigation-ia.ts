@@ -108,13 +108,13 @@ export const pageMap: PageMerge[] = [
   { section: "News", oldPath: "COVID-19 (8 posts)", newLocation: "/news?category=archive" },
   { section: "Get Involved", oldPath: "/become-volunteer/", newLocation: "/get-involved#volunteer" },
   { section: "Get Involved", oldPath: "/registration/", newLocation: "/get-involved#membership" },
-  { section: "Get Involved", oldPath: "/job-postings/", newLocation: "/get-involved#jobs" },
+  { section: "Get Involved", oldPath: "/job-postings/", newLocation: "/get-involved" },
   { section: "Contact", oldPath: "/contact/", newLocation: "/contact" },
   { section: "Contact", oldPath: "Resource Hub info", newLocation: "/contact#visit" },
   { section: "Footer", oldPath: "/marketplace/", newLocation: "/marketplace" },
   { section: "Footer", oldPath: "Vendor signup", newLocation: "/marketplace/signup" },
   { section: "Footer", oldPath: "/services/", newLocation: "/partners" },
-  { section: "Footer", oldPath: "/newsletters-reports/", newLocation: "/newsletters" },
+  { section: "Footer", oldPath: "/newsletters-reports/", newLocation: "/news" },
   { section: "Footer", oldPath: "/galllery/", newLocation: "/gallery" },
   { section: "Footer", oldPath: "/covid-19-resources/", newLocation: "/resources/covid-19" },
   { section: "Footer", oldPath: "/faq/", newLocation: "/faq" },
@@ -127,7 +127,7 @@ export const lowValuePages: LowValuePage[] = [
   { name: "COVID Trust Fund", summary: "Archive; keep Resource Center project on About/Donate." },
   { name: "Registration", summary: "Rebuild broken form on Get Involved." },
   { name: "Gallery", summary: "Footer only unless staff will maintain it." },
-  { name: "Newsletters/Reports", summary: "Footer only — PDF archive for members." },
+  { name: "Publications", summary: "Newsletters and annual reports, listed with news." },
 ];
 
 export const droppedPages: DroppedPage[] = [
@@ -145,7 +145,7 @@ export const droppedPages: DroppedPage[] = [
 export const footerLinks = [
   { label: "Marketplace", href: "/marketplace" },
   { label: "Partners", href: "/partners" },
-  { label: "Newsletters & Reports", href: "/newsletters" },
+  { label: "Publications", href: "/news" },
   { label: "Gallery", href: "/gallery" },
   { label: "COVID-19 Resources", href: "/resources/covid-19" },
   { label: "FAQ", href: "/faq" },

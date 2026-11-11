@@ -1,19 +1,27 @@
 "use client";
 
-import { useActionState, useEffect, useState } from "react";
+import { useActionState, useEffect, useRef, useState, useTransition } from "react";
 import {
   aiStatusAction,
+  duplicateEventAction,
   generatePostImageAction,
   rewritePostAction,
   saveEventAction,
   type CmsActionState,
 } from "@/app/cms/actions";
-import { FormattedField } from "@/components/cms/FormattedField";
+import { AttachmentPicker } from "@/components/cms/AttachmentPicker";
+import { CmsIcon, IconLabel } from "@/components/cms/CmsIcons";
+import { applyDictation, DictationButton, type DictationPreview, type DictationUpdate } from "@/components/cms/DictationButton";
+import { HtmlModeToggle } from "@/components/cms/HtmlModeToggle";
+import { MoreOptions } from "@/components/cms/MoreOptions";
+import { SidebarSection } from "@/components/cms/SidebarSection";
+import { FormattedField, type FormattedFieldHandle } from "@/components/cms/FormattedField";
 import { ImagePicker } from "@/components/cms/ImagePicker";
 import { DeleteButton } from "@/components/cms/DeleteButton";
 import { StatusField } from "@/components/cms/StatusField";
 import type { EventDraft } from "@/lib/cms-draft";
 import type { GcaoEvent } from "@/lib/events";
+import { youtubeWatchUrl, type BodyMode } from "@/lib/post-fields";
 import { slugify, toDatetimeLocalValue } from "@/lib/slug";
 
 const field =
@@ -40,6 +48,11 @@ export function EventForm({
   const [location, setLocation] = useState(event?.location ?? draft?.location ?? "");
   const [excerpt, setExcerpt] = useState(event?.excerpt ?? draft?.excerpt ?? "");
   const [body, setBody] = useState(event?.body ?? draft?.body ?? "");
+  const [bodyMode, setBodyMode] = useState<BodyMode>(
+    canPublish && event?.bodyMode === "html" ? "html" : "formatted",
+  );
+  const [youtubeUrl, setYoutubeUrl] = useState(youtubeWatchUrl(event?.youtubeId));
+  const [duplicating, startDuplicate] = useTransition();
   const [startsAt, setStartsAt] = useState(
     event ? toDatetimeLocalValue(event.startsAt) : (draft?.startsAt ?? ""),
   );
@@ -50,6 +63,45 @@ export function EventForm({
   const [aiEnabled, setAiEnabled] = useState(false);
   const [aiBusy, setAiBusy] = useState<"rewrite" | "image" | null>(null);
   const [aiError, setAiError] = useState("");
+  const lockedHtml = Boolean(event?.bodyMode === "html" && !canPublish);
+  const editorRef = useRef<FormattedFieldHandle>(null);
+  const bodyRef = useRef<HTMLTextAreaElement>(null);
+  const htmlMirror = useRef(body);
+  const htmlPreview = useRef<DictationPreview | null>(null);
+  const editorPreview = useRef(false);
+  htmlMirror.current = body;
+  const insertDictation = (update: DictationUpdate) => {
+    if (!update.text.trim()) {
+      htmlPreview.current = null;
+      editorPreview.current = false;
+      return;
+    }
+    if (bodyMode === "html") {
+      if (update.commit && editorPreview.current) {
+        editorPreview.current = false;
+        return;
+      }
+      const next = applyDictation(htmlMirror.current, update.text, update.commit, bodyRef.current, htmlPreview);
+      htmlMirror.current = next;
+      setBody(next);
+      return;
+    }
+    if (update.commit) {
+      editorPreview.current = false;
+      editorRef.current?.commitDictation(update.text);
+      return;
+    }
+    editorPreview.current = true;
+    editorRef.current?.previewDictation(update.text);
+  };
+  const moreOpen = Boolean(
+    (event?.attachments.length ?? 0) > 0 ||
+      event?.youtubeId ||
+      event?.featured ||
+      event?.endsAt ||
+      draft?.endsAt ||
+      (event ? event.slug !== slugify(event.title) : false),
+  );
 
   useEffect(() => {
     if (!slugTouched) setSlug(slugify(title));
@@ -125,6 +177,9 @@ export function EventForm({
               className="w-full border-0 border-b border-black/[0.08] bg-transparent pb-4 text-4xl font-semibold tracking-[-0.03em] text-[#0F1B14] outline-none placeholder:text-[#0F1B14]/25"
               style={display}
             />
+            <label className="mt-8 block text-xs font-semibold uppercase tracking-[0.16em] text-[#0F1B14]/45" htmlFor="excerpt">
+              Summary
+            </label>
             <textarea
               id="excerpt"
               name="excerpt"
@@ -132,18 +187,50 @@ export function EventForm({
               rows={2}
               value={excerpt}
               onChange={(e) => setExcerpt(e.target.value)}
-              aria-label="Short summary"
-              placeholder="Short summary…"
-              className="mt-5 w-full resize-none border-0 bg-transparent text-lg leading-relaxed text-[#0F1B14]/70 outline-none placeholder:text-[#0F1B14]/35"
+              placeholder="A sentence or two for the card"
+              className="mt-2 w-full resize-none border-0 bg-transparent text-base leading-relaxed text-[#0F1B14]/70 outline-none placeholder:text-[#0F1B14]/35"
             />
-            <FormattedField
-              id="body"
-              name="body"
-              label="Details"
-              value={body}
-              onChange={setBody}
-              plain
-            />
+            <div className="mt-8 border-t border-black/10 pt-8">
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <label className="text-xs font-semibold uppercase tracking-[0.16em] text-[#0F1B14]/45" htmlFor="body">
+                  Details
+                </label>
+                <div className="flex flex-wrap items-center justify-end gap-4">
+                  {lockedHtml ? null : <DictationButton activeKey={bodyMode} onText={insertDictation} />}
+                  {canPublish ? (
+                    <HtmlModeToggle
+                      html={bodyMode === "html"}
+                      onChange={(html) => setBodyMode(html ? "html" : "formatted")}
+                    />
+                  ) : null}
+                </div>
+              </div>
+              <input type="hidden" name="body_mode" value={lockedHtml ? "html" : bodyMode} />
+              {lockedHtml ? (
+                <p className="mt-6 text-sm text-[#0F1B14]/55">
+                  This event uses custom HTML. An admin can edit that.
+                </p>
+              ) : bodyMode === "html" ? (
+                <textarea
+                  id="body"
+                  name="body"
+                  ref={bodyRef}
+                  value={body}
+                  onChange={(change) => setBody(change.target.value)}
+                  className="mt-3 min-h-[16rem] w-full border-0 bg-transparent font-mono text-sm leading-relaxed text-[#0F1B14] outline-none"
+                />
+              ) : (
+                <FormattedField
+                  ref={editorRef}
+                  id="body"
+                  name="body"
+                  label="Details"
+                  value={body}
+                  onChange={setBody}
+                  plain
+                />
+              )}
+            </div>
           </div>
           {aiEnabled && (
             <div className="mt-4 px-2">
@@ -162,7 +249,8 @@ export function EventForm({
           )}
         </div>
 
-        <aside className="space-y-6 rounded-[1.5rem] border border-black/10 bg-white p-5 lg:sticky lg:top-6">
+        <aside className="rounded-[1.5rem] border border-black/10 bg-white px-5 lg:sticky lg:top-6">
+          <SidebarSection>
           <ImagePicker
             existingUrl={event?.imageUrl}
             existingAlt={title || event?.title}
@@ -171,7 +259,9 @@ export function EventForm({
             generatePending={aiBusy === "image"}
             generateEnabled={title.length >= 3}
           />
+          </SidebarSection>
 
+          <SidebarSection>
           <div>
             <label className={label} htmlFor="starts_at">
               Starts
@@ -186,19 +276,9 @@ export function EventForm({
               className={field}
             />
           </div>
-          <div>
-            <label className={label} htmlFor="ends_at">
-              Ends (optional)
-            </label>
-            <input
-              id="ends_at"
-              name="ends_at"
-              type="datetime-local"
-              value={endsAt}
-              onChange={(e) => setEndsAt(e.target.value)}
-              className={field}
-            />
-          </div>
+          </SidebarSection>
+
+          <SidebarSection>
           <div>
             <label className={label} htmlFor="location">
               Location
@@ -213,28 +293,86 @@ export function EventForm({
               placeholder="GCAO Resource Hub, 10 Belfield Rd, Toronto"
             />
           </div>
-          <div>
-            <label className="text-xs font-medium text-[#0F1B14]/55" htmlFor="slug">
-              URL slug
-            </label>
-            <input
-              id="slug"
-              name="slug"
-              value={slug}
-              onChange={(e) => {
-                setSlugTouched(true);
-                setSlug(e.target.value);
-              }}
-              className="mt-2 w-full border-0 border-b border-black/10 bg-transparent px-0 py-2 text-sm text-[#0F1B14]/70 outline-none focus:border-[#006B3F]"
-            />
-          </div>
+          </SidebarSection>
 
+          <SidebarSection>
+          <MoreOptions open={moreOpen}>
+            <AttachmentPicker initial={event?.attachments} />
+            <div>
+              <IconLabel icon="video" htmlFor="youtube_url" className={label}>
+                Video
+              </IconLabel>
+              <input
+                id="youtube_url"
+                name="youtube_url"
+                value={youtubeUrl}
+                onChange={(change) => setYoutubeUrl(change.target.value)}
+                placeholder="Paste a YouTube link"
+                className={field}
+              />
+              <p className="mt-1 text-xs text-[#0F1B14]/50">It plays on the page.</p>
+            </div>
+            {canPublish ? (
+              <label className="flex items-center gap-3 text-sm font-medium text-[#0F1B14]">
+                <input
+                  type="checkbox"
+                  name="featured"
+                  value="1"
+                  defaultChecked={event?.featured}
+                  className="h-4 w-4 accent-[#006B3F]"
+                />
+                <CmsIcon name="star" className="h-4 w-4 opacity-70" />
+                Feature on the homepage
+              </label>
+            ) : null}
+            <div>
+              <IconLabel icon="clock" htmlFor="ends_at" className={label}>
+                Ends (optional)
+              </IconLabel>
+              <input
+                id="ends_at"
+                name="ends_at"
+                type="datetime-local"
+                value={endsAt}
+                onChange={(e) => setEndsAt(e.target.value)}
+                className={field}
+              />
+            </div>
+            <div>
+              <IconLabel icon="link" htmlFor="slug" className="text-xs font-medium text-[#0F1B14]/55">
+                URL slug
+              </IconLabel>
+              <div className="relative mt-2">
+                <CmsIcon
+                  name="link"
+                  className="pointer-events-none absolute left-0 top-2.5 h-4 w-4 text-[#0F1B14]/35"
+                />
+                <input
+                  id="slug"
+                  name="slug"
+                  value={slug}
+                  onChange={(e) => {
+                    setSlugTouched(true);
+                    setSlug(e.target.value);
+                  }}
+                  className="w-full border-0 border-b border-black/10 bg-transparent py-2 pl-6 text-sm text-[#0F1B14]/70 outline-none focus:border-[#006B3F]"
+                />
+              </div>
+            </div>
+          </MoreOptions>
+          </SidebarSection>
+
+          <SidebarSection>
           <StatusField canPublish={canPublish} status={event?.status} />
+          </SidebarSection>
           {event?.authorName ? (
+            <SidebarSection>
             <p className="text-sm text-[#0F1B14]/55">Written by {event.authorName}</p>
+            </SidebarSection>
           ) : null}
 
-          <div className="flex flex-wrap items-center justify-between gap-4 pt-2">
+          <SidebarSection>
+          <div className="flex flex-wrap items-center justify-between gap-4">
             {event && (canPublish || event.status !== "published") ? (
               <DeleteButton id={event.id} kind="event" title={event.title} />
             ) : (
@@ -242,24 +380,38 @@ export function EventForm({
             )}
             <div className="flex flex-wrap items-center gap-3">
               {event ? (
-                <a
-                  href={`/cms/events/${event.id}/preview`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="rounded-full border border-black/10 px-5 py-3 text-sm font-semibold text-[#0F1B14] hover:border-[#006B3F]/40"
-                >
-                  Preview
-                </a>
+                <>
+                  <button
+                    type="button"
+                    disabled={duplicating}
+                    onClick={() => startDuplicate(() => duplicateEventAction(event.id))}
+                    className="inline-flex items-center gap-2 rounded-full border border-black/10 px-5 py-3 text-sm font-semibold text-[#0F1B14] hover:border-[#006B3F]/40 disabled:opacity-60"
+                  >
+                    <CmsIcon name="copy" />
+                    {duplicating ? "Copying…" : "Duplicate"}
+                  </button>
+                  <a
+                    href={`/cms/events/${event.id}/preview`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 rounded-full border border-black/10 px-5 py-3 text-sm font-semibold text-[#0F1B14] hover:border-[#006B3F]/40"
+                  >
+                    <CmsIcon name="eye" />
+                    Preview
+                  </a>
+                </>
               ) : null}
               <button
                 type="submit"
                 disabled={pending}
-                className="btn-premium rounded-full bg-[#FCD116] px-6 py-3 text-sm font-semibold text-[#06110D] disabled:opacity-60"
+                className="btn-premium inline-flex items-center gap-2 rounded-full bg-[#FCD116] px-6 py-3 text-sm font-semibold text-[#06110D] disabled:opacity-60"
               >
+                <CmsIcon name="check" />
                 {pending ? "Saving…" : "Save event"}
               </button>
             </div>
           </div>
+          </SidebarSection>
         </aside>
       </div>
     </form>

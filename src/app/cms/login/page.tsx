@@ -34,7 +34,7 @@ export default async function CmsLoginPage({
     <div className={`${sora.variable} min-h-screen bg-[#FFFBF2] text-[#0F1B14]`}>
       <main className="mx-auto flex min-h-screen max-w-lg flex-col justify-center px-6 py-16">
         <Logo href="/preview/sankofa" size={48} textClassName="text-[#0F1B14]" />
-        <p className="mt-10 text-[11px] font-semibold uppercase tracking-[0.28em] text-[#006B3F]">
+        <p className="mt-10 text-[13px] font-semibold uppercase tracking-[0.28em] text-[#006B3F]">
           GCAO CMS
         </p>
         <h1 className="mt-3 text-4xl font-semibold tracking-[-0.03em]" style={display}>

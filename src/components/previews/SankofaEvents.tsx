@@ -60,7 +60,7 @@ export function SankofaEvents({ theme, optionLabel, basePath, events }: SankofaE
       />
 
       <SankofaKenteHero theme={theme}>
-        <p className={`text-[11px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>
+        <p className={`text-[13px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>
           Events
         </p>
         <h1
@@ -170,7 +170,7 @@ function EventGroup({
       className={`px-6 py-24 md:px-10 md:py-32 ${muted ? `border-t ${t.statsWrap}` : ""}`}
     >
       <div className="mx-auto max-w-6xl">
-        <p className={`text-[11px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>
+        <p className={`text-[13px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>
           {eyebrow}
         </p>
         <h2 className="mt-4 text-3xl font-semibold tracking-tight md:text-5xl" style={display}>

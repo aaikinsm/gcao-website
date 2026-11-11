@@ -82,7 +82,7 @@ export async function CmsShell({ title, description, action, children, current, 
       <main className="mx-auto max-w-6xl px-6 py-10 md:px-10 md:py-14">
         {compact ? (
           <>
-            <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-[#006B3F]">
+            <p className="text-[13px] font-semibold uppercase tracking-[0.28em] text-[#006B3F]">
               GCAO CMS
             </p>
             <h1 className="sr-only">{title}</h1>
@@ -90,7 +90,7 @@ export async function CmsShell({ title, description, action, children, current, 
         ) : (
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
-              <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-[#006B3F]">
+              <p className="text-[13px] font-semibold uppercase tracking-[0.28em] text-[#006B3F]">
                 GCAO CMS
               </p>
               <h1

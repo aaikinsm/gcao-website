@@ -16,7 +16,7 @@ export function SankofaFooter({ theme, tokens: t, basePath }: SankofaFooterProps
       <div className="mx-auto max-w-6xl px-6 py-16 md:px-10 md:py-20">
         <div className="flex flex-col gap-12 md:flex-row md:items-start md:justify-between">
           <div className="max-w-sm">
-            <p className={`text-[11px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>
+            <p className={`text-[13px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>
               {siteContent.orgShort}
             </p>
             <p className="mt-4 text-sm leading-relaxed" style={display}>
@@ -42,7 +42,13 @@ export function SankofaFooter({ theme, tokens: t, basePath }: SankofaFooterProps
             {footerLinks.map((link) => (
               <a
                 key={link.href}
-                href={link.label === "Gallery" ? `${basePath}/gallery` : link.href}
+                href={
+                  link.label === "Gallery"
+                    ? `${basePath}/gallery`
+                    : link.label === "Publications"
+                      ? `${basePath}/news`
+                      : link.href
+                }
                 className={`text-sm transition-colors ${t.footerLink}`}
               >
                 {link.label}

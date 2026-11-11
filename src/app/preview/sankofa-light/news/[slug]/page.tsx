@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { SankofaNewsDetail } from "@/components/previews/SankofaNewsDetail";
 import { JsonLd } from "@/components/shared/JsonLd";
 import { getNewsBySlug } from "@/lib/news";
+import { newsCover } from "@/lib/news-types";
 import { absoluteImage, absoluteUrl, newsJsonLd, newsPath, postMetadata, siteOrigin } from "@/lib/seo";
 
 export const revalidate = 120;

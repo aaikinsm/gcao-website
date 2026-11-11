@@ -9,7 +9,7 @@ import { SankofaFooter } from "@/components/previews/SankofaFooter";
 import { SankofaHeader } from "@/components/previews/SankofaHeader";
 import { SankofaKenteHero } from "@/components/previews/SankofaKenteHero";
 import { sankofaThemes, type SankofaTheme } from "@/components/previews/sankofaTheme";
-import { NEWS_KINDS, newsKindLabel, newsTypeLabel, type GcaoNews, type NewsKind } from "@/lib/news-types";
+import { NEWS_KINDS, newsCover, newsKindLabel, newsTypeLabel, type GcaoNews, type NewsKind } from "@/lib/news-types";
 import { siteContent } from "@/lib/content";
 
 const sora = Sora({
@@ -61,7 +61,7 @@ export function SankofaNews({ theme, optionLabel, basePath, articles }: SankofaN
       />
 
       <SankofaKenteHero theme={theme}>
-        <p className={`text-[11px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>Updates</p>
+        <p className={`text-[13px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>Updates</p>
         <h1
           className="mt-5 text-4xl font-semibold tracking-[-0.03em] text-balance text-[#EFEDE4] md:text-6xl"
           style={display}
@@ -69,7 +69,7 @@ export function SankofaNews({ theme, optionLabel, basePath, articles }: SankofaN
           News from {siteContent.orgShort}
         </h1>
         <p className="mt-6 max-w-2xl text-lg leading-relaxed text-[#EFEDE4]/75">
-          Community reports, short notices, and stories from the Ghanaian-Canadian Association of
+          Community news, newsletters, and annual reports from the Ghanaian-Canadian Association of
           Ontario.
         </p>
       </SankofaKenteHero>
@@ -112,25 +112,29 @@ export function SankofaNews({ theme, optionLabel, basePath, articles }: SankofaN
             </p>
           ) : (
             <div className="grid gap-8 md:grid-cols-2">
-              {visible.map((article) => (
+              {visible.map((article) => {
+                const cover = newsCover(article.kind, article.imageUrl);
+                return (
                 <article
                   key={article.slug}
                   className={`group overflow-hidden rounded-3xl border ${t.card} ${t.panelBorder}`}
                 >
                   <Link href={`${basePath}/news/${article.slug}`} className="block">
-                    <div className="relative aspect-[16/10] overflow-hidden">
-                      <SiteImage
-                        src={article.imageUrl}
-                        alt={article.title}
-                        className="absolute inset-0 h-full w-full"
-                        imageClassName="img-zoom"
-                        sizes="(min-width: 768px) 50vw, 100vw"
-                      />
-                      <div
-                        className={`pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 ${hoverOverlay}`}
-                        aria-hidden
-                      />
-                    </div>
+                    {cover ? (
+                      <div className="relative aspect-[16/10] overflow-hidden">
+                        <SiteImage
+                          src={cover}
+                          alt={article.title}
+                          className="absolute inset-0 h-full w-full"
+                          imageClassName="img-zoom"
+                          sizes="(min-width: 768px) 50vw, 100vw"
+                        />
+                        <div
+                          className={`pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 ${hoverOverlay}`}
+                          aria-hidden
+                        />
+                      </div>
+                    ) : null}
                     <div className="p-6 md:p-8">
                       <p className={`text-sm ${t.sectionMuted}`}>
                         {newsTypeLabel(article.kind, article.category)} · {dateFmt.format(article.publishedAt)}
@@ -145,7 +149,8 @@ export function SankofaNews({ theme, optionLabel, basePath, articles }: SankofaN
                     </div>
                   </Link>
                 </article>
-              ))}
+                );
+              })}
             </div>
           )}
         </div>

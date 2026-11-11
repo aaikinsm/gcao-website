@@ -12,8 +12,9 @@ import { ServePanels } from "@/components/previews/ServePanels";
 import { UpcomingEventsSlider } from "@/components/previews/UpcomingEventsSlider";
 import { sankofaThemes, type SankofaTheme } from "@/components/previews/sankofaTheme";
 import { siteContent } from "@/lib/content";
-import { newsImages } from "@/lib/images";
 import type { UpcomingEventSlide } from "@/lib/events";
+import type { GcaoNews } from "@/lib/news-types";
+import { newsCover, newsTypeLabel } from "@/lib/news-types";
 
 const sora = Sora({
   subsets: ["latin"],
@@ -48,9 +49,10 @@ interface SankofaHomeProps {
   optionLabel: string;
   basePath: string;
   upcomingEvents: UpcomingEventSlide[];
+  news: GcaoNews[];
 }
 
-export function SankofaHome({ theme, optionLabel, basePath, upcomingEvents }: SankofaHomeProps) {
+export function SankofaHome({ theme, optionLabel, basePath, upcomingEvents, news }: SankofaHomeProps) {
   const t = sankofaThemes[theme];
   const isLight = theme === "light";
 
@@ -78,12 +80,12 @@ export function SankofaHome({ theme, optionLabel, basePath, upcomingEvents }: Sa
           <div aria-hidden className="hero-text-scrim pointer-events-none absolute -inset-x-8 -inset-y-10" />
           <div className="relative">
           <p
-            className={`animate-fade-in text-[11px] font-semibold uppercase tracking-[0.32em] ${t.eyebrow}`}
+            className={`animate-fade-in text-[33px] font-semibold uppercase tracking-[0.32em] ${t.eyebrow}`}
           >
             {siteContent.orgShort}
           </p>
           <h1
-            className="animate-blur-in mt-6 text-[2.6rem] font-semibold leading-[1.05] tracking-[-0.03em] text-balance text-white md:text-6xl lg:text-[4.2rem]"
+            className="animate-blur-in mt-6 text-[2.9rem] font-semibold leading-[1.05] tracking-[-0.03em] text-balance text-white md:text-[4rem] lg:text-[4.6rem]"
             style={display}
           >
             {siteContent.tagline}
@@ -123,12 +125,12 @@ export function SankofaHome({ theme, optionLabel, basePath, upcomingEvents }: Sa
           {siteContent.stats.map((stat) => (
             <div key={stat.label} className="px-4 py-14 text-center md:px-5">
               <p
-                className={`text-3xl font-semibold md:text-4xl ${t.statsValue}`}
+                className={`text-4xl font-semibold md:text-5xl ${t.statsValue}`}
                 style={display}
               >
                 <CountUp value={stat.value} />
               </p>
-              <p className={`mt-3 text-xs ${t.statsLabel}`}>{stat.label}</p>
+              <p className={`mt-3 text-sm ${t.statsLabel}`}>{stat.label}</p>
             </div>
           ))}
         </div>
@@ -140,12 +142,12 @@ export function SankofaHome({ theme, optionLabel, basePath, upcomingEvents }: Sa
       >
         <div className={`pointer-events-none absolute inset-x-0 top-0 h-80 ${t.missionGlow}`} />
         <div className="relative mx-auto max-w-4xl text-center">
-          <p className={`text-[11px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>
+          <p className={`text-[13px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>
             Our mission
           </p>
           <ScrollFillText
             text={siteContent.mission}
-            className="mt-12 text-2xl leading-[1.5] tracking-tight md:text-[2.1rem] md:leading-[1.45]"
+            className="mt-12 text-[1.7rem] leading-[1.5] tracking-tight md:text-[2.35rem] md:leading-[1.45]"
             mutedClassName={t.scrollMuted}
             filledClassName={t.scrollFilled}
           />
@@ -160,15 +162,15 @@ export function SankofaHome({ theme, optionLabel, basePath, upcomingEvents }: Sa
         </div>
       </AnimatedSection>
 
-      <AnimatedSection id="programs" className="px-6 pb-32 md:px-10 md:pb-40" delay={80}>
+      <AnimatedSection id="programs" className={`px-6 py-32 md:px-10 md:py-40 ${t.band}`} delay={80}>
         <div className="mx-auto max-w-6xl">
           <div className="flex flex-col items-start gap-6 md:flex-row md:flex-wrap md:items-end md:justify-between">
             <div>
-              <p className={`text-[11px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>
+              <p className={`text-[13px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>
                 Programs
               </p>
               <h2
-                className="mt-4 text-3xl font-semibold tracking-[-0.02em] md:text-5xl"
+                className="mt-4 text-4xl font-semibold tracking-[-0.02em] md:text-[3.35rem]"
                 style={display}
               >
                 How we serve
@@ -207,7 +209,7 @@ export function SankofaHome({ theme, optionLabel, basePath, upcomingEvents }: Sa
         </div>
       </AnimatedSection>
 
-      <AnimatedSection id="events" className="px-6 pb-32 md:px-10 md:pb-40" delay={80}>
+      <AnimatedSection id="events" className="px-6 py-32 md:px-10 md:py-40" delay={80}>
         <UpcomingEventsSlider
           events={upcomingEvents}
           basePath={basePath}
@@ -222,47 +224,71 @@ export function SankofaHome({ theme, optionLabel, basePath, upcomingEvents }: Sa
         />
       </AnimatedSection>
 
-      <AnimatedSection id="news" className="px-6 pb-32 md:px-10 md:pb-40" delay={80}>
+      <AnimatedSection id="news" className={`px-6 py-32 md:px-10 md:py-40 ${t.band}`} delay={80}>
         <div className="mx-auto max-w-6xl">
-          <p className={`text-[11px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>
-            News
-          </p>
-          <h2
-            className="mt-4 text-3xl font-semibold tracking-[-0.02em] md:text-5xl"
-            style={display}
-          >
-            From the community
-          </h2>
-          <div className="mt-14 grid gap-10 md:grid-cols-3">
-            {siteContent.news.map((item, i) => (
-              <article key={item.title} className="group">
-                <SiteImage
-                  {...newsImages[i]}
-                  className="aspect-[16/10] overflow-hidden rounded-2xl"
-                  imageClassName="img-zoom"
-                  sizes="(min-width: 768px) 33vw, 100vw"
-                />
-                <p className={`mt-6 text-[11px] font-semibold uppercase tracking-[0.2em] ${t.eyebrow}`}>
-                  {item.tag}
-                </p>
-                <h3
-                  className={`mt-3 text-lg font-semibold leading-snug tracking-tight transition-colors ${
-                    isLight ? "group-hover:text-[#006B3F]" : "group-hover:text-[#FCD116]"
-                  }`}
-                  style={display}
-                >
-                  {item.title}
-                </h3>
-                <p className={`mt-3 text-sm leading-relaxed ${t.newsExcerpt}`}>{item.excerpt}</p>
-              </article>
-            ))}
+          <div className="flex flex-col items-start gap-6 md:flex-row md:items-end md:justify-between">
+            <div>
+              <p className={`text-[13px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>
+                News
+              </p>
+              <h2
+                className="mt-4 text-4xl font-semibold tracking-[-0.02em] md:text-[3.35rem]"
+                style={display}
+              >
+                From the community
+              </h2>
+            </div>
+            <a
+              href={`${basePath}/news`}
+              className={`link-arrow text-sm font-semibold ${
+                isLight ? "text-[#006B3F]" : "text-[#FCD116]"
+              }`}
+            >
+              View all news <span aria-hidden>→</span>
+            </a>
           </div>
+          {news.length === 0 ? (
+            <p className={`mt-14 text-base ${t.sectionMuted}`}>No published updates yet.</p>
+          ) : (
+            <div className="mt-14 grid gap-10 md:grid-cols-3">
+              {news.map((item) => {
+                const cover = newsCover(item.kind, item.imageUrl);
+                return (
+                <article key={item.slug} className="group">
+                  <a href={`${basePath}/news/${item.slug}`} className="block">
+                    {cover ? (
+                      <SiteImage
+                        src={cover}
+                        alt={item.title}
+                        className="aspect-[16/10] overflow-hidden rounded-2xl"
+                        imageClassName="img-zoom"
+                        sizes="(min-width: 768px) 33vw, 100vw"
+                      />
+                    ) : null}
+                    <p className={`mt-6 text-[13px] font-semibold uppercase tracking-[0.2em] ${t.eyebrow}`}>
+                      {newsTypeLabel(item.kind, item.category)}
+                    </p>
+                    <h3
+                      className={`mt-3 text-xl font-semibold leading-snug tracking-tight transition-colors ${
+                        isLight ? "group-hover:text-[#006B3F]" : "group-hover:text-[#FCD116]"
+                      }`}
+                      style={display}
+                    >
+                      {item.title}
+                    </h3>
+                    <p className={`mt-3 text-base leading-relaxed ${t.newsExcerpt}`}>{item.excerpt}</p>
+                  </a>
+                </article>
+                );
+              })}
+            </div>
+          )}
         </div>
       </AnimatedSection>
 
       <AnimatedSection
         id="get-involved"
-        className="relative overflow-hidden px-6 pb-32 md:px-10 md:pb-40"
+        className="relative overflow-hidden px-6 py-32 md:px-10 md:py-40"
         delay={80}
       >
         <div

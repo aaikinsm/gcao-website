@@ -1,4 +1,5 @@
 import type { PostStatus } from "@/lib/post-status";
+import { CmsIcon, type CmsIconName } from "@/components/cms/CmsIcons";
 
 const label = "text-sm font-medium text-[#0F1B14]";
 
@@ -6,6 +7,12 @@ const labels: Record<PostStatus, string> = {
   draft: "Draft",
   pending: "Pending approval",
   published: "Published",
+};
+
+const icons: Record<PostStatus, CmsIconName> = {
+  draft: "pencil",
+  pending: "clock",
+  published: "check",
 };
 
 export function StatusField({
@@ -30,6 +37,7 @@ export function StatusField({
             className="flex cursor-pointer items-center gap-2 rounded-full border border-black/10 bg-[#FFFBF2] px-4 py-2 text-sm"
           >
             <input type="radio" name="status" value={value} defaultChecked={current === value} />
+            <CmsIcon name={icons[value]} />
             {labels[value]}
           </label>
         ))}

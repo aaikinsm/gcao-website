@@ -38,7 +38,7 @@ export function SankofaGallery({ theme, optionLabel, basePath }: SankofaGalleryP
       />
 
       <SankofaKenteHero theme={theme}>
-        <p className={`text-[11px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>
+        <p className={`text-[13px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>
           Gallery
         </p>
         <h1

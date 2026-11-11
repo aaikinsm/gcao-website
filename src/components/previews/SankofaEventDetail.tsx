@@ -7,6 +7,7 @@ import { SankofaFooter } from "@/components/previews/SankofaFooter";
 import { SankofaHeader } from "@/components/previews/SankofaHeader";
 import { sankofaThemes, type SankofaTheme } from "@/components/previews/sankofaTheme";
 import { FormattedBody } from "@/components/shared/FormattedBody";
+import { PostAttachmentsView, PostVideo } from "@/components/previews/PostMedia";
 import { ShareRow } from "@/components/shared/ShareRow";
 import { formatEventDateRange, type GcaoEvent } from "@/lib/events";
 
@@ -79,7 +80,7 @@ export function SankofaEventDetail({
           >
             ← All events
           </Link>
-          <p className="mt-8 text-[11px] font-semibold uppercase tracking-[0.28em] text-[#FCD116]">
+          <p className="mt-8 text-[13px] font-semibold uppercase tracking-[0.28em] text-[#FCD116]">
             Event
           </p>
           <h1
@@ -99,9 +100,17 @@ export function SankofaEventDetail({
       <article className="px-6 py-16 md:px-10 md:py-24">
         <div className="mx-auto max-w-3xl">
           <p className={`text-lg leading-relaxed ${t.sectionMuted}`}>{event.excerpt}</p>
+          <PostVideo youtubeId={event.youtubeId} />
           <FormattedBody
             text={event.body}
-            className={`mt-10 text-base leading-relaxed ${t.cardMuted}`}
+            html={event.bodyMode === "html"}
+            className={`mt-10 text-base leading-relaxed ${t.cardMuted} [&_a]:font-semibold [&_a]:underline ${
+              isLight ? "[&_a]:text-[#006B3F]" : "[&_a]:text-[#FCD116]"
+            }`}
+          />
+          <PostAttachmentsView
+            attachments={event.attachments}
+            linkClass={isLight ? "text-[#006B3F]" : "text-[#FCD116]"}
           />
           <Link
             href={`${basePath}/events`}

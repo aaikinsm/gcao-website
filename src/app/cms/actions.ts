@@ -5,16 +5,21 @@ import { redirect } from "next/navigation";
 import { assertCmsAllowed } from "@/lib/cms";
 import { countAdmins, getUserRole, setUserRole } from "@/lib/members";
 import type { AiComposeResult } from "@/lib/cms-draft";
+import { parseAttachmentOrder, syncAttachments } from "@/lib/attachments";
 import {
+  clearEventFeatured,
   createEvent,
   deleteEvent,
+  duplicateEventRecord,
   getEventById,
   uniqueEventSlug,
   updateEvent,
 } from "@/lib/events";
 import {
+  clearNewsFeatured,
   createNews,
   deleteNews,
+  duplicateNewsRecord,
   getNewsById,
   parseNewsKind,
   uniqueNewsSlug,
@@ -29,8 +34,10 @@ import {
   rewriteDraft,
   type AiDraftFields,
 } from "@/lib/openai";
+import { notifyAdminsOfPending } from "@/lib/notify";
 import { parseNewsGroup } from "@/lib/news-types";
-import { richTextIsEmpty, toEditorHtml } from "@/lib/rich-text";
+import { parseYoutubeInput, type BodyMode } from "@/lib/post-fields";
+import { richTextIsEmpty, sanitizeAdminHtml, toEditorHtml } from "@/lib/rich-text";
 import { parsePostStatus, resolvePostStatus } from "@/lib/post-status";
 import { formDateTimeToMysql, slugify } from "@/lib/slug";
 import { saveCmsImage, saveCmsImageBuffer } from "@/lib/uploads";
@@ -94,6 +101,30 @@ function toComposeResult(draft: AiDraftFields): AiComposeResult {
     endsAt: draft.endsAt,
     category: draft.category,
   };
+}
+
+function readExtras(
+  formData: FormData,
+  isAdmin: boolean,
+  existing?: { body: string; bodyMode: BodyMode; youtubeId: string | null; featured: boolean },
+):
+  | { error: string }
+  | { youtubeId: string | null; bodyMode: BodyMode; body: string; featured: boolean } {
+  const youtube = parseYoutubeInput(text(formData, "youtube_url"));
+  if ("error" in youtube) return { error: youtube.error };
+  const keepHtml = !isAdmin && existing?.bodyMode === "html";
+  const bodyMode: BodyMode = keepHtml
+    ? "html"
+    : isAdmin && text(formData, "body_mode") === "html"
+      ? "html"
+      : "formatted";
+  const body = keepHtml
+    ? existing.body
+    : bodyMode === "html"
+      ? sanitizeAdminHtml(text(formData, "body"))
+      : toEditorHtml(text(formData, "body"));
+  const featured = isAdmin ? formData.get("featured") === "1" : Boolean(existing?.featured);
+  return { youtubeId: youtube.id || null, bodyMode, body, featured };
 }
 
 export async function aiStatusAction() {
@@ -191,21 +222,27 @@ export async function saveEventAction(
   const startsAt = formDateTimeToMysql(text(formData, "starts_at"));
   const endsAt = formDateTimeToMysql(text(formData, "ends_at"));
   const requestedSlug = slugify(text(formData, "slug") || title);
+  const isAdmin = user.role === "admin";
+
+  const existing = id ? await getEventById(id) : null;
+  if (id && !existing) return { error: "That event could not be found." };
+  const extras = readExtras(formData, isAdmin, existing ?? undefined);
+  if ("error" in extras) return { error: extras.error };
 
   if (title.length < 3) return { error: "Add a title of at least 3 characters." };
   if (!startsAt) return { error: "Choose a start date and time." };
   if (!location) return { error: "Add a location." };
   if (!excerpt) return { error: "Add a short excerpt." };
-  if (richTextIsEmpty(body)) return { error: "Add the event details." };
-
-  const existing = id ? await getEventById(id) : null;
-  if (id && !existing) return { error: "That event could not be found." };
+  if (extras.bodyMode === "formatted" ? richTextIsEmpty(extras.body) : !extras.body.trim()) {
+    return { error: "Add the event details." };
+  }
 
   try {
     const imageUrl = await saveCmsImage(fileFrom(formData), imageFallback(formData, existing?.imageUrl));
     if (!imageUrl) return { error: "Upload or generate an image for this event." };
 
     const slug = await uniqueEventSlug(requestedSlug, existing?.id);
+    const status = resolvePostStatus(statusFrom(formData), isAdmin, existing?.status);
     const input = {
       title,
       slug,
@@ -213,13 +250,21 @@ export async function saveEventAction(
       endsAt,
       location,
       excerpt,
-      body,
+      body: extras.body,
       imageUrl,
-      status: resolvePostStatus(statusFrom(formData), user.role === "admin", existing?.status),
+      status,
+      bodyMode: extras.bodyMode,
+      youtubeId: extras.youtubeId,
+      featured: extras.featured,
     };
 
+    const savedId = existing ? existing.id : await createEvent({ ...input, authorName: user.name });
     if (existing) await updateEvent(existing.id, input);
-    else await createEvent({ ...input, authorName: user.name });
+    if (extras.featured) await clearEventFeatured(savedId);
+    await syncAttachments("event", savedId, parseAttachmentOrder(text(formData, "attachment_order")), formData);
+    if (!isAdmin && status === "pending" && existing?.status !== "pending") {
+      await notifyAdminsOfPending(title);
+    }
 
     revalidateEvents(slug);
     if (existing && existing.slug !== slug) revalidateEvents(existing.slug);
@@ -228,6 +273,14 @@ export async function saveEventAction(
   }
 
   redirect("/cms/posts?saved=1");
+}
+
+export async function duplicateEventAction(id: number) {
+  const user = await assertCmsAllowed();
+  const newId = await duplicateEventRecord(id, user.name);
+  if (!newId) redirect("/cms/posts");
+  revalidateEvents();
+  redirect(`/cms/events/${newId}`);
 }
 
 export async function deleteEventAction(id: number) {
@@ -256,34 +309,47 @@ export async function saveNewsAction(
   const body = toEditorHtml(text(formData, "body"));
   const publishedAt = formDateTimeToMysql(text(formData, "published_at"));
   const requestedSlug = slugify(text(formData, "slug") || title);
+  const isAdmin = user.role === "admin";
+
+  const existing = id ? await getNewsById(id) : null;
+  if (id && !existing) return { error: "That article could not be found." };
+  const extras = readExtras(formData, isAdmin, existing ?? undefined);
+  if ("error" in extras) return { error: extras.error };
 
   if (title.length < 3) return { error: "Add a title of at least 3 characters." };
   if (!publishedAt) return { error: "Choose a published date." };
   if (!excerpt) return { error: "Add a short excerpt." };
-  if (richTextIsEmpty(body)) return { error: "Add the article body." };
-
-  const existing = id ? await getNewsById(id) : null;
-  if (id && !existing) return { error: "That article could not be found." };
+  if (extras.bodyMode === "formatted" ? richTextIsEmpty(extras.body) : !extras.body.trim()) {
+    return { error: "Add the article body." };
+  }
 
   try {
     const imageUrl = await saveCmsImage(fileFrom(formData), imageFallback(formData, existing?.imageUrl));
-    if (!imageUrl) return { error: "Upload or generate an image for this article." };
 
     const slug = await uniqueNewsSlug(requestedSlug, existing?.id);
+    const status = resolvePostStatus(statusFrom(formData), isAdmin, existing?.status);
     const input = {
       title,
       slug,
       kind,
       category,
       excerpt,
-      body,
+      body: extras.body,
       imageUrl,
       publishedAt,
-      status: resolvePostStatus(statusFrom(formData), user.role === "admin", existing?.status),
+      status,
+      bodyMode: extras.bodyMode,
+      youtubeId: extras.youtubeId,
+      featured: extras.featured,
     };
 
+    const savedId = existing ? existing.id : await createNews({ ...input, authorName: user.name });
     if (existing) await updateNews(existing.id, input);
-    else await createNews({ ...input, authorName: user.name });
+    if (extras.featured) await clearNewsFeatured(savedId);
+    await syncAttachments("news", savedId, parseAttachmentOrder(text(formData, "attachment_order")), formData);
+    if (!isAdmin && status === "pending" && existing?.status !== "pending") {
+      await notifyAdminsOfPending(title);
+    }
 
     revalidateNews(slug);
     if (existing && existing.slug !== slug) revalidateNews(existing.slug);
@@ -292,6 +358,14 @@ export async function saveNewsAction(
   }
 
   redirect("/cms/posts?saved=1");
+}
+
+export async function duplicateNewsAction(id: number) {
+  const user = await assertCmsAllowed();
+  const newId = await duplicateNewsRecord(id, user.name);
+  if (!newId) redirect("/cms/posts");
+  revalidateNews();
+  redirect(`/cms/news/${newId}`);
 }
 
 export async function deleteNewsAction(id: number) {

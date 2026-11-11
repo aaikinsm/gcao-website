@@ -39,10 +39,10 @@ export function UpcomingEventsSlider({ events, basePath, tokens }: UpcomingEvent
       <div
         className={`relative mx-auto max-w-6xl overflow-hidden rounded-[2rem] border px-8 py-16 md:px-14 md:py-20 ${tokens.panelBorder}`}
       >
-        <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-[#FCD116]">
+        <p className="text-[13px] font-semibold uppercase tracking-[0.28em] text-[#FCD116]">
           Upcoming
         </p>
-        <h2 className="mt-5 text-3xl font-semibold tracking-tight md:text-4xl" style={display}>
+        <h2 className="mt-5 text-4xl font-semibold tracking-tight md:text-5xl" style={display}>
           No upcoming events right now
         </h2>
         <p className={`mt-5 max-w-xl leading-relaxed ${tokens.sectionMuted}`}>
@@ -80,7 +80,7 @@ export function UpcomingEventsSlider({ events, basePath, tokens }: UpcomingEvent
                 sizes="100vw"
               />
               <div className="relative min-h-[22rem] max-w-xl px-8 py-16 text-white md:px-14 md:py-20">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-[#FCD116]">
+                <p className="text-[13px] font-semibold uppercase tracking-[0.28em] text-[#FCD116]">
                   Upcoming
                 </p>
                 <h2

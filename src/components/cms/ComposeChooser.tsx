@@ -97,7 +97,7 @@ export function ComposeChooser({ canPublish = false }: { canPublish?: boolean })
         <div className="grid gap-4 md:grid-cols-2">
           <button type="button" className={card} onClick={() => pickStart("write")}>
             <IconPencil />
-            <p className="mt-4 text-[11px] font-semibold uppercase tracking-[0.28em] text-[#006B3F]">Write it</p>
+            <p className="mt-4 text-[13px] font-semibold uppercase tracking-[0.28em] text-[#006B3F]">Write it</p>
             <p className="mt-3 text-xl font-semibold tracking-tight">Fill the form, or jot notes</p>
             <p className="mt-2 text-sm text-[#0F1B14]/55">
               Use the fields yourself, or drop rough notes and use Rewrite with AI.
@@ -110,7 +110,7 @@ export function ComposeChooser({ canPublish = false }: { canPublish?: boolean })
             disabled={!aiEnabled}
           >
             <IconImage />
-            <p className="mt-4 text-[11px] font-semibold uppercase tracking-[0.28em] text-[#006B3F]">
+            <p className="mt-4 text-[13px] font-semibold uppercase tracking-[0.28em] text-[#006B3F]">
               Upload a flyer
             </p>
             <p className="mt-3 text-xl font-semibold tracking-tight">Read a photo or PDF</p>
@@ -142,7 +142,7 @@ export function ComposeChooser({ canPublish = false }: { canPublish?: boolean })
                 setScreen("form");
               }}
             >
-              <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-[#006B3F]">Event</p>
+              <p className="text-[13px] font-semibold uppercase tracking-[0.28em] text-[#006B3F]">Event</p>
               <p className="mt-3 text-xl font-semibold tracking-tight">A gathering with a date and place</p>
             </button>
             <button
@@ -154,8 +154,8 @@ export function ComposeChooser({ canPublish = false }: { canPublish?: boolean })
                 setScreen("form");
               }}
             >
-              <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-[#006B3F]">Update</p>
-              <p className="mt-3 text-xl font-semibold tracking-tight">News, a notice, or a story</p>
+              <p className="text-[13px] font-semibold uppercase tracking-[0.28em] text-[#006B3F]">Update</p>
+              <p className="mt-3 text-xl font-semibold tracking-tight">News or a publication</p>
             </button>
           </div>
         </div>

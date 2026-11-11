@@ -14,7 +14,7 @@ const sora = Sora({
 
 const display = { fontFamily: "var(--font-sankofa), sans-serif" };
 
-type MarkName = "clock" | "people" | "briefcase" | "megaphone" | "calendar" | "pencil" | "book";
+type MarkName = "clock" | "people" | "megaphone" | "calendar" | "pencil" | "book";
 
 function Mark({ name, className = "h-4 w-4" }: { name: MarkName; className?: string }) {
   return (
@@ -38,12 +38,6 @@ function Mark({ name, className = "h-4 w-4" }: { name: MarkName; className?: str
           <circle cx="16" cy="9" r="1.7" />
           <path d="M4.5 18.2c.7-2.5 2.5-3.7 4.5-3.7s3.8 1.2 4.5 3.7" />
           <path d="M14.2 14.8c1.1-.4 2.2-.5 3.2-.1 1.3.5 2.1 1.6 2.4 3.5" />
-        </>
-      ) : null}
-      {name === "briefcase" ? (
-        <>
-          <rect x="3" y="8" width="18" height="11" rx="2" />
-          <path d="M8 8V6.5A1.5 1.5 0 0 1 9.5 5h5A1.5 1.5 0 0 1 16 6.5V8M3 13h18" />
         </>
       ) : null}
       {name === "megaphone" ? (
@@ -118,7 +112,6 @@ export function SankofaGetInvolved({ theme, optionLabel, basePath }: SankofaGetI
   const sections: { label: string; href: string; icon: MarkName }[] = [
     { label: "Volunteer", href: "#volunteer", icon: "clock" },
     { label: "Membership", href: "#membership", icon: "people" },
-    { label: "Jobs", href: "#jobs", icon: "briefcase" },
   ];
 
   return (
@@ -136,7 +129,7 @@ export function SankofaGetInvolved({ theme, optionLabel, basePath }: SankofaGetI
       />
 
       <SankofaKenteHero theme={theme}>
-        <p className={`text-[11px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>
+        <p className={`text-[13px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>
           Get involved
         </p>
         <h1
@@ -169,7 +162,7 @@ export function SankofaGetInvolved({ theme, optionLabel, basePath }: SankofaGetI
       <AnimatedSection id="volunteer" className="px-6 py-24 md:px-10 md:py-32">
         <div className="mx-auto grid max-w-6xl gap-16 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-20">
           <div>
-            <p className={`text-[11px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>
+            <p className={`text-[13px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>
               Volunteer
             </p>
             <h2 className="mt-4 text-3xl font-semibold tracking-tight md:text-5xl" style={display}>
@@ -207,10 +200,10 @@ export function SankofaGetInvolved({ theme, optionLabel, basePath }: SankofaGetI
         </div>
       </AnimatedSection>
 
-      <AnimatedSection id="membership" className={`border-t px-6 py-24 md:px-10 md:py-32 ${t.panelBorder}`}>
+      <AnimatedSection id="membership" className={`border-t px-6 py-24 md:px-10 md:py-32 ${t.panelBorder} ${t.band}`}>
         <div className="mx-auto grid max-w-6xl gap-16 lg:grid-cols-2 lg:gap-20">
           <div>
-            <p className={`text-[11px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>
+            <p className={`text-[13px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>
               Membership
             </p>
             <div className="mt-4 flex items-center gap-4">
@@ -228,25 +221,6 @@ export function SankofaGetInvolved({ theme, optionLabel, basePath }: SankofaGetI
           <div className={`rounded-[2rem] border p-6 md:p-10 ${t.card}`}>
             <GetInvolvedForm kind="Membership" isLight={isLight} />
           </div>
-        </div>
-      </AnimatedSection>
-
-      <AnimatedSection id="jobs" className={`border-t px-6 py-24 md:px-10 md:py-32 ${t.panelBorder}`}>
-        <div className="mx-auto max-w-6xl">
-          <p className={`text-[11px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>
-            Jobs
-          </p>
-          <div className="mt-4 flex items-center gap-4">
-            <span className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl ${iconBox}`}>
-              <Mark name="briefcase" className="h-6 w-6" />
-            </span>
-            <h2 className="text-3xl font-semibold tracking-tight md:text-5xl" style={display}>
-              No openings are listed yet
-            </h2>
-          </div>
-          <p className={`mt-6 max-w-md text-base leading-relaxed ${t.sectionMuted}`}>
-            Roles will appear here when they are posted.
-          </p>
         </div>
       </AnimatedSection>
 

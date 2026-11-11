@@ -22,7 +22,7 @@ const aboutNav = [
   { label: "Mission & vision", href: "#mission" },
   { label: "History", href: "#history" },
   { label: "Team", href: "#team" },
-  { label: "Objectives", href: "#objectives" },
+  { label: "Values", href: "#values" },
   { label: "Impact", href: "#impact" },
   { label: "Projects", href: "#projects" },
 ];
@@ -57,7 +57,7 @@ export function SankofaAbout({ theme, optionLabel, basePath }: SankofaAboutProps
       />
 
       <SankofaKenteHero theme={theme}>
-        <p className={`text-[11px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>
+        <p className={`text-[13px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>
           About
         </p>
         <h1
@@ -88,7 +88,7 @@ export function SankofaAbout({ theme, optionLabel, basePath }: SankofaAboutProps
       <AnimatedSection id="mission" className="px-6 py-24 md:px-10 md:py-32">
         <div className="mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-12">
           <div className="lg:col-span-6">
-            <p className={`text-[11px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>
+            <p className={`text-[13px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>
               Mission & vision
             </p>
             <h2 className="mt-4 text-3xl font-semibold tracking-tight md:text-5xl" style={display}>
@@ -99,7 +99,7 @@ export function SankofaAbout({ theme, optionLabel, basePath }: SankofaAboutProps
             </p>
             <div className="mt-10 grid gap-8 sm:grid-cols-2">
               <div>
-                <p className={`text-[11px] font-semibold uppercase tracking-[0.22em] ${t.eyebrow}`}>
+                <p className={`text-[13px] font-semibold uppercase tracking-[0.22em] ${t.eyebrow}`}>
                   Our Vision
                 </p>
                 <p className={`mt-3 text-base leading-relaxed ${t.cardMuted}`}>
@@ -107,7 +107,7 @@ export function SankofaAbout({ theme, optionLabel, basePath }: SankofaAboutProps
                 </p>
               </div>
               <div>
-                <p className={`text-[11px] font-semibold uppercase tracking-[0.22em] ${t.eyebrow}`}>
+                <p className={`text-[13px] font-semibold uppercase tracking-[0.22em] ${t.eyebrow}`}>
                   What We Do
                 </p>
                 <p className={`mt-3 text-base leading-relaxed ${t.cardMuted}`}>
@@ -146,7 +146,7 @@ export function SankofaAbout({ theme, optionLabel, basePath }: SankofaAboutProps
             />
           </div>
           <div className="order-1 lg:order-2 lg:col-span-6">
-            <p className={`text-[11px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>
+            <p className={`text-[13px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>
               History
             </p>
             <h2 className="mt-4 text-3xl font-semibold tracking-tight md:text-4xl" style={display}>
@@ -168,7 +168,7 @@ export function SankofaAbout({ theme, optionLabel, basePath }: SankofaAboutProps
 
       <AnimatedSection id="team" className="px-6 py-24 md:px-10 md:py-32">
         <div className="mx-auto max-w-6xl">
-          <p className={`text-[11px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>
+          <p className={`text-[13px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>
             Team
           </p>
           <h2 className="mt-4 text-3xl font-semibold tracking-tight md:text-5xl" style={display}>
@@ -181,24 +181,27 @@ export function SankofaAbout({ theme, optionLabel, basePath }: SankofaAboutProps
         </div>
       </AnimatedSection>
 
-      <AnimatedSection id="objectives" className={`border-y px-6 py-24 md:px-10 md:py-32 ${t.statsWrap}`}>
+      <AnimatedSection id="values" className={`border-y px-6 py-24 md:px-10 md:py-32 ${t.statsWrap}`}>
         <div className="mx-auto max-w-6xl">
-          <p className={`text-[11px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>
-            Objectives
+          <p className={`text-[13px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>
+            Values
           </p>
           <h2 className="mt-4 max-w-2xl text-3xl font-semibold tracking-tight md:text-5xl" style={display}>
-            What we work toward
+            What we stand for
           </h2>
-          <ul className={`mt-14 grid gap-x-10 gap-y-5 md:grid-cols-2 ${t.cardMuted}`}>
-            {siteContent.about.objectives.map((objective) => (
-              <li key={objective} className="flex gap-3 text-sm leading-relaxed md:text-[15px]">
+          <ul className={`mt-14 max-w-3xl space-y-5 ${t.cardMuted}`}>
+            {siteContent.about.values.map((value) => (
+              <li key={value.name} className="flex gap-3 text-sm leading-relaxed">
                 <span
-                  className={`mt-2 h-1.5 w-1.5 shrink-0 rounded-full ${
-                    isLight ? "bg-[#006B3F]" : "bg-[#FCD116]"
-                  }`}
+                  className={`mt-1.5 h-2 w-2 shrink-0 ${isLight ? "bg-[#006B3F]" : "bg-[#FCD116]"}`}
                   aria-hidden
                 />
-                <span>{objective}</span>
+                <span>
+                  <span className={`font-semibold ${isLight ? "text-[#0F1B14]" : "text-[#EFEDE4]"}`}>
+                    {value.name}.
+                  </span>{" "}
+                  {value.text}
+                </span>
               </li>
             ))}
           </ul>
@@ -207,7 +210,7 @@ export function SankofaAbout({ theme, optionLabel, basePath }: SankofaAboutProps
 
       <AnimatedSection id="impact" className="px-6 py-24 md:px-10 md:py-32">
         <div className="mx-auto max-w-6xl">
-          <p className={`text-[11px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>
+          <p className={`text-[13px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>
             Impact stats
           </p>
           <h2 className="mt-4 text-3xl font-semibold tracking-tight md:text-5xl" style={display}>
@@ -228,7 +231,7 @@ export function SankofaAbout({ theme, optionLabel, basePath }: SankofaAboutProps
 
       <AnimatedSection id="projects" className="px-6 pb-32 md:px-10 md:pb-40">
         <div className="mx-auto max-w-6xl">
-          <p className={`text-[11px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>
+          <p className={`text-[13px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>
             Projects & fundraising
           </p>
           <h2 className="mt-4 text-3xl font-semibold tracking-tight md:text-5xl" style={display}>

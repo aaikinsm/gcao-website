@@ -1,6 +1,7 @@
 "use client";
 
 import { deleteEventAction, deleteNewsAction } from "@/app/cms/actions";
+import { CmsIcon } from "@/components/cms/CmsIcons";
 
 export function DeleteButton({
   id,
@@ -20,8 +21,9 @@ export function DeleteButton({
         if (!confirm(`Delete “${title}”? This cannot be undone.`)) return;
         void action();
       }}
-      className="rounded-full border border-red-200 px-5 py-2.5 text-sm font-semibold text-red-700 hover:bg-red-50"
+      className="inline-flex items-center gap-2 rounded-full border border-red-200 px-5 py-2.5 text-sm font-semibold text-red-700 hover:bg-red-50"
     >
+      <CmsIcon name="trash" />
       Delete
     </button>
   );

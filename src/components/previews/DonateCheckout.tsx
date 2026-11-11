@@ -85,7 +85,7 @@ export function DonateCheckout({ basePath, isLight, configured }: DonateCheckout
       </div>
 
       <label className="mt-10 block">
-        <span className={`text-[11px] font-semibold uppercase tracking-[0.22em] ${muted}`}>
+        <span className={`text-[13px] font-semibold uppercase tracking-[0.22em] ${muted}`}>
           Amount
         </span>
         <input

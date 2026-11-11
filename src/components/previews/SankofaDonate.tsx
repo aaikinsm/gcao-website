@@ -39,7 +39,7 @@ export function SankofaDonate({ theme, optionLabel, basePath }: SankofaDonatePro
       />
 
       <SankofaKenteHero theme={theme}>
-        <p className={`text-[11px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>
+        <p className={`text-[13px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>
           Donate
         </p>
         <h1

@@ -104,7 +104,7 @@ export function SankofaContact({ theme, optionLabel, basePath }: SankofaContactP
       />
 
       <SankofaKenteHero theme={theme}>
-        <p className={`text-[11px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>
+        <p className={`text-[13px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>
           Contact
         </p>
         <h1
@@ -136,7 +136,7 @@ export function SankofaContact({ theme, optionLabel, basePath }: SankofaContactP
       <AnimatedSection id="visit" className="px-6 py-24 md:px-10 md:py-32">
         <div className="mx-auto grid max-w-6xl items-start gap-16 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] lg:gap-20">
           <div>
-            <p className={`text-[11px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>
+            <p className={`text-[13px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>
               Resource Hub
             </p>
             <h2 className="mt-4 text-3xl font-semibold tracking-tight md:text-5xl" style={display}>
@@ -152,7 +152,7 @@ export function SankofaContact({ theme, optionLabel, basePath }: SankofaContactP
                   <Mark name="pin" className="h-5 w-5" />
                 </span>
                 <div>
-                  <dt className={`text-[11px] font-semibold uppercase tracking-[0.22em] ${label}`}>
+                  <dt className={`text-[13px] font-semibold uppercase tracking-[0.22em] ${label}`}>
                     Address
                   </dt>
                   <dd className="mt-2 text-lg leading-relaxed" style={display}>
@@ -165,7 +165,7 @@ export function SankofaContact({ theme, optionLabel, basePath }: SankofaContactP
                   <Mark name="clock" className="h-5 w-5" />
                 </span>
                 <div>
-                  <dt className={`text-[11px] font-semibold uppercase tracking-[0.22em] ${label}`}>
+                  <dt className={`text-[13px] font-semibold uppercase tracking-[0.22em] ${label}`}>
                     Hours
                   </dt>
                   <dd className="mt-2 text-lg leading-relaxed" style={display}>
@@ -178,15 +178,12 @@ export function SankofaContact({ theme, optionLabel, basePath }: SankofaContactP
                   <Mark name="phone" className="h-5 w-5" />
                 </span>
                 <div>
-                  <dt className={`text-[11px] font-semibold uppercase tracking-[0.22em] ${label}`}>
+                  <dt className={`text-[13px] font-semibold uppercase tracking-[0.22em] ${label}`}>
                     Phone
                   </dt>
                   <dd className="mt-2 space-y-1 text-lg" style={display}>
                     <a className={`block transition-colors ${link}`} href={telHref(contact.phone)}>
                       {contact.phone}
-                    </a>
-                    <a className={`block transition-colors ${link}`} href={telHref(contact.phoneAlt)}>
-                      {contact.phoneAlt}
                     </a>
                   </dd>
                 </div>
@@ -196,7 +193,7 @@ export function SankofaContact({ theme, optionLabel, basePath }: SankofaContactP
                   <Mark name="envelope" className="h-5 w-5" />
                 </span>
                 <div>
-                  <dt className={`text-[11px] font-semibold uppercase tracking-[0.22em] ${label}`}>
+                  <dt className={`text-[13px] font-semibold uppercase tracking-[0.22em] ${label}`}>
                     Email
                   </dt>
                   <dd className="mt-2 text-lg" style={display}>
@@ -227,7 +224,7 @@ export function SankofaContact({ theme, optionLabel, basePath }: SankofaContactP
                     className={`inline-flex items-center gap-3 rounded-full border px-4 py-2 text-sm transition-colors ${t.panelBorder} ${link}`}
                   >
                     <span
-                      className={`text-[11px] font-semibold uppercase tracking-[0.16em] ${t.eyebrow}`}
+                      className={`text-[13px] font-semibold uppercase tracking-[0.16em] ${t.eyebrow}`}
                       aria-hidden
                     >
                       {marks[item.label] ?? item.label.slice(0, 2)}
@@ -247,7 +244,7 @@ export function SankofaContact({ theme, optionLabel, basePath }: SankofaContactP
                 : t.card
             }`}
           >
-            <p className={`text-[11px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>
+            <p className={`text-[13px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>
               Message
             </p>
             <div className="mt-4 flex items-center gap-4">

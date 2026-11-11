@@ -1,7 +1,22 @@
-const ALLOWED = new Set(["p", "br", "strong", "b", "em", "i", "u", "ul", "li"]);
+const FORMATTED = new Set(["p", "br", "strong", "b", "em", "i", "u", "ul", "li", "a"]);
+const WIDE = new Set([
+  ...FORMATTED,
+  "h2",
+  "h3",
+  "ol",
+  "img",
+  "table",
+  "thead",
+  "tbody",
+  "tr",
+  "th",
+  "td",
+  "blockquote",
+  "iframe",
+]);
 
 export const RICH_TEXT_EDITOR_CLASS =
-  "space-y-3 [&_p]:m-0 [&_ul]:list-disc [&_ul]:space-y-2 [&_ul]:pl-6 [&_li]:m-0";
+  "space-y-3 [&_p]:m-0 [&_ul]:list-disc [&_ul]:space-y-2 [&_ul]:pl-6 [&_li]:m-0 [&_a]:font-semibold [&_a]:underline";
 
 function escapeText(text: string) {
   return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
@@ -18,7 +33,7 @@ function decodeBasic(text: string) {
 }
 
 export function looksLikeHtml(text: string) {
-  return /<\/?(p|br|strong|b|em|i|u|ul|ol|li|div)\b/i.test(text);
+  return /<\/?(p|br|strong|b|em|i|u|ul|ol|li|div|a|h2|h3|table|img|iframe|blockquote)\b/i.test(text);
 }
 
 export function richTextPlain(html: string) {
@@ -36,8 +51,22 @@ export function richTextIsEmpty(html: string) {
   return richTextPlain(html).length === 0;
 }
 
-export function sanitizeRichText(dirty: string) {
+function safeHref(raw: string, wide: boolean) {
+  const href = raw.match(/\bhref\s*=\s*"([^"]+)"/i)?.[1]?.trim() ?? "";
+  if (!href || href.includes("\\")) return null;
+  if (href.startsWith("/") && !href.startsWith("//")) {
+    if (!wide && !href.startsWith("/publications/")) return null;
+    return href;
+  }
+  if (!wide) return null;
+  if (/^https?:\/\//i.test(href)) return href;
+  if (/^mailto:[^\s"]+$/i.test(href)) return href;
+  return null;
+}
+
+export function sanitizeRichText(dirty: string, wide = false) {
   if (!dirty.trim()) return "";
+  const allowed = wide ? WIDE : FORMATTED;
 
   const stripped = dirty
     .replace(/<script[\s\S]*?<\/script>/gi, "")
@@ -56,8 +85,9 @@ export function sanitizeRichText(dirty: string) {
     }
 
     let tag = match[1].toLowerCase();
-    if (tag === "div" || tag === "ol") tag = tag === "ol" ? "ul" : "p";
-    if (!ALLOWED.has(tag)) continue;
+    if (tag === "div") tag = "p";
+    if (!wide && tag === "ol") tag = "ul";
+    if (!allowed.has(tag)) continue;
 
     const isClose = raw.startsWith("</");
     if (tag === "br") {
@@ -71,6 +101,30 @@ export function sanitizeRichText(dirty: string) {
       while (stack.length > index) {
         parts.push(`</${stack.pop()}>`);
       }
+      continue;
+    }
+
+    if (tag === "a") {
+      const href = safeHref(raw, wide);
+      if (!href) continue;
+      stack.push("a");
+      parts.push(`<a href="${href}">`);
+      continue;
+    }
+
+    if (wide && tag === "img") {
+      const src = raw.match(/\bsrc\s*=\s*"(\/(?:images|publications)\/[^"]+)"/i)?.[1];
+      if (!src || src.includes("..") || src.includes("//") || src.includes("\\")) continue;
+      parts.push(`<img src="${src}" alt="">`);
+      continue;
+    }
+
+    if (wide && tag === "iframe") {
+      const id = raw.match(/youtube(?:-nocookie)?\.com\/embed\/([A-Za-z0-9_-]{11})/i)?.[1];
+      if (!id) continue;
+      parts.push(
+        `<iframe src="https://www.youtube-nocookie.com/embed/${id}" title="YouTube video" allowfullscreen></iframe>`,
+      );
       continue;
     }
 
@@ -123,4 +177,8 @@ export function toEditorHtml(text: string) {
   if (!text.trim()) return "";
   if (looksLikeHtml(text)) return sanitizeRichText(text);
   return sanitizeRichText(markdownToHtml(text));
+}
+
+export function sanitizeAdminHtml(text: string) {
+  return sanitizeRichText(text, true);
 }

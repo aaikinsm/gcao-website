@@ -1,7 +1,10 @@
 import type { ResultSetHeader, RowDataPacket } from "mysql2";
+import { copyAttachments, deleteAttachments, listAttachments, type PostAttachment } from "@/lib/attachments";
 import { getPool } from "@/lib/db";
+import { ensurePostExtras } from "@/lib/post-extras";
+import { parseBodyMode, type BodyMode } from "@/lib/post-fields";
 import { ensureAuthorColumns, ensurePendingStatus, parsePostStatus, type PostStatus } from "@/lib/post-status";
-import { slugify } from "@/lib/slug";
+import { formDateTimeToMysql, slugify, toDatetimeLocalValue } from "@/lib/slug";
 
 export type GcaoEvent = {
   id: number;
@@ -15,6 +18,10 @@ export type GcaoEvent = {
   imageUrl: string;
   status: PostStatus;
   authorName: string | null;
+  bodyMode: BodyMode;
+  youtubeId: string | null;
+  featured: boolean;
+  attachments: PostAttachment[];
 };
 
 type EventRow = RowDataPacket & {
@@ -29,7 +36,18 @@ type EventRow = RowDataPacket & {
   image_url: string;
   status: string;
   author_name?: string | null;
+  body_mode?: string | null;
+  youtube_id?: string | null;
+  featured?: number | null;
 };
+
+const EVENT_SELECT = `id, title, slug, starts_at, ends_at, location, excerpt, body, image_url, status, author_name, body_mode, youtube_id, featured`;
+
+async function ready() {
+  await ensurePendingStatus();
+  await ensureAuthorColumns();
+  await ensurePostExtras();
+}
 
 const TORONTO = "America/Toronto";
 
@@ -69,7 +87,17 @@ function mapEvent(row: EventRow): GcaoEvent | null {
     imageUrl: row.image_url,
     status: parsePostStatus(row.status),
     authorName: row.author_name?.trim() || null,
+    bodyMode: parseBodyMode(row.body_mode),
+    youtubeId: row.youtube_id?.trim() || null,
+    featured: Number(row.featured) === 1,
+    attachments: [],
   };
+}
+
+async function withAttachments(event: GcaoEvent | null) {
+  if (!event) return null;
+  event.attachments = await listAttachments("event", event.id);
+  return event;
 }
 
 function torontoDayKey(date: Date) {
@@ -128,7 +156,11 @@ export type UpcomingEventSlide = {
 };
 
 export function toUpcomingSlides(events: GcaoEvent[]): UpcomingEventSlide[] {
-  return splitEvents(events).upcoming.map((event) => ({
+  const upcoming = splitEvents(events).upcoming.sort((a, b) => {
+    if (a.featured !== b.featured) return a.featured ? -1 : 1;
+    return a.startsAt.getTime() - b.startsAt.getTime();
+  });
+  return upcoming.map((event) => ({
     slug: event.slug,
     title: event.title,
     excerpt: event.excerpt,
@@ -140,8 +172,9 @@ export function toUpcomingSlides(events: GcaoEvent[]): UpcomingEventSlide[] {
 
 export async function getPublishedEvents(): Promise<GcaoEvent[]> {
   try {
+    await ready();
     const [rows] = await getPool().query<EventRow[]>(
-      `SELECT id, title, slug, starts_at, ends_at, location, excerpt, body, image_url, status
+      `SELECT ${EVENT_SELECT}
        FROM events
        WHERE status = 'published'
        ORDER BY starts_at DESC`,
@@ -155,15 +188,16 @@ export async function getPublishedEvents(): Promise<GcaoEvent[]> {
 
 export async function getEventBySlug(slug: string): Promise<GcaoEvent | null> {
   try {
+    await ready();
     const [rows] = await getPool().query<EventRow[]>(
-      `SELECT id, title, slug, starts_at, ends_at, location, excerpt, body, image_url, status
+      `SELECT ${EVENT_SELECT}
        FROM events
        WHERE status = 'published' AND slug = ?
        LIMIT 1`,
       [slug],
     );
     const row = rows[0];
-    return row ? mapEvent(row) : null;
+    return await withAttachments(row ? mapEvent(row) : null);
   } catch (error) {
     console.error("Failed to load event", slug, error);
     return null;
@@ -181,6 +215,9 @@ export type EventInput = {
   imageUrl: string;
   status: PostStatus;
   authorName?: string | null;
+  bodyMode: BodyMode;
+  youtubeId: string | null;
+  featured: boolean;
 };
 
 export async function uniqueEventSlug(base: string, excludeId?: number) {
@@ -205,10 +242,9 @@ async function eventSlugTaken(slug: string, excludeId?: number) {
 
 export async function getAllEvents(): Promise<GcaoEvent[]> {
   try {
-    await ensurePendingStatus();
-    await ensureAuthorColumns();
+    await ready();
     const [rows] = await getPool().query<EventRow[]>(
-      `SELECT id, title, slug, starts_at, ends_at, location, excerpt, body, image_url, status, author_name
+      `SELECT ${EVENT_SELECT}
        FROM events
        ORDER BY starts_at DESC`,
     );
@@ -221,13 +257,13 @@ export async function getAllEvents(): Promise<GcaoEvent[]> {
 
 export async function getEventById(id: number): Promise<GcaoEvent | null> {
   try {
-    await ensureAuthorColumns();
+    await ready();
     const [rows] = await getPool().query<EventRow[]>(
-      `SELECT id, title, slug, starts_at, ends_at, location, excerpt, body, image_url, status, author_name
+      `SELECT ${EVENT_SELECT}
        FROM events WHERE id = ? LIMIT 1`,
       [id],
     );
-    return rows[0] ? mapEvent(rows[0]) : null;
+    return await withAttachments(rows[0] ? mapEvent(rows[0]) : null);
   } catch (error) {
     console.error("Failed to load event", id, error);
     return null;
@@ -235,11 +271,10 @@ export async function getEventById(id: number): Promise<GcaoEvent | null> {
 }
 
 export async function createEvent(input: EventInput) {
-  await ensurePendingStatus();
-  await ensureAuthorColumns();
+  await ready();
   const [result] = await getPool().execute<ResultSetHeader>(
-    `INSERT INTO events (title, slug, starts_at, ends_at, location, excerpt, body, image_url, status, author_name)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    `INSERT INTO events (title, slug, starts_at, ends_at, location, excerpt, body, image_url, status, author_name, body_mode, youtube_id, featured)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     [
       input.title,
       input.slug,
@@ -251,16 +286,19 @@ export async function createEvent(input: EventInput) {
       input.imageUrl,
       input.status,
       input.authorName?.trim() || null,
+      input.bodyMode,
+      input.youtubeId,
+      input.featured ? 1 : 0,
     ],
   );
   return result.insertId;
 }
 
 export async function updateEvent(id: number, input: EventInput) {
-  await ensurePendingStatus();
+  await ready();
   await getPool().execute(
     `UPDATE events
-     SET title = ?, slug = ?, starts_at = ?, ends_at = ?, location = ?, excerpt = ?, body = ?, image_url = ?, status = ?
+     SET title = ?, slug = ?, starts_at = ?, ends_at = ?, location = ?, excerpt = ?, body = ?, image_url = ?, status = ?, body_mode = ?, youtube_id = ?, featured = ?
      WHERE id = ?`,
     [
       input.title,
@@ -272,11 +310,50 @@ export async function updateEvent(id: number, input: EventInput) {
       input.body,
       input.imageUrl,
       input.status,
+      input.bodyMode,
+      input.youtubeId,
+      input.featured ? 1 : 0,
       id,
     ],
   );
 }
 
 export async function deleteEvent(id: number) {
+  await deleteAttachments("event", id);
   await getPool().execute("DELETE FROM events WHERE id = ?", [id]);
+}
+
+export async function clearEventFeatured(exceptId?: number) {
+  await ensurePostExtras();
+  if (exceptId) {
+    await getPool().execute("UPDATE events SET featured = 0 WHERE featured = 1 AND id <> ?", [exceptId]);
+    return;
+  }
+  await getPool().execute("UPDATE events SET featured = 0 WHERE featured = 1");
+}
+
+export async function duplicateEventRecord(id: number, authorName: string | null) {
+  const event = await getEventById(id);
+  if (!event) return null;
+  const title = `Copy of ${event.title}`.slice(0, 200);
+  const startsAt = formDateTimeToMysql(toDatetimeLocalValue(event.startsAt));
+  if (!startsAt) return null;
+  const endsAt = event.endsAt ? formDateTimeToMysql(toDatetimeLocalValue(event.endsAt)) : null;
+  const newId = await createEvent({
+    title,
+    slug: await uniqueEventSlug(title),
+    startsAt,
+    endsAt,
+    location: event.location,
+    excerpt: event.excerpt,
+    body: event.body,
+    imageUrl: event.imageUrl,
+    status: "draft",
+    authorName,
+    bodyMode: event.bodyMode,
+    youtubeId: event.youtubeId,
+    featured: false,
+  });
+  await copyAttachments("event", event.id, newId);
+  return newId;
 }

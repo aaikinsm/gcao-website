@@ -18,7 +18,7 @@ export type AiDraftFields = {
 const SYSTEM = `You help GCAO staff draft public website copy for the Ghanaian-Canadian Association of Ontario.
 Return only JSON. Do not invent phone numbers or personal email addresses. Official @gcaocanada.org addresses are fine if they appear in the source.
 postType is "event" when there is a specific gathering with a date and place; otherwise "update".
-kind is only for updates: "news" (report of something that happened or is underway), "notice" (short operational bulletin: hours, deadline, registration, closure), or "story" (longer feature, tribute, or leadership voice). If unsure, use "news".
+kind is only for updates: "news" (something that happened, is underway, or a short community note) or "publication" (a newsletter or an annual report). If unsure, use "news".
 category is empty unless the source is clearly about one group: "Women's", "Men's", "Youth", or "Welfare". Do not guess a group.
 When postType is "event": fill excerpt with one or two sentences from the source; fill location with the venue and address only if printed; fill startsAt from the printed start date and time; fill endsAt only if an end time or range is printed. If a fact is missing, leave that field empty. Do not invent a venue or date.
 startsAt and endsAt must be empty or datetime-local form YYYY-MM-DDTHH:mm in America/Toronto.
@@ -288,7 +288,7 @@ export async function classifyArticleKind(input: {
     { role: "system", content: SYSTEM },
     {
       role: "user",
-      content: `Classify this update. Set postType to "update". Return kind as news, notice, or story.\n${JSON.stringify(input)}`,
+      content: `Classify this update. Set postType to "update". Return kind as news or publication.\n${JSON.stringify(input)}`,
     },
   ]);
   return draft.kind;
@@ -311,11 +311,11 @@ export async function generateImagePng(title: string, excerpt: string) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      model: "dall-e-3",
+      model: "gpt-image-1.5",
       prompt,
       size: "1024x1024",
-      quality: "standard",
-      response_format: "url",
+      quality: "medium",
+      output_format: "png",
     }),
   });
 
@@ -324,8 +324,10 @@ export async function generateImagePng(title: string, excerpt: string) {
     throw new Error(detail.slice(0, 240) || "Image generation failed.");
   }
 
-  const payload = (await response.json()) as { data?: { url?: string }[] };
-  const url = payload.data?.[0]?.url;
+  const payload = (await response.json()) as { data?: { url?: string; b64_json?: string }[] };
+  const first = payload.data?.[0];
+  if (first?.b64_json) return Buffer.from(first.b64_json, "base64");
+  const url = first?.url;
   if (!url) throw new Error("The image service returned no file.");
 
   const image = await fetch(url);

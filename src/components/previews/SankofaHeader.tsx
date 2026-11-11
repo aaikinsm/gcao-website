@@ -96,7 +96,7 @@ export function SankofaHeader({
               <a
                 key={item.label}
                 href={item.href}
-                className={`nav-link text-[12px] font-medium lg:text-[13px] ${navClass}`}
+                className={`nav-link text-[14px] font-medium lg:text-[15px] ${navClass}`}
               >
                 {item.label}
               </a>

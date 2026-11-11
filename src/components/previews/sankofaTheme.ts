@@ -14,12 +14,13 @@ export const sankofaThemes = {
     ctaPrimary: "bg-[#FCD116] text-[#06110D]",
     ctaSecondary:
       "border border-white/25 hover:border-[#FCD116]/70 hover:text-[#FCD116]",
-    statsWrap: "border-white/[0.08]",
+    statsWrap: "border-white/10 bg-[#0F241C]",
+    band: "bg-[#0F241C]",
     statsValue: "text-[#FCD116]",
-    statsLabel: "text-[#EFEDE4]/45",
+    statsLabel: "text-[#EFEDE4]/70",
     missionGlow:
-      "bg-[radial-gradient(ellipse_40%_60%_at_50%_0%,rgba(252,209,22,0.08),transparent_70%)]",
-    sectionMuted: "text-[#EFEDE4]/45",
+      "bg-[radial-gradient(ellipse_40%_60%_at_50%_0%,rgba(252,209,22,0.16),transparent_70%)]",
+    sectionMuted: "text-[#EFEDE4]/70",
     panelBorder: "border-white/10",
     panelOverlay:
       "bg-gradient-to-t from-[#06110D]/50 via-[#06110D]/20 to-transparent",
@@ -28,18 +29,18 @@ export const sankofaThemes = {
     panelPlus: "border-[#FCD116]/50 text-[#FCD116]",
     eventOverlay:
       "bg-gradient-to-r from-[#06110D] via-[#06110D]/80 to-[#06110D]/25",
-    eventMeta: "text-[#EFEDE4]/50",
+    eventMeta: "text-[#EFEDE4]/72",
     eventBody: "text-[#EFEDE4]/70",
-    eventLoc: "text-[#EFEDE4]/45",
-    newsExcerpt: "text-[#EFEDE4]/50",
-    donateBox: "border-white/10",
+    eventLoc: "text-[#EFEDE4]/70",
+    newsExcerpt: "text-[#EFEDE4]/72",
+    donateBox: "border-white/10 bg-[#0F241C]",
     donateGlow:
       "bg-[radial-gradient(ellipse_50%_50%_at_50%_50%,rgba(11,107,69,0.55),transparent_70%)]",
     donateCopy: "text-[#EFEDE4]/65",
     donateSecondary:
       "border border-white/20 hover:border-[#FCD116]/60 hover:text-[#FCD116]",
     footer: "border-white/[0.08] bg-black/30",
-    footerMuted: "text-[#EFEDE4]/45",
+    footerMuted: "text-[#EFEDE4]/70",
     footerLink: "text-[#EFEDE4]/65 hover:text-[#FCD116]",
     scrollMuted: "text-white/25",
     scrollFilled: "text-[#EFEDE4]",
@@ -48,8 +49,8 @@ export const sankofaThemes = {
     kenteOverlay:
       "bg-gradient-to-t from-[#06110D] via-[#06110D]/85 to-[#06110D]/65",
     aboutHero: "bg-[#0A1611]",
-    card: "border-white/10 bg-white/[0.03]",
-    cardMuted: "text-[#EFEDE4]/60",
+    card: "border-white/15 bg-[#173228]",
+    cardMuted: "text-[#EFEDE4]/78",
   },
   light: {
     page: "bg-[#FFFBF2] text-[#0F1B14]",
@@ -65,6 +66,7 @@ export const sankofaThemes = {
     ctaSecondary:
       "border border-white/40 text-white hover:border-[#FCD116] hover:text-[#FCD116]",
     statsWrap: "border-black/10 bg-white",
+    band: "",
     statsValue: "text-[#006B3F]",
     statsLabel: "text-[#0F1B14]/50",
     missionGlow:

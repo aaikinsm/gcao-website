@@ -12,8 +12,7 @@ const filters = [
   { id: "pending", label: "Needs approval" },
   { id: "events", label: "Events" },
   { id: "news", label: "News" },
-  { id: "notice", label: "Notices" },
-  { id: "story", label: "Stories" },
+  { id: "publication", label: "Publications" },
 ] as const;
 
 type Filter = (typeof filters)[number]["id"];
@@ -45,6 +44,7 @@ export default async function CmsPostsPage({
     previewHref: `/cms/news/${item.id}/preview`,
     status: item.status,
     imageUrl: item.imageUrl,
+    kind: item.kind,
     group: item.kind,
     meta: `${newsKindLabel(item.kind)} · ${toDatetimeLocalValue(item.publishedAt).replace("T", " ")}${item.authorName ? ` · ${item.authorName}` : ""}`,
   }));
@@ -60,7 +60,7 @@ export default async function CmsPostsPage({
     <CmsShell
       current="posts"
       title="All posts"
-      description="Events, news, notices, and stories in one list."
+      description="Events, news, and publications in one list."
       action={<PrimaryLink href="/cms/new">New post</PrimaryLink>}
     >
       <CmsNotice saved={query.saved === "1"} deleted={query.deleted === "1"} noun="Post" />

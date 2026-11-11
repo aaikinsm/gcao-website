@@ -1,17 +1,27 @@
+import type { PostAttachment } from "@/lib/attachments";
+import type { BodyMode } from "@/lib/post-fields";
 import type { PostStatus } from "@/lib/post-status";
 
-export const NEWS_KINDS = ["news", "notice", "story"] as const;
+export const NEWS_KINDS = ["news", "publication"] as const;
 export type NewsKind = (typeof NEWS_KINDS)[number];
 
 export function parseNewsKind(value: string | null | undefined): NewsKind {
-  if (value === "notice" || value === "story") return value;
+  if (value === "publication") return value;
   return "news";
 }
 
 export function newsKindLabel(kind: NewsKind) {
-  if (kind === "notice") return "Notice";
-  if (kind === "story") return "Story";
+  if (kind === "publication") return "Publications";
   return "News";
+}
+
+export const PUBLICATION_COVER = "/images/publication-cover.jpg";
+
+export function newsCover(kind: string | null | undefined, imageUrl: string | null | undefined) {
+  const image = imageUrl?.trim() ?? "";
+  if (image) return image;
+  if (kind === "publication") return PUBLICATION_COVER;
+  return "";
 }
 
 export const NEWS_GROUPS = ["Women's", "Men's", "Youth", "Welfare"] as const;
@@ -40,4 +50,8 @@ export type GcaoNews = {
   publishedAt: Date;
   status: PostStatus;
   authorName: string | null;
+  bodyMode: BodyMode;
+  youtubeId: string | null;
+  featured: boolean;
+  attachments: PostAttachment[];
 };
