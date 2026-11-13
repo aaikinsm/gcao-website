@@ -47,7 +47,9 @@ export function SankofaFooter({ theme, tokens: t, basePath }: SankofaFooterProps
                     ? `${basePath}/gallery`
                     : link.label === "Publications"
                       ? `${basePath}/news`
-                      : link.href
+                      : link.label === "FAQ"
+                        ? `${basePath}/faq`
+                        : link.href
                 }
                 className={`text-sm transition-colors ${t.footerLink}`}
               >

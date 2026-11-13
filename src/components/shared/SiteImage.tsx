@@ -22,6 +22,8 @@ export function SiteImage({
   // Tailwind emits `.relative` after `.absolute`, so a hardcoded `relative` here
   // would win over a caller passing `absolute inset-0` and collapse the wrapper.
   const positioned = /(?:^|\s)(?:absolute|fixed|sticky)(?:\s|$)/.test(className);
+  const directFile =
+    src.startsWith("/images/uploads/") || src.startsWith("/publications/uploads/");
 
   return (
     <div className={`${positioned ? "" : "relative"} overflow-hidden ${className}`}>
@@ -31,6 +33,7 @@ export function SiteImage({
         fill
         priority={priority}
         sizes={sizes}
+        unoptimized={directFile}
         className={`object-cover ${imageClassName}`}
       />
       {overlay && <div className={`absolute inset-0 ${overlay}`} />}

@@ -422,6 +422,92 @@ export const siteContent = {
       ],
     },
   },
+  faq: {
+    intro:
+      "Short answers about GCAO, the Resource Hub, programs, and how to take part.",
+    groups: [
+      {
+        id: "about",
+        label: "About",
+        items: [
+          {
+            question: "What is GCAO?",
+            answer:
+              "The Ghanaian-Canadian Association of Ontario is a non-profit for Ghanaian-Canadians in Ontario. It began in the 1970s and still runs social, cultural, educational, and health programs.",
+          },
+          {
+            question: "Who can take part?",
+            answer:
+              "GCAO serves families and community groups across generations in the Greater Toronto Area and across Ontario, including people, faith groups, professionals, and community organizations.",
+          },
+        ],
+      },
+      {
+        id: "visit",
+        label: "Visit",
+        items: [
+          {
+            question: "Where is the Resource Hub, and when is it open?",
+            answer:
+              "The Resource Hub is at 10 Belfield Rd, Toronto M9W 4J1. It is open Monday to Friday, 11AM–4PM (EST).",
+          },
+          {
+            question: "How do I reach the desk?",
+            answer: "Call 1-416-243-2003 or write to info@gcaocanada.org.",
+            links: [{ label: "Contact", href: "/contact" }],
+          },
+        ],
+      },
+      {
+        id: "programs",
+        label: "Programs",
+        items: [
+          {
+            question: "What programs do you run?",
+            answer:
+              "Programs include the Homework Club, youth and young adults, Golden Ages seniors, women’s and men’s programs, health and wellness, the Diaspora Engagement Think Tank, and the Ghanaian-Canadian Chamber of Commerce.",
+            links: [{ label: "Programs", href: "/programs" }],
+          },
+          {
+            question: "Is the Homework Club free?",
+            answer:
+              "Yes. The Homework Club is free after-school academic support for children at the Resource Hub.",
+          },
+        ],
+      },
+      {
+        id: "involved",
+        label: "Get involved",
+        items: [
+          {
+            question: "How do I volunteer?",
+            answer:
+              "Offer your time through the volunteer form. GCAO needs help with events, children’s programs, heritage programs, and communications.",
+            links: [{ label: "Volunteer", href: "/get-involved#volunteer" }],
+          },
+          {
+            question: "How do I become a member?",
+            answer:
+              "Leave your details on the membership form. GCAO will tell you how to join when membership opens.",
+            links: [{ label: "Membership", href: "/get-involved#membership" }],
+          },
+          {
+            question: "How can I donate?",
+            answer: "Donate to keep the Resource Hub and its programs open.",
+            links: [{ label: "Donate", href: "/donate" }],
+          },
+          {
+            question: "Where do I find events and news?",
+            answer: "Upcoming gatherings are on the events page. Stories and publications are on the news page.",
+            links: [
+              { label: "Events", href: "/events" },
+              { label: "News", href: "/news" },
+            ],
+          },
+        ],
+      },
+    ],
+  },
 };
 
 export const previewMeta = [
