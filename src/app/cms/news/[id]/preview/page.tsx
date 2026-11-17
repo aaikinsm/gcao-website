@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { PostPreviewNotice, previewTheme } from "@/components/cms/PostPreviewNotice";
 import { SankofaNewsDetail } from "@/components/previews/SankofaNewsDetail";
 import { assertCmsAllowed } from "@/lib/cms";
 import { getNewsById } from "@/lib/news";
+import { postAccessError } from "@/lib/post-access";
 
 export const dynamic = "force-dynamic";
 
@@ -19,13 +20,15 @@ export default async function CmsNewsPreviewPage({
   params: Promise<{ id: string }>;
   searchParams: Promise<{ theme?: string }>;
 }) {
-  await assertCmsAllowed();
+  const user = await assertCmsAllowed();
   const { id: idRaw } = await params;
   const id = Number(idRaw);
   if (!Number.isInteger(id)) notFound();
 
   const article = await getNewsById(id);
   if (!article) notFound();
+  const reason = postAccessError(user, article);
+  if (reason) redirect(`/cms/posts?error=${reason}`);
 
   const theme = previewTheme((await searchParams).theme);
   const isLight = theme === "light";

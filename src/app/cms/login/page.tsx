@@ -18,7 +18,7 @@ const field =
 export default async function CmsLoginPage({
   searchParams,
 }: {
-  searchParams: Promise<{ sent?: string; error?: string }>;
+  searchParams: Promise<{ sent?: string; error?: string; invite?: string }>;
 }) {
   const user = await getCmsUser();
   if (user?.name) redirect("/cms");
@@ -41,7 +41,9 @@ export default async function CmsLoginPage({
           Editor sign-in
         </h1>
         <p className="mt-3 text-base leading-relaxed text-[#0F1B14]/60">
-          Sign in to draft posts. An admin publishes them before they appear on the site.
+          {query.invite
+            ? "Sign in with the email address that was invited."
+            : "Sign in to draft posts. An admin publishes them before they appear on the site."}
         </p>
 
         {query.sent === "1" && (

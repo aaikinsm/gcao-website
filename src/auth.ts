@@ -5,6 +5,7 @@ import Resend from "next-auth/providers/resend";
 import type { NextAuthConfig } from "next-auth";
 import { authConfig } from "@/auth.config";
 import { createAuthAdapter } from "@/lib/auth-adapter";
+import { acceptEditorSignIn } from "@/lib/invites";
 import { ensureAuthTables, isAdminEmail, setUserRole } from "@/lib/members";
 
 function providers(): NextAuthConfig["providers"] {
@@ -50,11 +51,22 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   callbacks: {
     ...authConfig.callbacks,
     async signIn({ user }) {
-      if (user.id && user.email && isAdminEmail(user.email)) {
+      const email = user.email?.trim().toLowerCase() ?? "";
+      if (!email) return false;
+      const allowed = await acceptEditorSignIn(email);
+      if (!allowed) return false;
+      if (user.id && isAdminEmail(email)) {
         await ensureAuthTables();
         await setUserRole(user.id, "admin");
       }
       return true;
+    },
+  },
+  events: {
+    async signIn({ user }) {
+      if (!user.id || !user.email || !isAdminEmail(user.email)) return;
+      await ensureAuthTables();
+      await setUserRole(user.id, "admin");
     },
   },
 });

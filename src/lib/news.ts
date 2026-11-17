@@ -21,6 +21,7 @@ export type NewsInput = {
   publishedAt: string;
   status: PostStatus;
   authorName?: string | null;
+  authorId?: string | null;
   bodyMode: BodyMode;
   youtubeId: string | null;
   featured: boolean;
@@ -38,12 +39,13 @@ type NewsRow = RowDataPacket & {
   published_at: Date | string;
   status: string;
   author_name?: string | null;
+  author_id?: string | null;
   body_mode?: string | null;
   youtube_id?: string | null;
   featured?: number | null;
 };
 
-const NEWS_SELECT = `id, title, slug, kind, category, excerpt, body, image_url, published_at, status, author_name, body_mode, youtube_id, featured`;
+const NEWS_SELECT = `id, title, slug, kind, category, excerpt, body, image_url, published_at, status, author_name, author_id, body_mode, youtube_id, featured`;
 
 let kindColumnReady = false;
 
@@ -168,6 +170,7 @@ function mapNews(row: NewsRow): GcaoNews | null {
     publishedAt,
     status: parsePostStatus(row.status),
     authorName: row.author_name?.trim() || null,
+    authorId: row.author_id?.trim() || null,
     bodyMode: parseBodyMode(row.body_mode),
     youtubeId: row.youtube_id?.trim() || null,
     featured: Number(row.featured) === 1,
@@ -276,8 +279,8 @@ export async function createNews(input: NewsInput) {
   await ensureAuthorColumns();
   await ensurePendingStatus();
   const [result] = await getPool().execute<ResultSetHeader>(
-    `INSERT INTO news (title, slug, kind, category, excerpt, body, image_url, published_at, status, author_name, body_mode, youtube_id, featured)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    `INSERT INTO news (title, slug, kind, category, excerpt, body, image_url, published_at, status, author_name, author_id, body_mode, youtube_id, featured)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     [
       input.title,
       input.slug,
@@ -289,6 +292,7 @@ export async function createNews(input: NewsInput) {
       input.publishedAt,
       input.status,
       input.authorName?.trim() || null,
+      input.authorId?.trim() || null,
       input.bodyMode,
       input.youtubeId,
       input.featured ? 1 : 0,
@@ -337,7 +341,7 @@ export async function clearNewsFeatured(exceptId?: number) {
   await getPool().execute("UPDATE news SET featured = 0 WHERE featured = 1");
 }
 
-export async function duplicateNewsRecord(id: number, authorName: string | null) {
+export async function duplicateNewsRecord(id: number, authorName: string | null, authorId: string) {
   const article = await getNewsById(id);
   if (!article) return null;
   const title = `Copy of ${article.title}`.slice(0, 200);
@@ -354,6 +358,7 @@ export async function duplicateNewsRecord(id: number, authorName: string | null)
     publishedAt,
     status: "draft",
     authorName,
+    authorId,
     bodyMode: article.bodyMode,
     youtubeId: article.youtubeId,
     featured: false,

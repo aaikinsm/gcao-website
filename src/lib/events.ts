@@ -18,6 +18,7 @@ export type GcaoEvent = {
   imageUrl: string;
   status: PostStatus;
   authorName: string | null;
+  authorId: string | null;
   bodyMode: BodyMode;
   youtubeId: string | null;
   featured: boolean;
@@ -36,12 +37,13 @@ type EventRow = RowDataPacket & {
   image_url: string;
   status: string;
   author_name?: string | null;
+  author_id?: string | null;
   body_mode?: string | null;
   youtube_id?: string | null;
   featured?: number | null;
 };
 
-const EVENT_SELECT = `id, title, slug, starts_at, ends_at, location, excerpt, body, image_url, status, author_name, body_mode, youtube_id, featured`;
+const EVENT_SELECT = `id, title, slug, starts_at, ends_at, location, excerpt, body, image_url, status, author_name, author_id, body_mode, youtube_id, featured`;
 
 async function ready() {
   await ensurePendingStatus();
@@ -87,6 +89,7 @@ function mapEvent(row: EventRow): GcaoEvent | null {
     imageUrl: row.image_url,
     status: parsePostStatus(row.status),
     authorName: row.author_name?.trim() || null,
+    authorId: row.author_id?.trim() || null,
     bodyMode: parseBodyMode(row.body_mode),
     youtubeId: row.youtube_id?.trim() || null,
     featured: Number(row.featured) === 1,
@@ -215,6 +218,7 @@ export type EventInput = {
   imageUrl: string;
   status: PostStatus;
   authorName?: string | null;
+  authorId?: string | null;
   bodyMode: BodyMode;
   youtubeId: string | null;
   featured: boolean;
@@ -273,8 +277,8 @@ export async function getEventById(id: number): Promise<GcaoEvent | null> {
 export async function createEvent(input: EventInput) {
   await ready();
   const [result] = await getPool().execute<ResultSetHeader>(
-    `INSERT INTO events (title, slug, starts_at, ends_at, location, excerpt, body, image_url, status, author_name, body_mode, youtube_id, featured)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    `INSERT INTO events (title, slug, starts_at, ends_at, location, excerpt, body, image_url, status, author_name, author_id, body_mode, youtube_id, featured)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     [
       input.title,
       input.slug,
@@ -286,6 +290,7 @@ export async function createEvent(input: EventInput) {
       input.imageUrl,
       input.status,
       input.authorName?.trim() || null,
+      input.authorId?.trim() || null,
       input.bodyMode,
       input.youtubeId,
       input.featured ? 1 : 0,
@@ -332,7 +337,7 @@ export async function clearEventFeatured(exceptId?: number) {
   await getPool().execute("UPDATE events SET featured = 0 WHERE featured = 1");
 }
 
-export async function duplicateEventRecord(id: number, authorName: string | null) {
+export async function duplicateEventRecord(id: number, authorName: string | null, authorId: string) {
   const event = await getEventById(id);
   if (!event) return null;
   const title = `Copy of ${event.title}`.slice(0, 200);
@@ -350,6 +355,7 @@ export async function duplicateEventRecord(id: number, authorName: string | null
     imageUrl: event.imageUrl,
     status: "draft",
     authorName,
+    authorId,
     bodyMode: event.bodyMode,
     youtubeId: event.youtubeId,
     featured: false,

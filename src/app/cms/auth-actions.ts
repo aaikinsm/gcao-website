@@ -4,6 +4,7 @@ import { AuthError } from "next-auth";
 import { redirect } from "next/navigation";
 import { signIn, signOut } from "@/auth";
 import { getCmsUser } from "@/lib/cms";
+import { mayRequestEditorSignIn } from "@/lib/invites";
 import { setUserName } from "@/lib/members";
 
 export async function signOutAction() {
@@ -17,6 +18,7 @@ export async function signInWithGoogle() {
 export async function signInWithEmail(formData: FormData) {
   const email = String(formData.get("email") ?? "").trim();
   if (!email.includes("@")) redirect("/cms/login?error=email");
+  if (!(await mayRequestEditorSignIn(email))) redirect("/cms/login?error=AccessDenied");
   try {
     await signIn("resend", { email, redirectTo: "/cms" });
   } catch (error) {

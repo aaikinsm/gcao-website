@@ -1,4 +1,6 @@
 import { NextResponse } from "next/server";
+import { authOrigin } from "@/lib/auth-url";
+import { withinRateLimit } from "@/lib/rate-limit";
 import { getStripe } from "@/lib/stripe";
 
 const MIN_CENTS = 500;
@@ -27,7 +29,14 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Unknown page." }, { status: 400 });
   }
 
-  const origin = request.headers.get("origin") ?? new URL(request.url).origin;
+  const origin = authOrigin();
+  if (!origin) {
+    return NextResponse.json({ error: "Donations are unavailable right now." }, { status: 503 });
+  }
+  const address = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
+  if (!withinRateLimit(`checkout:${address.slice(0, 80)}`, 8, 10 * 60 * 1000)) {
+    return NextResponse.json({ error: "Try again shortly." }, { status: 429 });
+  }
   const returnUrl = `${origin}${basePath}/donate/return?session_id={CHECKOUT_SESSION_ID}`;
   const monthly = interval === "month";
 

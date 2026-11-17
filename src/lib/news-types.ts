@@ -50,6 +50,7 @@ export type GcaoNews = {
   publishedAt: Date;
   status: PostStatus;
   authorName: string | null;
+  authorId: string | null;
   bodyMode: BodyMode;
   youtubeId: string | null;
   featured: boolean;

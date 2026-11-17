@@ -3,7 +3,13 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { assertCmsAllowed } from "@/lib/cms";
-import { countAdmins, getUserRole, setUserRole } from "@/lib/members";
+import { countAdmins, getUserRole, isAdminEmail, setUserRole } from "@/lib/members";
+import {
+  revokeEditorAccess,
+  revokeEditorInvite,
+  sendEditorInvite,
+} from "@/lib/invites";
+import { postAccessError } from "@/lib/post-access";
 import type { AiComposeResult } from "@/lib/cms-draft";
 import { parseAttachmentOrder, syncAttachments } from "@/lib/attachments";
 import {
@@ -46,6 +52,14 @@ export type CmsActionState = { error: string } | null;
 
 function text(formData: FormData, key: string) {
   return String(formData.get(key) ?? "").trim();
+}
+
+function refusePostAccess(
+  user: { id: string; role: "admin" | "member" },
+  post: { authorId: string | null; status: "draft" | "pending" | "published" },
+) {
+  const reason = postAccessError(user, post);
+  if (reason) redirect(`/cms/posts?error=${reason}`);
 }
 
 function statusFrom(formData: FormData) {
@@ -226,6 +240,7 @@ export async function saveEventAction(
 
   const existing = id ? await getEventById(id) : null;
   if (id && !existing) return { error: "That event could not be found." };
+  if (existing) refusePostAccess(user, existing);
   const extras = readExtras(formData, isAdmin, existing ?? undefined);
   if ("error" in extras) return { error: extras.error };
 
@@ -258,7 +273,7 @@ export async function saveEventAction(
       featured: extras.featured,
     };
 
-    const savedId = existing ? existing.id : await createEvent({ ...input, authorName: user.name });
+    const savedId = existing ? existing.id : await createEvent({ ...input, authorName: user.name, authorId: user.id });
     if (existing) await updateEvent(existing.id, input);
     if (extras.featured) await clearEventFeatured(savedId);
     await syncAttachments("event", savedId, parseAttachmentOrder(text(formData, "attachment_order")), formData);
@@ -277,7 +292,10 @@ export async function saveEventAction(
 
 export async function duplicateEventAction(id: number) {
   const user = await assertCmsAllowed();
-  const newId = await duplicateEventRecord(id, user.name);
+  const existing = await getEventById(id);
+  if (!existing) redirect("/cms/posts");
+  refusePostAccess(user, existing);
+  const newId = await duplicateEventRecord(id, user.name, user.id);
   if (!newId) redirect("/cms/posts");
   revalidateEvents();
   redirect(`/cms/events/${newId}`);
@@ -286,9 +304,8 @@ export async function duplicateEventAction(id: number) {
 export async function deleteEventAction(id: number) {
   const user = await assertCmsAllowed();
   const existing = await getEventById(id);
-  if (existing?.status === "published" && user.role !== "admin") {
-    redirect("/cms/posts?error=published");
-  }
+  if (!existing) redirect("/cms/posts");
+  refusePostAccess(user, existing);
   await deleteEvent(id);
   revalidateEvents(existing?.slug);
   redirect("/cms/posts?deleted=1");
@@ -313,6 +330,7 @@ export async function saveNewsAction(
 
   const existing = id ? await getNewsById(id) : null;
   if (id && !existing) return { error: "That article could not be found." };
+  if (existing) refusePostAccess(user, existing);
   const extras = readExtras(formData, isAdmin, existing ?? undefined);
   if ("error" in extras) return { error: extras.error };
 
@@ -343,7 +361,7 @@ export async function saveNewsAction(
       featured: extras.featured,
     };
 
-    const savedId = existing ? existing.id : await createNews({ ...input, authorName: user.name });
+    const savedId = existing ? existing.id : await createNews({ ...input, authorName: user.name, authorId: user.id });
     if (existing) await updateNews(existing.id, input);
     if (extras.featured) await clearNewsFeatured(savedId);
     await syncAttachments("news", savedId, parseAttachmentOrder(text(formData, "attachment_order")), formData);
@@ -362,7 +380,10 @@ export async function saveNewsAction(
 
 export async function duplicateNewsAction(id: number) {
   const user = await assertCmsAllowed();
-  const newId = await duplicateNewsRecord(id, user.name);
+  const existing = await getNewsById(id);
+  if (!existing) redirect("/cms/posts");
+  refusePostAccess(user, existing);
+  const newId = await duplicateNewsRecord(id, user.name, user.id);
   if (!newId) redirect("/cms/posts");
   revalidateNews();
   redirect(`/cms/news/${newId}`);
@@ -371,9 +392,8 @@ export async function duplicateNewsAction(id: number) {
 export async function deleteNewsAction(id: number) {
   const user = await assertCmsAllowed();
   const existing = await getNewsById(id);
-  if (existing?.status === "published" && user.role !== "admin") {
-    redirect("/cms/posts?error=published");
-  }
+  if (!existing) redirect("/cms/posts");
+  refusePostAccess(user, existing);
   await deleteNews(id);
   revalidateNews(existing?.slug);
   redirect("/cms/posts?deleted=1");
@@ -397,4 +417,34 @@ export async function setMemberRoleAction(formData: FormData) {
   await setUserRole(userId, role);
   revalidatePath("/cms/members");
   redirect("/cms/members?saved=1");
+}
+
+export async function sendEditorInviteAction(formData: FormData) {
+  const actor = await assertCmsAllowed();
+  if (actor.role !== "admin") redirect("/cms");
+  const result = await sendEditorInvite(text(formData, "email"), actor.id);
+  revalidatePath("/cms/members");
+  if ("error" in result) redirect(`/cms/members?error=${result.error}`);
+  redirect("/cms/members?invited=1");
+}
+
+export async function revokeEditorInviteAction(formData: FormData) {
+  const actor = await assertCmsAllowed();
+  if (actor.role !== "admin") redirect("/cms");
+  const id = text(formData, "id");
+  if (id) await revokeEditorInvite(id);
+  revalidatePath("/cms/members");
+  redirect("/cms/members?revoked=1");
+}
+
+export async function revokeEditorAccessAction(formData: FormData) {
+  const actor = await assertCmsAllowed();
+  if (actor.role !== "admin") redirect("/cms");
+  const email = text(formData, "email");
+  if (!email || isAdminEmail(email) || email.toLowerCase() === actor.email?.toLowerCase()) {
+    redirect("/cms/members");
+  }
+  await revokeEditorAccess(email);
+  revalidatePath("/cms/members");
+  redirect("/cms/members?revoked=1");
 }

@@ -66,7 +66,12 @@ export default async function CmsPostsPage({
       <CmsNotice saved={query.saved === "1"} deleted={query.deleted === "1"} noun="Post" />
       {query.error === "published" && (
         <p className="mb-8 rounded-2xl border border-red-200 bg-red-50 px-5 py-3 text-sm text-red-700">
-          Only an admin can delete a published post.
+          Only an admin can change a published post.
+        </p>
+      )}
+      {query.error === "forbidden" && (
+        <p className="mb-8 rounded-2xl border border-red-200 bg-red-50 px-5 py-3 text-sm text-red-700">
+          That post is not yours to change.
         </p>
       )}
       <div className="mb-8 flex flex-wrap gap-2">

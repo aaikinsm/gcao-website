@@ -64,5 +64,13 @@ async function addAuthorColumns() {
         `ALTER TABLE \`${table}\` ADD COLUMN author_name VARCHAR(255) NULL`,
       );
     }
+    const [idColumns] = await getPool().query<RowDataPacket[]>(
+      `SHOW COLUMNS FROM \`${table}\` LIKE 'author_id'`,
+    );
+    if (idColumns.length === 0) {
+      await getPool().query(
+        `ALTER TABLE \`${table}\` ADD COLUMN author_id VARCHAR(255) NULL`,
+      );
+    }
   }
 }
