@@ -18,13 +18,14 @@ const field =
 export default async function CmsLoginPage({
   searchParams,
 }: {
-  searchParams: Promise<{ sent?: string; error?: string; invite?: string }>;
+  searchParams: Promise<{ sent?: string; error?: string; invite?: string; type?: string }>;
 }) {
   const user = await getCmsUser();
   if (user?.name) redirect("/cms");
   if (user) redirect("/cms/name");
 
   const query = await searchParams;
+  const linkSent = query.sent === "1" || query.type === "email";
   const signInHint = (await cookies()).get("gcao-signin-error")?.value;
   const googleReady = Boolean(process.env.AUTH_GOOGLE_ID && process.env.AUTH_GOOGLE_SECRET);
   const emailReady = Boolean(process.env.AUTH_RESEND_KEY && process.env.AUTH_EMAIL_FROM);
@@ -46,12 +47,12 @@ export default async function CmsLoginPage({
             : "Sign in to draft posts. An admin publishes them before they appear on the site."}
         </p>
 
-        {query.sent === "1" && (
+        {linkSent && (
           <p className="mt-6 rounded-2xl border border-[#006B3F]/20 bg-[#006B3F]/10 px-5 py-3 text-sm text-[#006B3F]">
             Check your email for a sign-in link.
           </p>
         )}
-        {query.error && query.sent !== "1" && (
+        {query.error && !linkSent && (
           <p className="mt-6 rounded-2xl border border-red-200 bg-red-50 px-5 py-3 text-sm text-red-700">
             {loginError(query.error, signInHint)}
           </p>

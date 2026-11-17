@@ -6,7 +6,7 @@ export const authConfig = {
   pages: {
     signIn: "/cms/login",
     error: "/cms/login",
-    verifyRequest: "/cms/login?sent=1",
+    verifyRequest: "/cms/login",
   },
   providers: [],
   callbacks: {

@@ -5,7 +5,7 @@ import Resend from "next-auth/providers/resend";
 import type { NextAuthConfig } from "next-auth";
 import { authConfig } from "@/auth.config";
 import { createAuthAdapter } from "@/lib/auth-adapter";
-import { acceptEditorSignIn } from "@/lib/invites";
+import { acceptEditorSignIn, mayRequestEditorSignIn } from "@/lib/invites";
 import { ensureAuthTables, isAdminEmail, setUserRole } from "@/lib/members";
 
 function providers(): NextAuthConfig["providers"] {
@@ -50,9 +50,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   providers: providers(),
   callbacks: {
     ...authConfig.callbacks,
-    async signIn({ user }) {
+    async signIn({ user, email: verification }) {
       const email = user.email?.trim().toLowerCase() ?? "";
       if (!email) return false;
+      // Asking for the email only checks permission. Accepting the invite waits until the link is used.
+      if (verification?.verificationRequest) return mayRequestEditorSignIn(email);
       const allowed = await acceptEditorSignIn(email);
       if (!allowed) return false;
       if (user.id && isAdminEmail(email)) {
