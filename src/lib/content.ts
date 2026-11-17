@@ -509,22 +509,3 @@ export const siteContent = {
     ],
   },
 };
-
-export const previewMeta = [
-  {
-    id: "sankofa-light",
-    option: "A",
-    description:
-      "Light Sankofa. Cream canvas, green accents, full-bleed video hero, scroll-filled mission, CEE-style headlines.",
-    bestFor: "Daytime readability and everyday visitors",
-    href: "/preview/sankofa-light",
-  },
-  {
-    id: "sankofa",
-    option: "B",
-    description:
-      "Dark Sankofa. Forest canvas, gold accents, the same Obama.org video hero and interactive text system.",
-    bestFor: "A bold, memorable brand statement",
-    href: "/preview/sankofa",
-  },
-];

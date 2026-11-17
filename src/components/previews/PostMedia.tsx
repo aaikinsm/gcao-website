@@ -1,4 +1,8 @@
-import { isImageAttachment, type PostAttachment } from "@/lib/attachments";
+import type { PostAttachment } from "@/lib/attachments";
+
+function isImageAttachment(url: string) {
+  return /\.(jpe?g|png|webp)$/i.test(url.split("?")[0]);
+}
 import { SiteImage } from "@/components/shared/SiteImage";
 
 export function PostVideo({ youtubeId }: { youtubeId: string | null }) {

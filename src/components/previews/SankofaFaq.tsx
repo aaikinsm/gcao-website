@@ -1,10 +1,11 @@
+"use client";
+
 import { Sora } from "next/font/google";
 import { AnimatedSection } from "@/components/shared/AnimatedSection";
-import { PreviewBanner } from "@/components/shared/PreviewBanner";
+import { useSankofaAppearance } from "@/components/previews/sankofaThemeContext";
 import { SankofaFooter } from "@/components/previews/SankofaFooter";
 import { SankofaHeader } from "@/components/previews/SankofaHeader";
 import { SankofaKenteHero } from "@/components/previews/SankofaKenteHero";
-import { sankofaThemes, type SankofaTheme } from "@/components/previews/sankofaTheme";
 import { siteContent } from "@/lib/content";
 
 const sora = Sora({
@@ -14,22 +15,13 @@ const sora = Sora({
 
 const display = { fontFamily: "var(--font-sankofa), sans-serif" };
 
-interface SankofaFaqProps {
-  theme: SankofaTheme;
-  optionLabel: string;
-  basePath: string;
-}
-
-export function SankofaFaq({ theme, optionLabel, basePath }: SankofaFaqProps) {
-  const t = sankofaThemes[theme];
-  const isLight = theme === "light";
+export function SankofaFaq() {
+  const { theme, t, isLight, basePath } = useSankofaAppearance();
   const link = isLight ? "text-[#006B3F] hover:underline" : "text-[#FCD116] hover:underline";
   const { faq } = siteContent;
 
   return (
     <div className={`${sora.variable} ${t.page}`}>
-      <PreviewBanner option={optionLabel} />
-
       <SankofaHeader
         theme={theme}
         basePath={basePath}
@@ -41,25 +33,25 @@ export function SankofaFaq({ theme, optionLabel, basePath }: SankofaFaqProps) {
       />
 
       <SankofaKenteHero theme={theme}>
-        <p className={`text-[13px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>
+        <p className={`text-[13px] uppercase tracking-[0.28em] ${t.heroEyebrow}`}>
           FAQ
         </p>
         <h1
-          className="mt-5 text-4xl font-semibold tracking-[-0.03em] text-balance text-[#EFEDE4] md:text-6xl"
+          className={`mt-5 text-4xl tracking-[-0.03em] text-balance md:text-6xl ${t.heroTitle}`}
           style={display}
         >
           Questions we hear often
         </h1>
-        <p className="mt-6 max-w-2xl text-lg leading-relaxed text-[#EFEDE4]/75">{faq.intro}</p>
+        <p className={`mt-6 max-w-2xl text-lg leading-relaxed ${t.heroBody}`}>{faq.intro}</p>
         <nav
           aria-label="FAQ sections"
-          className="mt-10 flex flex-wrap gap-3 text-sm font-medium text-[#EFEDE4]"
+          className={`mt-10 flex flex-wrap gap-3 text-sm font-medium ${t.heroTitle}`}
         >
           {faq.groups.map((group) => (
             <a
               key={group.id}
               href={`#${group.id}`}
-              className="rounded-full border border-white/25 px-4 py-2 transition-colors hover:border-[#FCD116] hover:text-[#FCD116]"
+              className={`rounded-full border px-4 py-2 ${t.heroChip}`}
             >
               {group.label}
             </a>

@@ -3,8 +3,8 @@ import { headers } from "next/headers";
 import type { GcaoEvent } from "@/lib/events";
 import type { GcaoNews } from "@/lib/news-types";
 
-export const DARK_NEWS = "/preview/sankofa/news";
-export const DARK_EVENTS = "/preview/sankofa/events";
+export const DARK_NEWS = "/news";
+export const DARK_EVENTS = "/events";
 
 const PUBLISHER = "Ghanaian-Canadian Association of Ontario";
 

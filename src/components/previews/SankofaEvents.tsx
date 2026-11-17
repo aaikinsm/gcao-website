@@ -1,17 +1,16 @@
+"use client";
+
 import Link from "next/link";
+import { useSankofaAppearance } from "@/components/previews/sankofaThemeContext";
 import { Sora } from "next/font/google";
 import { AnimatedSection } from "@/components/shared/AnimatedSection";
-import { PreviewBanner } from "@/components/shared/PreviewBanner";
 import { SiteImage } from "@/components/shared/SiteImage";
 import { SankofaFooter } from "@/components/previews/SankofaFooter";
 import { SankofaHeader } from "@/components/previews/SankofaHeader";
 import { SankofaKenteHero } from "@/components/previews/SankofaKenteHero";
 import { sankofaThemes, type SankofaTheme } from "@/components/previews/sankofaTheme";
-import {
-  formatEventDateRange,
-  splitEvents,
-  type GcaoEvent,
-} from "@/lib/events";
+import { formatEventDateRange, splitEvents } from "@/lib/event-display";
+import type { GcaoEvent } from "@/lib/events";
 import { siteContent } from "@/lib/content";
 
 const sora = Sora({
@@ -27,15 +26,11 @@ const eventsNav = [
 ];
 
 interface SankofaEventsProps {
-  theme: SankofaTheme;
-  optionLabel: string;
-  basePath: string;
   events: GcaoEvent[];
 }
 
-export function SankofaEvents({ theme, optionLabel, basePath, events }: SankofaEventsProps) {
-  const t = sankofaThemes[theme];
-  const isLight = theme === "light";
+export function SankofaEvents({ events }: SankofaEventsProps) {
+  const { theme, t, isLight, basePath } = useSankofaAppearance();
   const { upcoming, past } = splitEvents(events);
   const chipHover = isLight
     ? "hover:border-[#006B3F] hover:text-[#006B3F]"
@@ -47,8 +42,6 @@ export function SankofaEvents({ theme, optionLabel, basePath, events }: SankofaE
 
   return (
     <div className={`${sora.variable} ${t.page}`}>
-      <PreviewBanner option={optionLabel} />
-
       <SankofaHeader
         theme={theme}
         basePath={basePath}
@@ -60,16 +53,16 @@ export function SankofaEvents({ theme, optionLabel, basePath, events }: SankofaE
       />
 
       <SankofaKenteHero theme={theme}>
-        <p className={`text-[13px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>
+        <p className={`text-[13px] uppercase tracking-[0.28em] ${t.heroEyebrow}`}>
           Events
         </p>
         <h1
-          className="mt-5 text-4xl font-semibold tracking-[-0.03em] text-balance text-[#EFEDE4] md:text-6xl"
+          className={`mt-5 text-4xl tracking-[-0.03em] text-balance md:text-6xl ${t.heroTitle}`}
           style={display}
         >
           Gather with {siteContent.orgShort}
         </h1>
-        <p className="mt-6 max-w-2xl text-lg leading-relaxed text-[#EFEDE4]/75">
+        <p className={`mt-6 max-w-2xl text-lg leading-relaxed ${t.heroBody}`}>
           Upcoming gatherings and past celebrations from the Ghanaian-Canadian community across
           Ontario — lectures, picnics, language classes, and cultural nights.
         </p>
@@ -77,7 +70,7 @@ export function SankofaEvents({ theme, optionLabel, basePath, events }: SankofaE
 
       <nav
         aria-label="Event sections"
-        className={`sticky top-[calc(36px+4.25rem)] z-40 border-b backdrop-blur-xl ${
+        className={`sticky top-[4.25rem] z-40 border-b backdrop-blur-xl ${
           isLight ? "border-black/10 bg-[#FFFBF2]/90" : "border-white/[0.08] bg-[#06110D]/90"
         }`}
       >

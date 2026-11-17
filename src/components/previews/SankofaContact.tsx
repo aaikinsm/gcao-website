@@ -1,11 +1,12 @@
+"use client";
+
 import { Sora } from "next/font/google";
 import { AnimatedSection } from "@/components/shared/AnimatedSection";
-import { PreviewBanner } from "@/components/shared/PreviewBanner";
+import { useSankofaAppearance } from "@/components/previews/sankofaThemeContext";
 import { ContactForm } from "@/components/previews/ContactForm";
 import { SankofaFooter } from "@/components/previews/SankofaFooter";
 import { SankofaHeader } from "@/components/previews/SankofaHeader";
 import { SankofaKenteHero } from "@/components/previews/SankofaKenteHero";
-import { sankofaThemes, type SankofaTheme } from "@/components/previews/sankofaTheme";
 import { siteContent } from "@/lib/content";
 
 const sora = Sora({
@@ -68,15 +69,8 @@ function telHref(phone: string) {
   return `tel:${phone.replace(/[^\d+]/g, "")}`;
 }
 
-interface SankofaContactProps {
-  theme: SankofaTheme;
-  optionLabel: string;
-  basePath: string;
-}
-
-export function SankofaContact({ theme, optionLabel, basePath }: SankofaContactProps) {
-  const t = sankofaThemes[theme];
-  const isLight = theme === "light";
+export function SankofaContact() {
+  const { theme, t, isLight, basePath } = useSankofaAppearance();
   const { contact } = siteContent;
   const mapsHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(contact.address)}`;
   const label = isLight ? "text-[#0F1B14]/45" : "text-[#EFEDE4]/45";
@@ -91,8 +85,6 @@ export function SankofaContact({ theme, optionLabel, basePath }: SankofaContactP
 
   return (
     <div className={`${sora.variable} ${t.page}`}>
-      <PreviewBanner option={optionLabel} />
-
       <SankofaHeader
         theme={theme}
         basePath={basePath}
@@ -104,27 +96,27 @@ export function SankofaContact({ theme, optionLabel, basePath }: SankofaContactP
       />
 
       <SankofaKenteHero theme={theme}>
-        <p className={`text-[13px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>
+        <p className={`text-[13px] uppercase tracking-[0.28em] ${t.heroEyebrow}`}>
           Contact
         </p>
         <h1
-          className="mt-5 text-4xl font-semibold tracking-[-0.03em] text-balance text-[#EFEDE4] md:text-6xl"
+          className={`mt-5 text-4xl tracking-[-0.03em] text-balance md:text-6xl ${t.heroTitle}`}
           style={display}
         >
           Get in touch
         </h1>
-        <p className="mt-6 max-w-2xl text-lg leading-relaxed text-[#EFEDE4]/75">
+        <p className={`mt-6 max-w-2xl text-lg leading-relaxed ${t.heroBody}`}>
           Write to the Resource Hub, or visit us on weekday afternoons at 10 Belfield Rd.
         </p>
         <nav
           aria-label="Contact sections"
-          className="mt-10 flex flex-wrap gap-3 text-sm font-medium text-[#EFEDE4]"
+          className={`mt-10 flex flex-wrap gap-3 text-sm font-medium ${t.heroTitle}`}
         >
           {shortcuts.map((item) => (
             <a
               key={item.href}
               href={item.href}
-              className="inline-flex items-center gap-2 rounded-full border border-white/25 px-4 py-2 transition-colors hover:border-[#FCD116] hover:text-[#FCD116]"
+              className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 ${t.heroChip}`}
             >
               <Mark name={item.icon} />
               {item.label}

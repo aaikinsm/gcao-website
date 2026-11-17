@@ -1,11 +1,12 @@
+"use client";
+
 import type { ReactNode } from "react";
+import { useSankofaAppearance } from "@/components/previews/sankofaThemeContext";
 import Link from "next/link";
 import { Sora } from "next/font/google";
-import { PreviewBanner } from "@/components/shared/PreviewBanner";
 import { SiteImage } from "@/components/shared/SiteImage";
 import { SankofaFooter } from "@/components/previews/SankofaFooter";
 import { SankofaHeader } from "@/components/previews/SankofaHeader";
-import { sankofaThemes, type SankofaTheme } from "@/components/previews/sankofaTheme";
 import { FormattedBody } from "@/components/shared/FormattedBody";
 import { PostAttachmentsView, PostVideo } from "@/components/previews/PostMedia";
 import { ShareRow } from "@/components/shared/ShareRow";
@@ -26,24 +27,13 @@ const dateFmt = new Intl.DateTimeFormat("en-CA", {
 });
 
 interface SankofaNewsDetailProps {
-  theme: SankofaTheme;
-  optionLabel: string;
-  basePath: string;
   article: GcaoNews;
   notice?: ReactNode;
   shareUrl?: string;
 }
 
-export function SankofaNewsDetail({
-  theme,
-  optionLabel,
-  basePath,
-  article,
-  notice,
-  shareUrl,
-}: SankofaNewsDetailProps) {
-  const t = sankofaThemes[theme];
-  const isLight = theme === "light";
+export function SankofaNewsDetail({ article, notice, shareUrl }: SankofaNewsDetailProps) {
+  const { theme, t, isLight, basePath } = useSankofaAppearance();
   const cover = newsCover(article.kind, article.imageUrl);
 
   return (
@@ -53,8 +43,6 @@ export function SankofaNewsDetail({
           {notice}
         </div>
       ) : null}
-      <PreviewBanner option={optionLabel} topClass={notice ? "top-9" : "top-0"} />
-
       <SankofaHeader
         theme={theme}
         basePath={basePath}
@@ -63,12 +51,14 @@ export function SankofaNewsDetail({
         navClass={t.nav}
         donateClass={t.donateOutline}
         menuBgClass={t.menuBg}
-        topClass={notice ? "top-[72px]" : "top-[36px]"}
-        menuTopClass={notice ? "top-[calc(72px+4.25rem)]" : "top-[calc(36px+4.25rem)]"}
+        topClass={notice ? "top-9" : "top-0"}
+        menuTopClass={notice ? "top-[calc(2.25rem+4.25rem)]" : "top-[4.25rem]"}
       />
 
       <section
-        className={`relative overflow-hidden ${cover ? "min-h-[52vh]" : "bg-[#06110D]"} ${
+        className={`relative overflow-hidden ${
+          cover ? "min-h-[52vh]" : isLight ? "bg-[#FFFBF2]" : "bg-[#06110D]"
+        } ${
           notice ? "pt-[calc(72px+4.25rem)]" : "pt-[calc(36px+4.25rem)]"
         }`}
       >
@@ -90,21 +80,21 @@ export function SankofaNewsDetail({
         >
           <Link
             href={`${basePath}/news`}
-            className="inline-flex w-fit items-center gap-2 text-sm font-semibold text-[#FCD116]"
+            className={`inline-flex w-fit items-center gap-2 text-sm ${t.heroEyebrow}`}
           >
             ← All updates
           </Link>
-          <p className="mt-8 text-[13px] font-semibold uppercase tracking-[0.28em] text-[#FCD116]">
+          <p className={`mt-8 text-[13px] uppercase tracking-[0.28em] ${t.heroEyebrow}`}>
             {newsTypeLabel(article.kind, article.category)}
           </p>
           <h1
-            className="mt-4 text-4xl font-semibold tracking-[-0.03em] text-balance text-white md:text-6xl"
+            className={`mt-4 text-4xl tracking-[-0.03em] text-balance md:text-6xl ${t.heroTitle}`}
             style={display}
           >
             {article.title}
           </h1>
           <p className={`mt-5 text-sm ${t.eventMeta}`}>{dateFmt.format(article.publishedAt)}</p>
-          {shareUrl ? <ShareRow url={shareUrl} title={article.title} /> : null}
+          {shareUrl ? <ShareRow url={shareUrl} title={article.title} className={t.heroChip} /> : null}
         </div>
       </section>
 

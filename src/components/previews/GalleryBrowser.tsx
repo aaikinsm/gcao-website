@@ -67,7 +67,7 @@ export function GalleryBrowser({ theme }: GalleryBrowserProps) {
     <>
       <nav
         aria-label="Gatherings"
-        className={`sticky top-[calc(36px+4.25rem)] z-40 border-b backdrop-blur-xl ${
+        className={`sticky top-[4.25rem] z-40 border-b backdrop-blur-xl ${
           isLight ? "border-black/10 bg-[#FFFBF2]/90" : "border-white/[0.08] bg-[#06110D]/90"
         }`}
       >

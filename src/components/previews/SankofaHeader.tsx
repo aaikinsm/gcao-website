@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { Logo } from "@/components/shared/Logo";
 import { getSankofaNav } from "@/components/previews/sankofaTheme";
+import { useSankofaTheme } from "@/components/previews/sankofaThemeContext";
 
 interface SankofaHeaderProps {
   theme: "light" | "dark";
@@ -25,9 +26,10 @@ export function SankofaHeader({
   navClass,
   donateClass,
   menuBgClass,
-  topClass = "top-[36px]",
-  menuTopClass = "top-[calc(36px+4.25rem)]",
+  topClass = "top-0",
+  menuTopClass = "top-[4.25rem]",
 }: SankofaHeaderProps) {
+  const { toggleTheme } = useSankofaTheme();
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const isLight = theme === "light";
@@ -89,7 +91,7 @@ export function SankofaHeader({
     <>
       <header className={`fixed left-0 right-0 z-50 border-b backdrop-blur-xl ${topClass} ${headerClass}`}>
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-4 md:px-10">
-          <Logo size={42} textClassName={logoTextClass} href={basePath} />
+          <Logo size={42} textClassName={logoTextClass} href={basePath || "/"} />
 
           <nav className="hidden items-center gap-5 md:flex lg:gap-6">
             {nav.map((item) => (
@@ -110,6 +112,25 @@ export function SankofaHeader({
             >
               Editors
             </a>
+            <button
+              type="button"
+              onClick={toggleTheme}
+              aria-label={isLight ? "Switch to dark" : "Switch to light"}
+              className={`inline-flex h-10 w-10 items-center justify-center rounded-full border ${
+                isLight ? "border-black/15 text-[#0F1B14]" : "border-white/20 text-[#EFEDE4]"
+              }`}
+            >
+              {isLight ? (
+                <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
+                  <path d="M21 14.5A8.5 8.5 0 1 1 9.5 3 7 7 0 0 0 21 14.5z" />
+                </svg>
+              ) : (
+                <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
+                  <circle cx="12" cy="12" r="4" />
+                  <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" />
+                </svg>
+              )}
+            </button>
             <a
               href={donateHref}
               className={`btn-premium hidden rounded-full px-5 py-2 text-xs font-semibold transition-colors sm:inline-flex ${donateClass}`}

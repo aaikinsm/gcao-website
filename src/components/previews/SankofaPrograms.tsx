@@ -1,11 +1,12 @@
+"use client";
+
 import { Sora } from "next/font/google";
 import { AnimatedSection } from "@/components/shared/AnimatedSection";
-import { PreviewBanner } from "@/components/shared/PreviewBanner";
+import { useSankofaAppearance } from "@/components/previews/sankofaThemeContext";
 import { SiteImage } from "@/components/shared/SiteImage";
 import { SankofaFooter } from "@/components/previews/SankofaFooter";
 import { SankofaHeader } from "@/components/previews/SankofaHeader";
 import { SankofaKenteHero } from "@/components/previews/SankofaKenteHero";
-import { sankofaThemes, type SankofaTheme } from "@/components/previews/sankofaTheme";
 import { siteContent } from "@/lib/content";
 
 const sora = Sora({
@@ -22,15 +23,8 @@ const programsNav = [
   { label: "DETT", href: "#dett" },
 ];
 
-interface SankofaProgramsProps {
-  theme: SankofaTheme;
-  optionLabel: string;
-  basePath: string;
-}
-
-export function SankofaPrograms({ theme, optionLabel, basePath }: SankofaProgramsProps) {
-  const t = sankofaThemes[theme];
-  const isLight = theme === "light";
+export function SankofaPrograms() {
+  const { theme, t, isLight, basePath } = useSankofaAppearance();
   const p = siteContent.programsPage;
   const donateHref = `${basePath}/donate`;
   const inquireHref = `mailto:${siteContent.contact.email}`;
@@ -43,8 +37,6 @@ export function SankofaPrograms({ theme, optionLabel, basePath }: SankofaProgram
 
   return (
     <div className={`${sora.variable} ${t.page}`}>
-      <PreviewBanner option={optionLabel} />
-
       <SankofaHeader
         theme={theme}
         basePath={basePath}
@@ -56,21 +48,21 @@ export function SankofaPrograms({ theme, optionLabel, basePath }: SankofaProgram
       />
 
       <SankofaKenteHero theme={theme}>
-        <p className={`text-[13px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>
+        <p className={`text-[13px] uppercase tracking-[0.28em] ${t.heroEyebrow}`}>
           Programs
         </p>
         <h1
-          className="mt-5 text-4xl font-semibold tracking-[-0.03em] text-balance text-[#EFEDE4] md:text-6xl"
+          className={`mt-5 text-4xl tracking-[-0.03em] text-balance md:text-6xl ${t.heroTitle}`}
           style={display}
         >
           Programs at {siteContent.orgShort}
         </h1>
-        <p className="mt-6 max-w-2xl text-lg leading-relaxed text-[#EFEDE4]/75">{p.intro}</p>
+        <p className={`mt-6 max-w-2xl text-lg leading-relaxed ${t.heroBody}`}>{p.intro}</p>
       </SankofaKenteHero>
 
       <nav
         aria-label="Program sections"
-        className={`sticky top-[calc(36px+4.25rem)] z-40 border-b backdrop-blur-xl ${
+        className={`sticky top-[4.25rem] z-40 border-b backdrop-blur-xl ${
           isLight ? "border-black/10 bg-[#FFFBF2]/90" : "border-white/[0.08] bg-[#06110D]/90"
         }`}
       >

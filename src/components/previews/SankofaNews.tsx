@@ -1,14 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import { useSankofaAppearance } from "@/components/previews/sankofaThemeContext";
 import Link from "next/link";
 import { Sora } from "next/font/google";
-import { PreviewBanner } from "@/components/shared/PreviewBanner";
 import { SiteImage } from "@/components/shared/SiteImage";
 import { SankofaFooter } from "@/components/previews/SankofaFooter";
 import { SankofaHeader } from "@/components/previews/SankofaHeader";
 import { SankofaKenteHero } from "@/components/previews/SankofaKenteHero";
-import { sankofaThemes, type SankofaTheme } from "@/components/previews/sankofaTheme";
 import { NEWS_KINDS, newsCover, newsKindLabel, newsTypeLabel, type GcaoNews, type NewsKind } from "@/lib/news-types";
 import { siteContent } from "@/lib/content";
 
@@ -27,15 +26,11 @@ const dateFmt = new Intl.DateTimeFormat("en-CA", {
 });
 
 interface SankofaNewsProps {
-  theme: SankofaTheme;
-  optionLabel: string;
-  basePath: string;
   articles: GcaoNews[];
 }
 
-export function SankofaNews({ theme, optionLabel, basePath, articles }: SankofaNewsProps) {
-  const t = sankofaThemes[theme];
-  const isLight = theme === "light";
+export function SankofaNews({ articles }: SankofaNewsProps) {
+  const { theme, t, isLight, basePath } = useSankofaAppearance();
   const [filter, setFilter] = useState<"all" | NewsKind>("all");
   const chipHover = isLight
     ? "hover:border-[#006B3F] hover:text-[#006B3F]"
@@ -48,8 +43,6 @@ export function SankofaNews({ theme, optionLabel, basePath, articles }: SankofaN
 
   return (
     <div className={`${sora.variable} ${t.page}`}>
-      <PreviewBanner option={optionLabel} />
-
       <SankofaHeader
         theme={theme}
         basePath={basePath}
@@ -61,14 +54,14 @@ export function SankofaNews({ theme, optionLabel, basePath, articles }: SankofaN
       />
 
       <SankofaKenteHero theme={theme}>
-        <p className={`text-[13px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>Updates</p>
+        <p className={`text-[13px] uppercase tracking-[0.28em] ${t.heroEyebrow}`}>Updates</p>
         <h1
-          className="mt-5 text-4xl font-semibold tracking-[-0.03em] text-balance text-[#EFEDE4] md:text-6xl"
+          className={`mt-5 text-4xl tracking-[-0.03em] text-balance md:text-6xl ${t.heroTitle}`}
           style={display}
         >
           News from {siteContent.orgShort}
         </h1>
-        <p className="mt-6 max-w-2xl text-lg leading-relaxed text-[#EFEDE4]/75">
+        <p className={`mt-6 max-w-2xl text-lg leading-relaxed ${t.heroBody}`}>
           Community news, newsletters, and annual reports from the Ghanaian-Canadian Association of
           Ontario.
         </p>
@@ -76,7 +69,7 @@ export function SankofaNews({ theme, optionLabel, basePath, articles }: SankofaN
 
       <nav
         aria-label="Update types"
-        className={`sticky top-[calc(36px+4.25rem)] z-40 border-b backdrop-blur-xl ${
+        className={`sticky top-[4.25rem] z-40 border-b backdrop-blur-xl ${
           isLight ? "border-black/10 bg-[#FFFBF2]/90" : "border-white/[0.08] bg-[#06110D]/90"
         }`}
       >

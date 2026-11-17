@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { SiteImage } from "@/components/shared/SiteImage";
-import type { UpcomingEventSlide } from "@/lib/events";
+import type { UpcomingEventSlide } from "@/lib/event-display";
 
 const display = { fontFamily: "var(--font-sankofa), sans-serif" };
 
@@ -14,6 +14,10 @@ type Tokens = {
   eventBody: string;
   eventLoc: string;
   sectionMuted: string;
+  heroTitle: string;
+  heroTitleLink: string;
+  heroEyebrow: string;
+  heroControl: string;
 };
 
 interface UpcomingEventsSliderProps {
@@ -79,18 +83,17 @@ export function UpcomingEventsSlider({ events, basePath, tokens }: UpcomingEvent
                 overlay={tokens.eventOverlay}
                 sizes="100vw"
               />
-              <div className="relative min-h-[22rem] max-w-xl px-8 py-16 text-white md:px-14 md:py-20">
-                <p className="text-[13px] font-semibold uppercase tracking-[0.28em] text-[#FCD116]">
+              <div className="relative min-h-[22rem] max-w-xl px-8 py-16 md:px-14 md:py-20">
+                <p
+                  className={`text-[13px] uppercase tracking-[0.28em] ${tokens.heroEyebrow}`}
+                >
                   Upcoming
                 </p>
                 <h2
-                  className="mt-5 text-3xl font-semibold tracking-tight md:text-4xl"
+                  className={`mt-5 text-3xl tracking-tight md:text-4xl ${tokens.heroTitle}`}
                   style={display}
                 >
-                  <Link
-                    href={`${basePath}/events/${event.slug}`}
-                    className="hover:text-[#FCD116]"
-                  >
+                  <Link href={`${basePath}/events/${event.slug}`} className={tokens.heroTitleLink}>
                     {event.title}
                   </Link>
                 </h2>
@@ -99,7 +102,7 @@ export function UpcomingEventsSlider({ events, basePath, tokens }: UpcomingEvent
                 <p className={`mt-4 text-sm ${tokens.eventLoc}`}>{event.location}</p>
                 <Link
                   href={allEventsHref}
-                  className="link-arrow mt-8 inline-flex items-center gap-2 text-sm font-semibold text-[#FCD116]"
+                  className={`link-arrow mt-8 inline-flex items-center gap-2 text-sm ${tokens.heroEyebrow}`}
                 >
                   View all events <span aria-hidden>→</span>
                 </Link>
@@ -114,7 +117,7 @@ export function UpcomingEventsSlider({ events, basePath, tokens }: UpcomingEvent
               type="button"
               onClick={() => go(index - 1)}
               aria-label="Previous event"
-              className="absolute left-3 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-white/30 bg-black/35 text-white backdrop-blur-sm hover:bg-black/55 md:left-5"
+              className={`absolute left-3 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border backdrop-blur-sm md:left-5 ${tokens.heroControl}`}
             >
               <span aria-hidden>←</span>
             </button>
@@ -122,7 +125,7 @@ export function UpcomingEventsSlider({ events, basePath, tokens }: UpcomingEvent
               type="button"
               onClick={() => go(index + 1)}
               aria-label="Next event"
-              className="absolute right-3 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-white/30 bg-black/35 text-white backdrop-blur-sm hover:bg-black/55 md:right-5"
+              className={`absolute right-3 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border backdrop-blur-sm md:right-5 ${tokens.heroControl}`}
             >
               <span aria-hidden>→</span>
             </button>

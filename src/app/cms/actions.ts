@@ -72,28 +72,18 @@ function fileFrom(formData: FormData, key = "image") {
 }
 
 function revalidateEvents(slug?: string) {
-  revalidatePath("/preview/sankofa/events");
-  revalidatePath("/preview/sankofa-light/events");
-  revalidatePath("/preview/sankofa");
-  revalidatePath("/preview/sankofa-light");
-  if (slug) {
-    revalidatePath(`/preview/sankofa/events/${slug}`);
-    revalidatePath(`/preview/sankofa-light/events/${slug}`);
-  }
+  revalidatePath("/events");
+  revalidatePath("/");
+  if (slug) revalidatePath(`/events/${slug}`);
   revalidatePath("/cms");
   revalidatePath("/cms/events");
   revalidatePath("/cms/posts");
 }
 
 function revalidateNews(slug?: string) {
-  revalidatePath("/preview/sankofa/news");
-  revalidatePath("/preview/sankofa-light/news");
-  revalidatePath("/preview/sankofa");
-  revalidatePath("/preview/sankofa-light");
-  if (slug) {
-    revalidatePath(`/preview/sankofa/news/${slug}`);
-    revalidatePath(`/preview/sankofa-light/news/${slug}`);
-  }
+  revalidatePath("/news");
+  revalidatePath("/");
+  if (slug) revalidatePath(`/news/${slug}`);
   revalidatePath("/cms");
   revalidatePath("/cms/news");
   revalidatePath("/cms/posts");

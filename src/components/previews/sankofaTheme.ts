@@ -10,6 +10,13 @@ export const sankofaThemes = {
       "border border-[#FCD116]/60 text-[#FCD116] hover:bg-[#FCD116] hover:text-[#06110D]",
     menuBg: "bg-[#06110D]",
     eyebrow: "text-[#FCD116]",
+    heroEyebrow: "font-semibold text-[#FCD116]",
+    heroTitle: "font-semibold text-[#EFEDE4]",
+    heroBody: "text-[#EFEDE4]/75",
+    heroChip:
+      "border-white/25 text-[#EFEDE4] transition-colors hover:border-[#FCD116] hover:text-[#FCD116]",
+    heroControl: "border-white/30 bg-black/35 text-white hover:bg-black/55",
+    heroTitleLink: "font-semibold text-[#EFEDE4] hover:text-[#FCD116]",
     heroSub: "text-[#EFEDE4]/75",
     ctaPrimary: "bg-[#FCD116] text-[#06110D]",
     ctaSecondary:
@@ -61,10 +68,17 @@ export const sankofaThemes = {
       "border border-[#006B3F] text-[#006B3F] hover:bg-[#006B3F] hover:text-white",
     menuBg: "bg-[#FFFBF2]",
     eyebrow: "text-[#FCD116]",
-    heroSub: "text-white/80",
+    heroEyebrow: "font-bold text-[#043D28]",
+    heroTitle: "font-bold text-[#06110D]",
+    heroBody: "text-[#06110D]",
+    heroChip:
+      "border-[#0F1B14]/20 font-semibold text-[#0F1B14] transition-colors hover:border-[#006B3F] hover:text-[#006B3F]",
+    heroControl: "border-[#0F1B14]/20 bg-[#FFFBF2]/80 text-[#0F1B14] hover:bg-white",
+    heroTitleLink: "font-bold text-[#06110D] hover:text-[#006B3F]",
+    heroSub: "font-semibold text-[#06110D]",
     ctaPrimary: "bg-[#FCD116] text-[#06110D]",
     ctaSecondary:
-      "border border-white/40 text-white hover:border-[#FCD116] hover:text-[#FCD116]",
+      "border border-[#0F1B14]/25 text-[#0F1B14] hover:border-[#006B3F] hover:text-[#006B3F]",
     statsWrap: "border-black/10 bg-white",
     band: "",
     statsValue: "text-[#006B3F]",
@@ -79,10 +93,10 @@ export const sankofaThemes = {
     panelHover: "group-hover:text-[#FCD116]",
     panelPlus: "border-[#FCD116]/60 text-[#FCD116]",
     eventOverlay:
-      "bg-gradient-to-r from-[#0F1B14] via-[#0F1B14]/75 to-[#0F1B14]/20",
-    eventMeta: "text-white/55",
-    eventBody: "text-white/75",
-    eventLoc: "text-white/50",
+      "bg-gradient-to-r from-[#FFFBF2] via-[#FFFBF2]/82 to-[#FFFBF2]/30",
+    eventMeta: "font-semibold text-[#06110D]",
+    eventBody: "font-semibold text-[#06110D]",
+    eventLoc: "font-semibold text-[#06110D]",
     newsExcerpt: "text-[#0F1B14]/55",
     donateBox: "border-black/10 bg-white shadow-[0_8px_40px_rgba(15,27,20,0.08)]",
     donateGlow:
@@ -96,9 +110,9 @@ export const sankofaThemes = {
     scrollMuted: "text-[#0F1B14]/25",
     scrollFilled: "text-[#0F1B14]",
     videoOverlay:
-      "bg-[linear-gradient(to_bottom,rgba(6,17,13,0.42)_0%,rgba(6,17,13,0.22)_16%,rgba(0,0,0,0.9)_68%,rgba(0,0,0,0.96)_100%)]",
+      "bg-[linear-gradient(to_bottom,rgba(255,251,242,0.22)_0%,rgba(255,251,242,0.34)_28%,rgba(255,251,242,0.72)_76%,rgba(255,251,242,0.78)_100%)]",
     kenteOverlay:
-      "bg-gradient-to-t from-[#0F1B14]/95 via-[#0F1B14]/75 to-[#0F1B14]/55",
+      "bg-[linear-gradient(to_bottom,rgba(255,251,242,0.96)_0%,rgba(255,251,242,0.9)_48%,rgba(255,251,242,0.5)_100%)]",
     aboutHero: "bg-[#F3EEE3]",
     card: "border-black/10 bg-white",
     cardMuted: "text-[#0F1B14]/60",

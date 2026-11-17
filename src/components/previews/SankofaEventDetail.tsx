@@ -1,15 +1,17 @@
+"use client";
+
 import type { ReactNode } from "react";
+import { useSankofaAppearance } from "@/components/previews/sankofaThemeContext";
 import Link from "next/link";
 import { Sora } from "next/font/google";
-import { PreviewBanner } from "@/components/shared/PreviewBanner";
 import { SiteImage } from "@/components/shared/SiteImage";
 import { SankofaFooter } from "@/components/previews/SankofaFooter";
 import { SankofaHeader } from "@/components/previews/SankofaHeader";
-import { sankofaThemes, type SankofaTheme } from "@/components/previews/sankofaTheme";
 import { FormattedBody } from "@/components/shared/FormattedBody";
 import { PostAttachmentsView, PostVideo } from "@/components/previews/PostMedia";
 import { ShareRow } from "@/components/shared/ShareRow";
-import { formatEventDateRange, type GcaoEvent } from "@/lib/events";
+import { formatEventDateRange } from "@/lib/event-display";
+import type { GcaoEvent } from "@/lib/events";
 
 const sora = Sora({
   subsets: ["latin"],
@@ -19,24 +21,13 @@ const sora = Sora({
 const display = { fontFamily: "var(--font-sankofa), sans-serif" };
 
 interface SankofaEventDetailProps {
-  theme: SankofaTheme;
-  optionLabel: string;
-  basePath: string;
   event: GcaoEvent;
   notice?: ReactNode;
   shareUrl?: string;
 }
 
-export function SankofaEventDetail({
-  theme,
-  optionLabel,
-  basePath,
-  event,
-  notice,
-  shareUrl,
-}: SankofaEventDetailProps) {
-  const t = sankofaThemes[theme];
-  const isLight = theme === "light";
+export function SankofaEventDetail({ event, notice, shareUrl }: SankofaEventDetailProps) {
+  const { theme, t, isLight, basePath } = useSankofaAppearance();
 
   return (
     <div className={`${sora.variable} ${t.page}`}>
@@ -45,8 +36,6 @@ export function SankofaEventDetail({
           {notice}
         </div>
       ) : null}
-      <PreviewBanner option={optionLabel} topClass={notice ? "top-9" : "top-0"} />
-
       <SankofaHeader
         theme={theme}
         basePath={basePath}
@@ -55,8 +44,8 @@ export function SankofaEventDetail({
         navClass={t.nav}
         donateClass={t.donateOutline}
         menuBgClass={t.menuBg}
-        topClass={notice ? "top-[72px]" : "top-[36px]"}
-        menuTopClass={notice ? "top-[calc(72px+4.25rem)]" : "top-[calc(36px+4.25rem)]"}
+        topClass={notice ? "top-9" : "top-0"}
+        menuTopClass={notice ? "top-[calc(2.25rem+4.25rem)]" : "top-[4.25rem]"}
       />
 
       <section
@@ -76,15 +65,15 @@ export function SankofaEventDetail({
         <div className="relative mx-auto flex min-h-[52vh] max-w-4xl flex-col justify-end px-6 pb-16 pt-24 md:px-10 md:pb-20">
           <Link
             href={`${basePath}/events`}
-            className="inline-flex w-fit items-center gap-2 text-sm font-semibold text-[#FCD116]"
+            className={`inline-flex w-fit items-center gap-2 text-sm ${t.heroEyebrow}`}
           >
             ← All events
           </Link>
-          <p className="mt-8 text-[13px] font-semibold uppercase tracking-[0.28em] text-[#FCD116]">
+          <p className={`mt-8 text-[13px] uppercase tracking-[0.28em] ${t.heroEyebrow}`}>
             Event
           </p>
           <h1
-            className="mt-4 text-4xl font-semibold tracking-[-0.03em] text-balance text-white md:text-6xl"
+            className={`mt-4 text-4xl tracking-[-0.03em] text-balance md:text-6xl ${t.heroTitle}`}
             style={display}
           >
             {event.title}
@@ -93,7 +82,7 @@ export function SankofaEventDetail({
             {formatEventDateRange(event.startsAt, event.endsAt)}
           </p>
           <p className={`mt-2 text-sm ${t.eventLoc}`}>{event.location}</p>
-          {shareUrl ? <ShareRow url={shareUrl} title={event.title} /> : null}
+          {shareUrl ? <ShareRow url={shareUrl} title={event.title} className={t.heroChip} /> : null}
         </div>
       </section>
 

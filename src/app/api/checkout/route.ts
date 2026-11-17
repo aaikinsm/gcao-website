@@ -5,8 +5,6 @@ import { getStripe } from "@/lib/stripe";
 
 const MIN_CENTS = 500;
 const MAX_CENTS = 5_000_000;
-const THEMES = ["/preview/sankofa-light", "/preview/sankofa"] as const;
-
 export async function POST(request: Request) {
   const stripe = getStripe();
   if (!stripe) {
@@ -25,7 +23,7 @@ export async function POST(request: Request) {
   if (interval !== "once" && interval !== "month") {
     return NextResponse.json({ error: "Choose once or monthly." }, { status: 400 });
   }
-  if (basePath !== THEMES[0] && basePath !== THEMES[1]) {
+  if (basePath !== "") {
     return NextResponse.json({ error: "Unknown page." }, { status: 400 });
   }
 

@@ -1,13 +1,14 @@
+"use client";
+
 import { Sora } from "next/font/google";
 import { AnimatedSection } from "@/components/shared/AnimatedSection";
 import { CountUp } from "@/components/shared/CountUp";
-import { PreviewBanner } from "@/components/shared/PreviewBanner";
+import { useSankofaAppearance } from "@/components/previews/sankofaThemeContext";
 import { SiteImage } from "@/components/shared/SiteImage";
 import { SankofaFooter } from "@/components/previews/SankofaFooter";
 import { SankofaHeader } from "@/components/previews/SankofaHeader";
 import { SankofaKenteHero } from "@/components/previews/SankofaKenteHero";
 import { SankofaTeam } from "@/components/previews/SankofaTeam";
-import { sankofaThemes, type SankofaTheme } from "@/components/previews/sankofaTheme";
 import { siteContent } from "@/lib/content";
 import { siteImages } from "@/lib/images";
 
@@ -27,15 +28,8 @@ const aboutNav = [
   { label: "Projects", href: "#projects" },
 ];
 
-interface SankofaAboutProps {
-  theme: SankofaTheme;
-  optionLabel: string;
-  basePath: string;
-}
-
-export function SankofaAbout({ theme, optionLabel, basePath }: SankofaAboutProps) {
-  const t = sankofaThemes[theme];
-  const isLight = theme === "light";
+export function SankofaAbout() {
+  const { theme, t, isLight, basePath } = useSankofaAppearance();
   const donateHref = `${basePath}/donate`;
   const historyParagraphs = siteContent.about.history.split("\n\n");
   const hoverOverlay = isLight
@@ -44,8 +38,6 @@ export function SankofaAbout({ theme, optionLabel, basePath }: SankofaAboutProps
 
   return (
     <div className={`${sora.variable} ${t.page}`}>
-      <PreviewBanner option={optionLabel} />
-
       <SankofaHeader
         theme={theme}
         basePath={basePath}
@@ -57,27 +49,27 @@ export function SankofaAbout({ theme, optionLabel, basePath }: SankofaAboutProps
       />
 
       <SankofaKenteHero theme={theme}>
-        <p className={`text-[13px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>
+        <p className={`text-[13px] uppercase tracking-[0.28em] ${t.heroEyebrow}`}>
           About
         </p>
         <h1
-          className="mt-5 text-4xl font-semibold tracking-[-0.03em] text-balance text-[#EFEDE4] md:text-6xl"
+          className={`mt-5 text-4xl tracking-[-0.03em] text-balance md:text-6xl ${t.heroTitle}`}
           style={display}
         >
           About {siteContent.orgShort}
         </h1>
-        <p className="mt-6 max-w-2xl text-lg leading-relaxed text-[#EFEDE4]/75">
+        <p className={`mt-6 max-w-2xl text-lg leading-relaxed ${t.heroBody}`}>
           {siteContent.about.intro}
         </p>
         <nav
           aria-label="About sections"
-          className="mt-10 flex flex-wrap gap-3 text-sm font-medium text-[#EFEDE4]"
+          className={`mt-10 flex flex-wrap gap-3 text-sm font-medium ${t.heroTitle}`}
         >
           {aboutNav.map((item) => (
             <a
               key={item.href}
               href={item.href}
-              className="rounded-full border border-white/25 px-4 py-2 transition-colors hover:border-[#FCD116] hover:text-[#FCD116]"
+              className={`rounded-full border px-4 py-2 ${t.heroChip}`}
             >
               {item.label}
             </a>

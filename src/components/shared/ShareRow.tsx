@@ -5,7 +5,18 @@ import { useState } from "react";
 const pill =
   "rounded-full border border-white/30 px-4 py-2 text-xs font-semibold text-white transition-colors hover:border-[#FCD116] hover:text-[#FCD116]";
 
-export function ShareRow({ url, title }: { url: string; title: string }) {
+export function ShareRow({
+  url,
+  title,
+  className,
+}: {
+  url: string;
+  title: string;
+  className?: string;
+}) {
+  const chip = className
+    ? `rounded-full border px-4 py-2 text-xs font-semibold ${className}`
+    : pill;
   const [open, setOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const encodedUrl = encodeURIComponent(url);
@@ -31,7 +42,7 @@ export function ShareRow({ url, title }: { url: string; title: string }) {
         type="button"
         aria-expanded={open}
         onClick={() => setOpen((value) => !value)}
-        className={`${pill} inline-flex items-center gap-2`}
+        className={`${chip} inline-flex items-center gap-2`}
       >
         <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
           <circle cx="6" cy="12" r="2.2" />
@@ -43,7 +54,7 @@ export function ShareRow({ url, title }: { url: string; title: string }) {
       </button>
       {open ? (
         <>
-          <button type="button" onClick={copy} className={pill}>
+          <button type="button" onClick={copy} className={chip}>
             {copied ? "Copied" : "Copy link"}
           </button>
           {links.map((item) => (
@@ -52,7 +63,7 @@ export function ShareRow({ url, title }: { url: string; title: string }) {
               href={item.href}
               target="_blank"
               rel="noopener noreferrer"
-              className={pill}
+              className={chip}
             >
               {item.label}
             </a>

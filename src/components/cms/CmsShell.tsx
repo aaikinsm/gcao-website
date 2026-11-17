@@ -59,7 +59,7 @@ export async function CmsShell({ title, description, action, children, current, 
               );
             })}
             <Link
-              href="/preview/sankofa"
+              href="/"
               className="ml-2 rounded-full border border-[#006B3F] px-4 py-2 text-sm font-semibold text-[#006B3F] hover:bg-[#006B3F] hover:text-white"
             >
               View site

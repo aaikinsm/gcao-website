@@ -1,8 +1,10 @@
+"use client";
+
 import { Sora } from "next/font/google";
+import { useSankofaAppearance } from "@/components/previews/sankofaThemeContext";
 import { AnimatedHeadline } from "@/components/shared/AnimatedHeadline";
 import { AnimatedSection } from "@/components/shared/AnimatedSection";
 import { CountUp } from "@/components/shared/CountUp";
-import { PreviewBanner } from "@/components/shared/PreviewBanner";
 import { ScrollFillText } from "@/components/shared/ScrollFillText";
 import { SiteImage } from "@/components/shared/SiteImage";
 import { VideoHero } from "@/components/shared/VideoHero";
@@ -10,9 +12,8 @@ import { SankofaFooter } from "@/components/previews/SankofaFooter";
 import { SankofaHeader } from "@/components/previews/SankofaHeader";
 import { ServePanels } from "@/components/previews/ServePanels";
 import { UpcomingEventsSlider } from "@/components/previews/UpcomingEventsSlider";
-import { sankofaThemes, type SankofaTheme } from "@/components/previews/sankofaTheme";
 import { siteContent } from "@/lib/content";
-import type { UpcomingEventSlide } from "@/lib/events";
+import type { UpcomingEventSlide } from "@/lib/event-display";
 import type { GcaoNews } from "@/lib/news-types";
 import { newsCover, newsTypeLabel } from "@/lib/news-types";
 
@@ -45,21 +46,15 @@ const panels = [
 ];
 
 interface SankofaHomeProps {
-  theme: SankofaTheme;
-  optionLabel: string;
-  basePath: string;
   upcomingEvents: UpcomingEventSlide[];
   news: GcaoNews[];
 }
 
-export function SankofaHome({ theme, optionLabel, basePath, upcomingEvents, news }: SankofaHomeProps) {
-  const t = sankofaThemes[theme];
-  const isLight = theme === "light";
+export function SankofaHome({ upcomingEvents, news }: SankofaHomeProps) {
+  const { theme, t, isLight, basePath } = useSankofaAppearance();
 
   return (
     <div className={`${sora.variable} ${t.page}`}>
-      <PreviewBanner option={optionLabel} />
-
       <SankofaHeader
         theme={theme}
         basePath={basePath}
@@ -77,15 +72,20 @@ export function SankofaHome({ theme, optionLabel, basePath, upcomingEvents, news
         overlayClassName={t.videoOverlay}
       >
         <div className="relative mx-auto w-[min(56rem,calc(100%-2rem))] px-6 py-10 text-center md:px-10 md:py-12">
-          <div aria-hidden className="hero-text-scrim pointer-events-none absolute -inset-x-8 -inset-y-10" />
+          <div
+            aria-hidden
+            className={`pointer-events-none absolute -inset-x-8 -inset-y-10 ${
+              isLight ? "hero-text-scrim-light" : "hero-text-scrim"
+            }`}
+          />
           <div className="relative">
           <p
-            className={`animate-fade-in text-[33px] font-semibold uppercase tracking-[0.32em] ${t.eyebrow}`}
+            className={`animate-fade-in text-[33px] uppercase tracking-[0.32em] ${t.heroEyebrow}`}
           >
             {siteContent.orgShort}
           </p>
           <h1
-            className="animate-blur-in mt-6 text-[2.9rem] font-semibold leading-[1.05] tracking-[-0.03em] text-balance text-white md:text-[4rem] lg:text-[4.6rem]"
+            className={`animate-blur-in mt-6 text-[2.9rem] leading-[1.05] tracking-[-0.03em] text-balance md:text-[4rem] lg:text-[4.6rem] ${t.heroTitle}`}
             style={display}
           >
             {siteContent.tagline}
@@ -220,6 +220,10 @@ export function SankofaHome({ theme, optionLabel, basePath, upcomingEvents, news
             eventBody: t.eventBody,
             eventLoc: t.eventLoc,
             sectionMuted: t.sectionMuted,
+            heroTitle: t.heroTitle,
+            heroTitleLink: t.heroTitleLink,
+            heroEyebrow: t.heroEyebrow,
+            heroControl: t.heroControl,
           }}
         />
       </AnimatedSection>

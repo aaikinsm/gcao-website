@@ -8,8 +8,12 @@ interface SankofaKenteHeroProps {
   children: ReactNode;
 }
 
+const lightKenteOverlay =
+  "bg-[linear-gradient(to_bottom,rgba(255,251,242,0.5)_0%,rgba(255,251,242,0.9)_52%,rgba(255,251,242,0.96)_100%)]";
+
 export function SankofaKenteHero({ theme, children }: SankofaKenteHeroProps) {
   const t = sankofaThemes[theme];
+  const overlay = theme === "light" ? lightKenteOverlay : t.kenteOverlay;
 
   return (
     <section
@@ -20,7 +24,7 @@ export function SankofaKenteHero({ theme, children }: SankofaKenteHeroProps) {
         alt=""
         className="absolute inset-0"
         imageClassName="animate-kente-drift"
-        overlay={t.kenteOverlay}
+        overlay={overlay}
         sizes="100vw"
         priority
       />

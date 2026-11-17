@@ -1,11 +1,12 @@
+"use client";
+
 import { Sora } from "next/font/google";
 import { AnimatedSection } from "@/components/shared/AnimatedSection";
-import { PreviewBanner } from "@/components/shared/PreviewBanner";
+import { useSankofaAppearance } from "@/components/previews/sankofaThemeContext";
 import { GetInvolvedForm } from "@/components/previews/GetInvolvedForm";
 import { SankofaFooter } from "@/components/previews/SankofaFooter";
 import { SankofaHeader } from "@/components/previews/SankofaHeader";
 import { SankofaKenteHero } from "@/components/previews/SankofaKenteHero";
-import { sankofaThemes, type SankofaTheme } from "@/components/previews/sankofaTheme";
 
 const sora = Sora({
   subsets: ["latin"],
@@ -97,15 +98,8 @@ const roles: { title: string; copy: string; icon: MarkName }[] = [
   },
 ];
 
-interface SankofaGetInvolvedProps {
-  theme: SankofaTheme;
-  optionLabel: string;
-  basePath: string;
-}
-
-export function SankofaGetInvolved({ theme, optionLabel, basePath }: SankofaGetInvolvedProps) {
-  const t = sankofaThemes[theme];
-  const isLight = theme === "light";
+export function SankofaGetInvolved() {
+  const { theme, t, isLight, basePath } = useSankofaAppearance();
   const iconBox = isLight
     ? "bg-[#006B3F]/10 text-[#006B3F]"
     : "bg-[#FCD116]/10 text-[#FCD116]";
@@ -116,8 +110,6 @@ export function SankofaGetInvolved({ theme, optionLabel, basePath }: SankofaGetI
 
   return (
     <div className={`${sora.variable} ${t.page}`}>
-      <PreviewBanner option={optionLabel} />
-
       <SankofaHeader
         theme={theme}
         basePath={basePath}
@@ -129,28 +121,28 @@ export function SankofaGetInvolved({ theme, optionLabel, basePath }: SankofaGetI
       />
 
       <SankofaKenteHero theme={theme}>
-        <p className={`text-[13px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>
+        <p className={`text-[13px] uppercase tracking-[0.28em] ${t.heroEyebrow}`}>
           Get involved
         </p>
         <h1
-          className="mt-5 text-4xl font-semibold tracking-[-0.03em] text-balance text-[#EFEDE4] md:text-6xl"
+          className={`mt-5 text-4xl tracking-[-0.03em] text-balance md:text-6xl ${t.heroTitle}`}
           style={display}
         >
           There is a place for you here
         </h1>
-        <p className="mt-6 max-w-2xl text-lg leading-relaxed text-[#EFEDE4]/75">
+        <p className={`mt-6 max-w-2xl text-lg leading-relaxed ${t.heroBody}`}>
           Volunteer with GCAO or ask about membership. You can also{" "}
           <a href={`${basePath}/donate`} className="underline decoration-1 underline-offset-4">
             donate
           </a>{" "}
           to keep the Resource Hub open.
         </p>
-        <nav aria-label="Get involved sections" className="mt-10 flex flex-wrap gap-3 text-sm font-medium text-[#EFEDE4]">
+        <nav aria-label="Get involved sections" className={`mt-10 flex flex-wrap gap-3 text-sm font-medium ${t.heroTitle}`}>
           {sections.map((item) => (
             <a
               key={item.href}
               href={item.href}
-              className="inline-flex items-center gap-2 rounded-full border border-white/25 px-4 py-2 transition-colors hover:border-[#FCD116] hover:text-[#FCD116]"
+              className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 ${t.heroChip}`}
             >
               <Mark name={item.icon} />
               {item.label}
