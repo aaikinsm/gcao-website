@@ -97,6 +97,8 @@ export function SankofaHome({ upcomingEvents, news }: SankofaHomeProps) {
               before="Strengthening"
               words={["communities", "youth", "seniors", "families"]}
               after="across Ontario"
+              highlightClassName={isLight ? "text-[#C8960C]" : "text-[#FCD116]"}
+              markerClassName={isLight ? "bg-[#C8960C]" : "bg-[#FCD116]"}
             />
           </p>
           <div
@@ -183,6 +185,8 @@ export function SankofaHome({ upcomingEvents, news }: SankofaHomeProps) {
                   words={["youth", "seniors", "newcomers", "families"]}
                   after="across Ontario"
                   className="text-sm"
+                  highlightClassName={isLight ? "text-[#C8960C]" : "text-[#FCD116]"}
+                  markerClassName={isLight ? "bg-[#C8960C]" : "bg-[#FCD116]"}
                 />
               </p>
               <a
@@ -224,6 +228,8 @@ export function SankofaHome({ upcomingEvents, news }: SankofaHomeProps) {
             heroTitleLink: t.heroTitleLink,
             heroEyebrow: t.heroEyebrow,
             heroControl: t.heroControl,
+            accentText: isLight ? "text-[#C8960C]" : "text-[#FCD116]",
+            accentBg: isLight ? "bg-[#C8960C]" : "bg-[#FCD116]",
           }}
         />
       </AnimatedSection>

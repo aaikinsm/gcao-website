@@ -52,7 +52,9 @@ export function SankofaDonateReturn({ paid, amount, monthly }: SankofaDonateRetu
         {!paid && (
           <a
             href={`${basePath}/donate`}
-            className="mt-10 inline-flex rounded-full bg-[#FCD116] px-6 py-3 text-sm font-semibold text-[#06110D]"
+            className={`mt-10 inline-flex rounded-full px-6 py-3 text-sm font-semibold text-[#06110D] ${
+              theme === "light" ? "bg-[#C8960C]" : "bg-[#FCD116]"
+            }`}
           >
             Back to donate
           </a>

@@ -51,6 +51,17 @@ export function SankofaDonate({ configured }: SankofaDonateProps) {
       <section className="px-6 py-16 md:px-10 md:py-24">
         <div className="mx-auto max-w-3xl">
           <DonateCheckout basePath={basePath} isLight={isLight} configured={configured} />
+          <p className={`mt-12 text-base leading-relaxed ${t.sectionMuted}`}>
+            You can also send an e-Transfer to{" "}
+            <a
+              href="mailto:donate@gcaocanada.org"
+              className={
+                isLight ? "text-[#006B3F] hover:underline" : "text-[#FCD116] hover:underline"
+              }
+            >
+              donate@gcaocanada.org
+            </a>.
+          </p>
         </div>
       </section>
 

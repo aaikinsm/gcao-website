@@ -67,7 +67,7 @@ export const sankofaThemes = {
     donateOutline:
       "border border-[#006B3F] text-[#006B3F] hover:bg-[#006B3F] hover:text-white",
     menuBg: "bg-[#FFFBF2]",
-    eyebrow: "text-[#FCD116]",
+    eyebrow: "text-[#C8960C]",
     heroEyebrow: "font-bold text-[#043D28]",
     heroTitle: "font-bold text-[#06110D]",
     heroBody: "text-[#06110D]",
@@ -76,7 +76,7 @@ export const sankofaThemes = {
     heroControl: "border-[#0F1B14]/20 bg-[#FFFBF2]/80 text-[#0F1B14] hover:bg-white",
     heroTitleLink: "font-bold text-[#06110D] hover:text-[#006B3F]",
     heroSub: "font-semibold text-[#06110D]",
-    ctaPrimary: "bg-[#FCD116] text-[#06110D]",
+    ctaPrimary: "bg-[#C8960C] text-[#06110D]",
     ctaSecondary:
       "border border-[#0F1B14]/25 text-[#0F1B14] hover:border-[#006B3F] hover:text-[#006B3F]",
     statsWrap: "border-black/10 bg-white",

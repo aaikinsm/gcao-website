@@ -8,6 +8,7 @@ interface AnimatedHeadlineProps {
   after: string;
   className?: string;
   highlightClassName?: string;
+  markerClassName?: string;
   intervalMs?: number;
 }
 
@@ -21,6 +22,7 @@ export function AnimatedHeadline({
   after,
   className = "",
   highlightClassName = "text-[#FCD116]",
+  markerClassName = "bg-[#FCD116]",
   intervalMs = 2500,
 }: AnimatedHeadlineProps) {
   const ref = useRef<HTMLSpanElement>(null);
@@ -67,7 +69,7 @@ export function AnimatedHeadline({
         {word}
         <span
           aria-hidden
-          className="absolute inset-x-0 -bottom-1 h-[3px] origin-left animate-marker rounded-full bg-[#FCD116]"
+          className={`absolute inset-x-0 -bottom-1 h-[3px] origin-left animate-marker rounded-full ${markerClassName}`}
         />
       </span>{" "}
       {after}

@@ -18,6 +18,8 @@ type Tokens = {
   heroTitleLink: string;
   heroEyebrow: string;
   heroControl: string;
+  accentText: string;
+  accentBg: string;
 };
 
 interface UpcomingEventsSliderProps {
@@ -43,7 +45,7 @@ export function UpcomingEventsSlider({ events, basePath, tokens }: UpcomingEvent
       <div
         className={`relative mx-auto max-w-6xl overflow-hidden rounded-[2rem] border px-8 py-16 md:px-14 md:py-20 ${tokens.panelBorder}`}
       >
-        <p className="text-[13px] font-semibold uppercase tracking-[0.28em] text-[#FCD116]">
+        <p className={`text-[13px] font-semibold uppercase tracking-[0.28em] ${tokens.accentText}`}>
           Upcoming
         </p>
         <h2 className="mt-5 text-4xl font-semibold tracking-tight md:text-5xl" style={display}>
@@ -54,7 +56,7 @@ export function UpcomingEventsSlider({ events, basePath, tokens }: UpcomingEvent
         </p>
         <Link
           href={allEventsHref}
-          className="link-arrow mt-8 inline-flex items-center gap-2 text-sm font-semibold text-[#FCD116]"
+          className={`link-arrow mt-8 inline-flex items-center gap-2 text-sm font-semibold ${tokens.accentText}`}
         >
           View all events <span aria-hidden>→</span>
         </Link>
@@ -144,7 +146,7 @@ export function UpcomingEventsSlider({ events, basePath, tokens }: UpcomingEvent
               aria-label={`Show ${event.title}`}
               onClick={() => setIndex(i)}
               className={`h-2.5 rounded-full transition-all ${
-                i === index ? "w-8 bg-[#FCD116]" : "w-2.5 bg-current opacity-25 hover:opacity-50"
+                i === index ? `w-8 ${tokens.accentBg}` : "w-2.5 bg-current opacity-25 hover:opacity-50"
               }`}
             />
           ))}

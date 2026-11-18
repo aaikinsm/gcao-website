@@ -46,7 +46,9 @@ export function SankofaGallery() {
         </p>
         <a
           href={`#${firstGallerySectionId}`}
-          className="mt-8 inline-flex rounded-full bg-[#FCD116] px-5 py-2.5 text-sm font-semibold text-[#06110D]"
+          className={`mt-8 inline-flex rounded-full px-5 py-2.5 text-sm font-semibold text-[#06110D] ${
+            theme === "light" ? "bg-[#C8960C]" : "bg-[#FCD116]"
+          }`}
         >
           See the pictures
         </a>
