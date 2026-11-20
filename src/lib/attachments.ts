@@ -24,7 +24,6 @@ export function isImageAttachment(url: string) {
 }
 
 export async function listAttachments(postType: PostType, postId: number): Promise<PostAttachment[]> {
-  await ensurePostExtras();
   const [rows] = await getPool().query<RowDataPacket[]>(
     `SELECT id, url, filename, caption, sort_order
      FROM post_attachments
@@ -110,6 +109,7 @@ export async function syncAttachments(
 }
 
 export async function copyAttachments(postType: PostType, fromId: number, toId: number) {
+  await ensurePostExtras();
   const rows = await listAttachments(postType, fromId);
   for (const [index, row] of rows.entries()) {
     const url = await copyUploadedFile(row.url);
@@ -122,6 +122,7 @@ export async function copyAttachments(postType: PostType, fromId: number, toId: 
 }
 
 export async function deleteAttachments(postType: PostType, postId: number) {
+  await ensurePostExtras();
   const rows = await listAttachments(postType, postId);
   await getPool().execute("DELETE FROM post_attachments WHERE post_type = ? AND post_id = ?", [
     postType,

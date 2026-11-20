@@ -6,6 +6,8 @@ import { EmbeddedCheckout, EmbeddedCheckoutProvider } from "@stripe/react-stripe
 
 const publishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY ?? "";
 const stripePromise = publishableKey ? loadStripe(publishableKey) : null;
+const MIN_CENTS = 500;
+const MAX_CENTS = 5_000_000;
 
 function dollarsToCents(value: string) {
   const trimmed = value.trim().replace(/^\$/, "");
@@ -30,8 +32,13 @@ export function DonateCheckout({ basePath, isLight, configured }: DonateCheckout
 
   const trimmed = amount.trim();
   const amountCents = trimmed === "" ? null : dollarsToCents(trimmed);
-  const ready = configured && amountCents !== null && amountCents >= 500;
-  const belowMinimum = configured && trimmed !== "" && !ready;
+  const belowMinimum = configured && amountCents !== null && amountCents < MIN_CENTS;
+  const aboveMaximum = configured && amountCents !== null && amountCents > MAX_CENTS;
+  const ready =
+    configured &&
+    amountCents !== null &&
+    amountCents >= MIN_CENTS &&
+    amountCents <= MAX_CENTS;
   const checkoutKey = ready ? `${interval}-${amountCents}` : "";
 
   const muted = isLight ? "text-[#0F1B14]/55" : "text-[#EFEDE4]/55";
@@ -109,6 +116,14 @@ export function DonateCheckout({ basePath, isLight, configured }: DonateCheckout
       )}
 
       {belowMinimum && (
+        <p className={`mt-8 text-sm leading-relaxed ${muted}`}>Enter at least $5.</p>
+      )}
+
+      {aboveMaximum && (
+        <p className={`mt-8 text-sm leading-relaxed ${muted}`}>Enter at most $50,000.</p>
+      )}
+
+      {configured && trimmed !== "" && amountCents === null && (
         <p className={`mt-8 text-sm leading-relaxed ${muted}`}>Enter at least $5.</p>
       )}
 

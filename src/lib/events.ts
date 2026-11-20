@@ -5,6 +5,7 @@ import { ensurePostExtras } from "@/lib/post-extras";
 import { parseBodyMode, type BodyMode } from "@/lib/post-fields";
 import { ensureAuthorColumns, ensurePendingStatus, parsePostStatus, type PostStatus } from "@/lib/post-status";
 import { formDateTimeToMysql, slugify, toDatetimeLocalValue } from "@/lib/slug";
+import { torontoWallTime } from "@/lib/toronto-time";
 
 export {
   formatEventDateRange,
@@ -60,10 +61,7 @@ async function ready() {
 }
 
 function asDate(value: Date | string | null | undefined): Date | null {
-  if (!value) return null;
-  if (value instanceof Date) return Number.isNaN(value.getTime()) ? null : value;
-  const parsed = new Date(value.includes("T") ? value : value.replace(" ", "T"));
-  return Number.isNaN(parsed.getTime()) ? null : parsed;
+  return torontoWallTime(value);
 }
 
 function mapEvent(row: EventRow): GcaoEvent | null {
@@ -97,7 +95,6 @@ async function withAttachments(event: GcaoEvent | null) {
 
 export async function getPublishedEvents(): Promise<GcaoEvent[]> {
   try {
-    await ready();
     const [rows] = await getPool().query<EventRow[]>(
       `SELECT ${EVENT_SELECT}
        FROM events
@@ -113,7 +110,6 @@ export async function getPublishedEvents(): Promise<GcaoEvent[]> {
 
 export async function getEventBySlug(slug: string): Promise<GcaoEvent | null> {
   try {
-    await ready();
     const [rows] = await getPool().query<EventRow[]>(
       `SELECT ${EVENT_SELECT}
        FROM events

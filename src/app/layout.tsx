@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { DM_Sans, Playfair_Display } from "next/font/google";
 import { SankofaThemeProvider } from "@/components/previews/sankofaThemeContext";
+import { authOrigin } from "@/lib/auth-url";
 import "./globals.css";
 
 const dmSans = DM_Sans({
@@ -14,7 +15,9 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL?.trim() || "http://localhost:3000"),
+  metadataBase: new URL(
+    authOrigin() || process.env.NEXT_PUBLIC_SITE_URL?.trim() || "http://localhost:3000",
+  ),
   title: "Ghanaian-Canadian Association of Ontario",
   description:
     "The Ghanaian-Canadian Association of Ontario strengthens communities through social, cultural, and educational programs.",

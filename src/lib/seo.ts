@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { headers } from "next/headers";
+import { authOrigin } from "@/lib/auth-url";
 import type { GcaoEvent } from "@/lib/events";
 import type { GcaoNews } from "@/lib/news-types";
 
@@ -9,6 +10,8 @@ export const DARK_EVENTS = "/events";
 const PUBLISHER = "Ghanaian-Canadian Association of Ontario";
 
 export async function siteOrigin() {
+  const fromAuth = authOrigin();
+  if (fromAuth) return fromAuth;
   const configured = process.env.NEXT_PUBLIC_SITE_URL?.trim().replace(/\/$/, "");
   if (configured) return configured;
   const headerList = await headers();

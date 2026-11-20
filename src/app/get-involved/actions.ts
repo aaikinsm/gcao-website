@@ -1,5 +1,7 @@
 "use server";
 
+import { headers } from "next/headers";
+import { withinRateLimit } from "@/lib/rate-limit";
 import { isInterestKind, postWebToLead, salesforceConfigured, type InterestKind } from "@/lib/salesforce";
 
 export type InterestState = { ok: true } | { error: string } | null;
@@ -53,6 +55,12 @@ export async function submitInterest(_prev: InterestState, formData: FormData): 
 
   const details = description(kindRaw, formData);
   if ("error" in details) return { error: details.error };
+
+  const headerList = await headers();
+  const address = headerList.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
+  if (!withinRateLimit(`interest:${address.slice(0, 80)}`, 8, 10 * 60 * 1000)) {
+    return { error: "Try again shortly." };
+  }
 
   if (!salesforceConfigured()) return { ok: true };
 

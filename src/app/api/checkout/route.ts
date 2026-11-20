@@ -11,14 +11,30 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Donations are unavailable right now." }, { status: 503 });
   }
 
+  const contentType = request.headers.get("content-type") ?? "";
+  if (!contentType.toLowerCase().includes("application/json")) {
+    return NextResponse.json({ error: "Unknown page." }, { status: 415 });
+  }
+
+  const origin = authOrigin();
+  if (!origin) {
+    return NextResponse.json({ error: "Donations are unavailable right now." }, { status: 503 });
+  }
+  if (request.headers.get("origin") !== origin) {
+    return NextResponse.json({ error: "Unknown page." }, { status: 403 });
+  }
+
   const body = await request.json().catch(() => null);
   const amountCents = Number(body?.amountCents);
   const interval = body?.interval;
   const basePath = body?.basePath;
   const theme = body?.theme === "dark" ? "dark" : "light";
 
-  if (!Number.isInteger(amountCents) || amountCents < MIN_CENTS || amountCents > MAX_CENTS) {
+  if (!Number.isInteger(amountCents) || amountCents < MIN_CENTS) {
     return NextResponse.json({ error: "Enter at least $5." }, { status: 400 });
+  }
+  if (amountCents > MAX_CENTS) {
+    return NextResponse.json({ error: "Enter at most $50,000." }, { status: 400 });
   }
   if (interval !== "once" && interval !== "month") {
     return NextResponse.json({ error: "Choose once or monthly." }, { status: 400 });
@@ -27,10 +43,6 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Unknown page." }, { status: 400 });
   }
 
-  const origin = authOrigin();
-  if (!origin) {
-    return NextResponse.json({ error: "Donations are unavailable right now." }, { status: 503 });
-  }
   const address = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
   if (!withinRateLimit(`checkout:${address.slice(0, 80)}`, 8, 10 * 60 * 1000)) {
     return NextResponse.json({ error: "Try again shortly." }, { status: 429 });

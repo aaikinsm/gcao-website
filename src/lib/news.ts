@@ -2,6 +2,7 @@ import type { ResultSetHeader, RowDataPacket } from "mysql2";
 import { copyAttachments, deleteAttachments, listAttachments } from "@/lib/attachments";
 import { getPool } from "@/lib/db";
 import { slugify, formDateTimeToMysql, toDatetimeLocalValue } from "@/lib/slug";
+import { torontoWallTime } from "@/lib/toronto-time";
 import { parseNewsKind, type GcaoNews, type NewsKind } from "@/lib/news-types";
 import { ensurePostExtras } from "@/lib/post-extras";
 import { parseBodyMode, type BodyMode } from "@/lib/post-fields";
@@ -149,10 +150,7 @@ async function ensurePublicationPosts() {
 }
 
 function asDate(value: Date | string | null | undefined): Date | null {
-  if (!value) return null;
-  if (value instanceof Date) return Number.isNaN(value.getTime()) ? null : value;
-  const parsed = new Date(value.includes("T") ? value : value.replace(" ", "T"));
-  return Number.isNaN(parsed.getTime()) ? null : parsed;
+  return torontoWallTime(value);
 }
 
 function mapNews(row: NewsRow): GcaoNews | null {
@@ -229,8 +227,6 @@ export async function getAllNews(): Promise<GcaoNews[]> {
 
 export async function getPublishedNews(): Promise<GcaoNews[]> {
   try {
-    await ensureNewsKindColumn();
-    await ensureAuthorColumns();
     const [rows] = await getPool().query<NewsRow[]>(
       `SELECT ${NEWS_SELECT}
        FROM news
@@ -261,8 +257,6 @@ export async function getNewsById(id: number): Promise<GcaoNews | null> {
 
 export async function getNewsBySlug(slug: string): Promise<GcaoNews | null> {
   try {
-    await ensureNewsKindColumn();
-    await ensureAuthorColumns();
     const [rows] = await getPool().query<NewsRow[]>(
       `SELECT ${NEWS_SELECT} FROM news WHERE slug = ? AND status = 'published' LIMIT 1`,
       [slug],

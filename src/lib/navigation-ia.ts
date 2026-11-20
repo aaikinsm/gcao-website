@@ -143,10 +143,7 @@ export const droppedPages: DroppedPage[] = [
 ];
 
 export const footerLinks = [
-  { label: "Marketplace", href: "/marketplace" },
-  { label: "Partners", href: "/partners" },
   { label: "Publications", href: "/news" },
   { label: "Gallery", href: "/gallery" },
-  { label: "COVID-19 Resources", href: "/resources/covid-19" },
   { label: "FAQ", href: "/faq" },
 ];

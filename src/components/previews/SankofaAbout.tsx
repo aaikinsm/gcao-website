@@ -77,7 +77,7 @@ export function SankofaAbout() {
         </nav>
       </SankofaKenteHero>
 
-      <AnimatedSection id="mission" className="px-6 py-24 md:px-10 md:py-32">
+      <AnimatedSection id="mission" className="scroll-mt-28 px-6 py-24 md:px-10 md:py-32">
         <div className="mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-12">
           <div className="lg:col-span-6">
             <p className={`text-[13px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>
@@ -123,7 +123,7 @@ export function SankofaAbout() {
         </div>
       </AnimatedSection>
 
-      <AnimatedSection id="history" className={`border-y px-6 py-24 md:px-10 md:py-32 ${t.statsWrap}`}>
+      <AnimatedSection id="history" className={`scroll-mt-28 border-y px-6 py-24 md:px-10 md:py-32 ${t.statsWrap}`}>
         <div className="mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-12">
           <div className="group relative order-2 overflow-hidden rounded-3xl lg:order-1 lg:col-span-6">
             <SiteImage
@@ -158,7 +158,7 @@ export function SankofaAbout() {
         </div>
       </AnimatedSection>
 
-      <AnimatedSection id="team" className="px-6 py-24 md:px-10 md:py-32">
+      <AnimatedSection id="team" className="scroll-mt-28 px-6 py-24 md:px-10 md:py-32">
         <div className="mx-auto max-w-6xl">
           <p className={`text-[13px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>
             Team
@@ -173,7 +173,7 @@ export function SankofaAbout() {
         </div>
       </AnimatedSection>
 
-      <AnimatedSection id="values" className={`border-y px-6 py-24 md:px-10 md:py-32 ${t.statsWrap}`}>
+      <AnimatedSection id="values" className={`scroll-mt-28 border-y px-6 py-24 md:px-10 md:py-32 ${t.statsWrap}`}>
         <div className="mx-auto max-w-6xl">
           <p className={`text-[13px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>
             Values
@@ -200,7 +200,7 @@ export function SankofaAbout() {
         </div>
       </AnimatedSection>
 
-      <AnimatedSection id="impact" className="px-6 py-24 md:px-10 md:py-32">
+      <AnimatedSection id="impact" className="scroll-mt-28 px-6 py-24 md:px-10 md:py-32">
         <div className="mx-auto max-w-6xl">
           <p className={`text-[13px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>
             Impact stats
@@ -221,7 +221,7 @@ export function SankofaAbout() {
         </div>
       </AnimatedSection>
 
-      <AnimatedSection id="projects" className="px-6 pb-32 md:px-10 md:pb-40">
+      <AnimatedSection id="projects" className="scroll-mt-28 px-6 pb-32 md:px-10 md:pb-40">
         <div className="mx-auto max-w-6xl">
           <p className={`text-[13px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>
             Projects & fundraising
