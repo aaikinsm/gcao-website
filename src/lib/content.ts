@@ -734,7 +734,7 @@ export const siteContent = {
           },
         ],
       },
-    ] satisfies PartnerGroup[],
+    ] satisfies PartnerGroup[] as PartnerGroup[],
   },
   mentalHealth: {
     eyebrow: "Mental Health",

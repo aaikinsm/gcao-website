@@ -12,7 +12,7 @@ import { SankofaFooter } from "@/components/previews/SankofaFooter";
 import { SankofaHeader } from "@/components/previews/SankofaHeader";
 import { ServePanels } from "@/components/previews/ServePanels";
 import { UpcomingEventsSlider } from "@/components/previews/UpcomingEventsSlider";
-import { siteContent } from "@/lib/content";
+import { siteContent, type PartnerItem } from "@/lib/content";
 import type { UpcomingEventSlide } from "@/lib/event-display";
 import type { GcaoNews } from "@/lib/news-types";
 import { newsCover, newsTypeLabel } from "@/lib/news-types";
@@ -310,7 +310,9 @@ export function SankofaHome({ upcomingEvents, news }: SankofaHomeProps) {
           <ul className="mt-14 grid list-none grid-cols-2 gap-x-6 gap-y-4 sm:grid-cols-3 lg:grid-cols-5">
             {siteContent.partners.groups
               .flatMap((group) => group.items)
-              .filter((item) => item.featured && item.logo)
+              .filter((item): item is PartnerItem & { logo: string } =>
+                Boolean(item.featured && item.logo),
+              )
               .map((item) => (
                 <li key={item.name} className="group relative pb-14">
                   <div
