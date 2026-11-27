@@ -1,3 +1,17 @@
+export type PartnerItem = {
+  name: string;
+  detail: string;
+  href?: string;
+  logo?: string;
+  featured?: boolean;
+};
+
+export type PartnerGroup = {
+  id: string;
+  label: string;
+  items: PartnerItem[];
+};
+
 export const siteContent = {
   orgName: "Ghanaian-Canadian Association of Ontario",
   orgShort: "GCAO",
@@ -48,12 +62,12 @@ export const siteContent = {
   featuredProgram: {
     title: "GCAO Homework Club",
     description:
-      "Free after-school academic support for children in need. Our Homework Club is now open — helping youth build confidence, skills, and community connections.",
+      "Free after-school academic support for children in need. Our Homework Club is now open and helps youth build confidence, skills, and community connections.",
     cta: "Learn More",
   },
   featuredEvent: {
     title: "GCAO Homework Club Launch",
-    date: "Ongoing — Register Now",
+    date: "Ongoing. Register now",
     location: "Resource Hub, 65 Mayall Ave, North York",
     description:
       "We invite children in need of academic support to join our free Homework Club program at the GCAO Resource Hub.",
@@ -63,14 +77,14 @@ export const siteContent = {
       title: "Ghanaian Community Comes Together for Life-Saving Prostate Cancer Screening",
       category: "Community",
       excerpt:
-        "Prostate cancer remains one of the most common cancers affecting men, and research continues to show that Black men — including Ghanaian-Canadians — face elevated risk.",
+        "Prostate cancer remains one of the most common cancers affecting men, and research continues to show that Black men, including Ghanaian-Canadians, face elevated risk.",
       tag: "Health",
     },
     {
-      title: "Emancipation Month — Continental Africa-Sankofa",
+      title: "Emancipation Month: Continental Africa-Sankofa",
       category: "Events",
       excerpt:
-        "As August is Emancipation Month, we closed the month with 'Continental Africa-Sankofa' — a free community celebration of heritage and resilience.",
+        "As August is Emancipation Month, we closed the month with 'Continental Africa-Sankofa', a free community celebration of heritage and resilience.",
       tag: "Culture",
     },
     {
@@ -82,7 +96,7 @@ export const siteContent = {
     },
   ],
   placeholders: [
-    { label: "Resource Hub exterior — 65 Mayall Ave", aspect: "wide" },
+    { label: "Resource Hub exterior, 65 Mayall Ave", aspect: "wide" },
     { label: "Community event / cultural celebration", aspect: "square" },
     { label: "Homework Club / youth program", aspect: "square" },
     { label: "Seniors program / intergenerational gathering", aspect: "wide" },
@@ -257,7 +271,7 @@ export const siteContent = {
       {
         title: "Homework Club",
         description:
-          "Free after-school academic support for children — confidence, skills, and community connection at the Resource Hub.",
+          "Free after-school academic support for children. The club builds confidence, skills, and community connection at the Resource Hub.",
         cta: "Support youth learning",
       },
       {
@@ -276,7 +290,7 @@ export const siteContent = {
   },
   programsPage: {
     intro:
-      "Social, cultural, educational, and wellness programs serving Ghanaian-Canadians across Ontario — from after-school learning to seniors, family wings, mental health training, and diaspora advocacy.",
+      "Social, cultural, educational, and wellness programs serving Ghanaian-Canadians across Ontario, from after-school learning to seniors, family wings, mental health training, and diaspora advocacy.",
     education: {
       title: "Education and mentorship",
       eyebrow: "Education",
@@ -285,7 +299,7 @@ export const siteContent = {
       context:
         "Nearly 50% of Ontario students have failed to meet standards in math and English on EQAO assessments. This program supports working parents and new immigrant families who may face economic or language barriers.",
       mission:
-        "To develop a creative, respectful, and intellectual learning environment for the Ghanaian-Canadian community — empowering young leaders to mentor and assist the next generation.",
+        "To develop a creative, respectful, and intellectual learning environment for the Ghanaian-Canadian community, and to empower young leaders to mentor and assist the next generation.",
       offers: [
         "Homework support",
         "Mentorship",
@@ -303,7 +317,7 @@ export const siteContent = {
       title: "Youth · Seniors · Women · Men",
       eyebrow: "Community wings",
       summary:
-        "Four interconnected wings keep Ghanaian-Canadian families supported across generations — leadership for youth, connection for seniors, empowerment for women, and fellowship for men.",
+        "Four interconnected wings keep Ghanaian-Canadian families supported across generations: leadership for youth, connection for seniors, empowerment for women, and fellowship for men.",
       groups: [
         {
           id: "youth",
@@ -323,7 +337,7 @@ export const siteContent = {
           id: "seniors",
           title: "Golden Ages Seniors",
           summary:
-            "A community-based program for Ghanaian-Canadian seniors 65+ that promotes active aging, reduces isolation, and strengthens social connection — engaging 400+ seniors with support from the Ontario Seniors Community Grant Program.",
+            "A community-based program for Ghanaian-Canadian seniors 65+ that promotes active aging, reduces isolation, and strengthens social connection. It engages 400+ seniors with support from the Ontario Seniors Community Grant Program.",
           highlights: [
             "Virtual fitness, Zumba & fall-prevention classes",
             "Health education on chronic disease and wellness",
@@ -370,11 +384,18 @@ export const siteContent = {
         "Mental Health First Aid for Africans in the Diaspora builds capacity among Black Canadians and African diaspora communities through culturally focused MHFA courses and training.",
       context:
         "Mental health supports are often the least available resources for African immigrants. Incorporating culture into MHFA increases uptake and helps communities address unique barriers to care.",
+      definition:
+        "Mental Health First Aid is a course like First Aid and CPR. It teaches people how to assist someone in a mental health crisis, and it includes certification from the Mental Health Commission of Canada.",
       highlights: [
-        "Culturally relevant Mental Health First Aid courses",
-        "Capacity building for community responders",
-        "Training delivered across Canadian cities",
-        "Education that reduces stigma and superstition around mental health",
+        "Substance use and first aid for overdose",
+        "Depression, bipolar disorder, and first aid for suicidal behavior",
+        "Anxiety and first aid for panic attacks and acute stress",
+        "Psychotic disorders and first aid for psychotic episodes",
+        "Training for communities across Canada, starting with Vancouver, Calgary, Toronto, and Montreal",
+      ],
+      contacts: [
+        { name: "Mary Akuamoah-Boateng", email: "vp@gcaocanada.org" },
+        { name: "Noah Boakye-Yiadom", email: "noah@bynconsults.com" },
       ],
       image: "/images/programs/health.jpg",
       alt: "Mental Health First Aid training with GCAO participants",
@@ -383,7 +404,7 @@ export const siteContent = {
       title: "Diaspora Engagement Think Tank (DETT)",
       eyebrow: "Advocacy",
       summary:
-        "DETT is a non-profit, voluntary organization anchored under GCAO in Toronto that promotes critical analysis of policies and community challenges — and advocacy to support Ghanaian-Canadians in Canada or wishing to return to Ghana.",
+        "DETT is a non-profit, voluntary organization anchored under GCAO in Toronto that promotes critical analysis of policies and community challenges, and advocacy to support Ghanaian-Canadians in Canada or wishing to return to Ghana.",
       mission:
         "Voice of the Ghanaian-Canadian community in developing policies and partnering with governments, professional, and business groups to meet community challenges.",
       vision:
@@ -507,5 +528,276 @@ export const siteContent = {
         ],
       },
     ],
+  },
+  partners: {
+    title: "Partners & Funders",
+    intro:
+      "GCAO works with funders, health centres, community groups, faith communities, and media.",
+    groups: [
+      {
+        id: "funders",
+        label: "Funders",
+        items: [
+          {
+            name: "Public Health Agency of Canada",
+            detail: "Funded Mental Health First Aid for Africans in the Diaspora (2022–24).",
+            href: "https://www.canada.ca/en/public-health.html",
+            featured: true,
+          },
+          {
+            name: "Employment and Social Development Canada",
+            detail:
+              "Supporting Black Communities Initiative grant for GCAO Virtual Capacity for Social Intervention Programs (2021–22).",
+            href: "https://www.canada.ca/en/employment-social-development.html",
+          },
+          {
+            name: "New Horizons for Seniors Program",
+            detail: "Seniors programming through the Golden Ages wing.",
+            href: "https://www.canada.ca",
+          },
+          {
+            name: "Canadian Heritage",
+            detail: "Multiculturalism Program grant.",
+            href: "https://www.canada.ca/en/canadian-heritage.html",
+          },
+          {
+            name: "Government of Ontario, Seniors Community Grant",
+            detail: "Seniors programming.",
+            href: "https://www.ontario.ca",
+          },
+          {
+            name: "City of Toronto",
+            detail: "Funding for health and wellbeing programming.",
+            href: "https://www.toronto.ca",
+          },
+          {
+            name: "United Way Greater Toronto",
+            detail: "Funded newcomer support.",
+            href: "https://www.unitedwaygt.org",
+            logo: "/images/partners/united-way.png",
+            featured: true,
+          },
+          {
+            name: "Canadian Women's Foundation",
+            detail: "Funding for women's programming.",
+            href: "https://www.canadianwomen.org",
+            logo: "/images/partners/womens-foundation.png",
+            featured: true,
+          },
+        ],
+      },
+      {
+        id: "health",
+        label: "Health partners",
+        items: [
+          {
+            name: "Rexdale Community Health Centre",
+            detail: "Long-standing health education partner. Co-delivered the BWELL Health Fairs.",
+            href: "https://rexdalechc.com",
+            logo: "/images/partners/rexdale.png",
+            featured: true,
+          },
+          {
+            name: "Black Health Alliance",
+            detail: "Health education partner.",
+            href: "https://blackhealthalliance.ca",
+            logo: "/images/partners/black-health-alliance.png",
+          },
+          {
+            name: "The Walnut Foundation",
+            detail:
+              "Co-delivered 2025 prostate cancer education and two free PSA screening clinics, with about 200 men screened.",
+            href: "https://thewalnutfoundation.com",
+            logo: "/images/partners/walnut.png",
+            featured: true,
+          },
+          {
+            name: "Princess Margaret Cancer Centre",
+            detail: "Co-delivered the 2025 PSA screening clinics with The Walnut Foundation.",
+            href: "https://www.uhn.ca",
+          },
+          {
+            name: "Afri-Can FoodBasket",
+            detail: "Health education and community food partner.",
+            href: "https://africanfoodbasket.ca",
+            logo: "/images/partners/african-foodbasket.png",
+          },
+          {
+            name: "TAIBU Community Health Centre",
+            detail: "A past health partner of GCAO.",
+            href: "https://taibuchc.ca",
+            logo: "/images/partners/taibu.png",
+          },
+          {
+            name: "Black Mental Health Canada",
+            detail: "A past health partner of GCAO.",
+            href: "https://www.blackmentalhealth.ca",
+            logo: "/images/partners/black-mental-health.png",
+          },
+        ],
+      },
+      {
+        id: "community",
+        label: "Community and sector partners",
+        items: [
+          {
+            name: "Network for the Advancement of Black Communities",
+            detail: "A past community partner of GCAO.",
+            href: "https://networkabc.ca",
+            logo: "/images/partners/nabc.png",
+          },
+          {
+            name: "African Canadian Social Development Council",
+            detail: "GCAO is a member organization.",
+            href: "https://acsdc.ca",
+            logo: "/images/partners/acsdc.png",
+          },
+          {
+            name: "Alliance of Ghanaian-Canadian Associations",
+            detail: "National alliance of Ghanaian associations.",
+            href: "https://alliancegca.org",
+            logo: "/images/partners/agca.png",
+            featured: true,
+          },
+          {
+            name: "Ghana High Commission, Ottawa",
+            detail: "Long-standing collaboration on community and diaspora events.",
+            href: "https://ottawa.mfa.gov.gh",
+            featured: true,
+          },
+        ],
+      },
+      {
+        id: "faith",
+        label: "Faith and hometown partners",
+        items: [
+          {
+            name: "United Brong Ahafo Associations of Ontario",
+            detail: "Community partner.",
+          },
+          {
+            name: "Mfantseman Cultural Association of Toronto",
+            detail: "Community partner.",
+          },
+          {
+            name: "Ghanaian Presbyterian Church of Toronto",
+            detail: "Long-time host of GCAO community meetings.",
+            href: "https://www.ghpresby.com",
+            logo: "/images/partners/ghpresby.png",
+            featured: true,
+          },
+          {
+            name: "Apostles' Continuation Church",
+            detail: "Long-time host of GCAO community meetings.",
+            href: "https://accihq.org",
+            logo: "/images/partners/acci.png",
+          },
+          {
+            name: "Ghana Methodist Church of Toronto",
+            detail: "Hosted GCAO's 2019 Heritage Centre fundraiser.",
+            href: "https://www.gmct-ca.org",
+            logo: "/images/partners/gmct.png",
+          },
+          {
+            name: "The Church of Pentecost (Toronto)",
+            detail: "Community and faith partner.",
+            href: "https://pentecost.ca",
+          },
+          {
+            name: "Zumunta",
+            detail: "Muslim community partner.",
+            href: "https://www.facebook.com/ZUMUNTAOFCANADA",
+          },
+          {
+            name: "Ghanaian Ministerial Fellowship of Toronto",
+            detail: "Community and faith partner.",
+            href: "https://ghanaianministerialfellowship.com",
+            logo: "/images/partners/ministerial.png",
+          },
+          {
+            name: "Living Word Assembly of God Church",
+            detail: "Community and faith partner.",
+            href: "https://livingwordag.org",
+            logo: "/images/partners/living-word.png",
+          },
+        ],
+      },
+      {
+        id: "media",
+        label: "Media",
+        items: [
+          {
+            name: "Ghanaian News",
+            detail: "Long-running coverage of GCAO events.",
+            href: "https://ghanaiannews.ca",
+            logo: "/images/partners/ghanaian-news.png",
+          },
+        ],
+      },
+    ] satisfies PartnerGroup[],
+  },
+  mentalHealth: {
+    eyebrow: "Mental Health",
+    title: "Mental Health First Aid for Africans in the Diaspora",
+    intro:
+      "Culturally focused Mental Health First Aid for Black Canadians and African diaspora communities across Canada.",
+    inquiry: { label: "Make an inquiry", email: "vp@gcaocanada.org" },
+    image: "/images/programs/health.jpg",
+    alt: "Mental Health First Aid training with GCAO participants",
+    video: {
+      youtubeId: "l04MCXXURBk",
+      heading: "Message from Vice President of GCAO, Mary Akuamoah-Boateng",
+      title: "MH COVID Project Profile | Ghanaian Canadian Association of Ontario",
+    },
+    overview: {
+      id: "overview",
+      label: "Overview",
+      paragraphs: [
+        "The number of immigrants in Canada from Africa grew from 2004 to 2014, with more than 30,000 new immigrants settling in the country every year (Martel and D’Aoust, 2016). African and Caribbean communities across Canada have continued to grow.",
+        "Many of these newcomers turn to country-specific associations for support. Mental health services are often the least available and least accessible resources for immigrants from Africa, where those supports were minimal or did not exist.",
+        "This program builds capacity among Black Canadians and African diaspora communities through culturally focused Mental Health First Aid (MHFA) courses. The goal is to have trainers in every Canadian community that has an African Canadian association or agency. The first cities are Vancouver, Calgary, Toronto, and Montreal, where those associations are already well established.",
+        "Conversation and education about mental health remain difficult in many African communities because of stigma and superstition. As a result, many people do not get timely, appropriate support.",
+        "COVID-19 made this worse. More people have been living with depression, anxiety, and bipolar disorder, and some of that strain has led to abuse and violence in the community.",
+        "Teaching MHFA with an understanding of culture helps more people accept support and gives communities a practical way to address barriers of access and knowledge.",
+      ],
+    },
+    training: {
+      id: "training",
+      label: "Training",
+      definition:
+        "Mental Health First Aid is a training course, similar to First Aid and CPR. It gives people the knowledge and skills to assist someone in a mental health crisis, and it includes certification from the Mental Health Commission of Canada.",
+      topics: [
+        "Substance use and first aid for overdose",
+        "Depression, bipolar disorder, and first aid for suicidal behavior",
+        "Anxiety and first aid for panic attacks and acute stress",
+        "Psychotic disorders and first aid for psychotic episodes",
+      ],
+    },
+    reasons: {
+      id: "why",
+      label: "Why take part",
+      items: [
+        "Support the mental wellbeing of members dealing with stress, anxiety, substance use, and depression. These issues affect how people show up at work and in community life, and the training equips leaders to recognize distress and offer initial support.",
+        "Reduce stigma by encouraging open conversations about mental health, so people feel able to talk about what they are facing and get support.",
+        "Learn to notice early signs and respond promptly, before a smaller problem becomes a severe one.",
+        "Build awareness and resilience that lead to better mental health.",
+        "Contribute to wider community efforts to improve mental health awareness and support.",
+      ],
+    },
+    resources: {
+      id: "resources",
+      label: "Resources",
+      title: "Find a mental health provider",
+      body: "To find a provider, or to hear when the next course runs, contact the trainers below.",
+    },
+    contact: {
+      id: "contact-trainers",
+      label: "Contact",
+      intro: "To take part in GCAO Mental Health First Aid training, or to find out more, contact:",
+      people: [
+        { name: "Mary Akuamoah-Boateng", email: "vp@gcaocanada.org" },
+        { name: "Noah Boakye-Yiadom", email: "noah@bynconsults.com" },
+      ],
+    },
   },
 };

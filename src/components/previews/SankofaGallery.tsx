@@ -41,7 +41,7 @@ export function SankofaGallery() {
           Pictures from our gatherings
         </h1>
         <p className={`mt-6 max-w-2xl text-lg leading-relaxed ${t.heroBody}`}>
-          Dinners, flag raisings, seniors’ days, training, and Black History — moments GCAO keeps
+          Dinners, flag raisings, seniors’ days, training, and Black History. These are moments GCAO keeps
           from the year.
         </p>
         <a

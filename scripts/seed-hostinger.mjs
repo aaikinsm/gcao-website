@@ -88,7 +88,7 @@ const events = [
     ends_at: "2026-09-19 16:00:00",
     location: "Greater Toronto Area (details via GCAO)",
     excerpt:
-      "GCAO Golden Ages seniors gather for the annual picnic — food, fellowship, and community connection.",
+      "GCAO Golden Ages seniors gather for the annual picnic, with food, fellowship, and community connection.",
     body: "The Ghanaian-Canadian Association of Ontario’s Golden Ages group hosts its Seniors Annual Picnic on September 19, 2026. The picnic continues GCAO’s work to reduce isolation and strengthen social connections among seniors 65 and above through culturally welcoming gatherings of food, games, and fellowship.",
     image_url: "/images/seniors-picnic.jpg",
     status: "published",
@@ -100,7 +100,7 @@ const events = [
     ends_at: "2026-02-27 20:30:00",
     location: "Online (Zoom)",
     excerpt:
-      "GCAO’s Black History Month lecture series with Prof. Dei — education and community conversation on Zoom.",
+      "GCAO’s Black History Month lecture series with Prof. Dei: education and community conversation on Zoom.",
     body: "Topic: Black History Month Lecture Series with Prof. Dei. Time: February 27, 2026, 7:00 p.m. Eastern Time (US and Canada). Join via Zoom. Event categories: Awareness, community, Education.",
     image_url: "/images/conference.jpg",
     status: "published",
@@ -125,8 +125,8 @@ const news = [
     slug: "prostate-cancer-screening",
     category: "Health",
     excerpt:
-      "Prostate cancer remains one of the most common cancers affecting men, and research continues to show that Black men—including Ghanaian men—are at a significantly higher risk of developing the disease.",
-    body: "Prostate cancer remains one of the most common cancers affecting men, and research continues to show that Black men—including Ghanaian men—are at a significantly higher risk of developing the disease and often at a younger age. On Sunday, March 15, 2026, the Ghanaian community gathered at the Ghanaian Presbyterian Church of Toronto for a free PSA screening clinic. The event successfully screened 78 men, including several who received their first PSA test. GCAO thanks the Walnut Foundation, Princess Margaret Cancer Centre / University Health Network, MPP Tom Rakocevic, Mary Akuamoah-Boateng, and community volunteers who made the initiative possible.",
+      "Prostate cancer remains one of the most common cancers affecting men, and research continues to show that Black men, including Ghanaian men, are at a significantly higher risk of developing the disease.",
+    body: "Prostate cancer remains one of the most common cancers affecting men, and research continues to show that Black men, including Ghanaian men, are at a significantly higher risk of developing the disease and often at a younger age. On Sunday, March 15, 2026, the Ghanaian community gathered at the Ghanaian Presbyterian Church of Toronto for a free PSA screening clinic. The event successfully screened 78 men, including several who received their first PSA test. GCAO thanks the Walnut Foundation, Princess Margaret Cancer Centre / University Health Network, MPP Tom Rakocevic, Mary Akuamoah-Boateng, and community volunteers who made the initiative possible.",
     image_url: "/images/programs/health.jpg",
     published_at: "2026-03-16 20:42:00",
     status: "published",

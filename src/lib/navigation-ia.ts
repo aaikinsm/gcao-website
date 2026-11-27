@@ -78,7 +78,7 @@ export const proposedNav: NavItem[] = [
     label: "Contact",
     children: [
       { label: "Contact form" },
-      { label: "Resource Hub — 65 Mayall Ave" },
+      { label: "Resource Hub, 65 Mayall Ave" },
     ],
   },
 ];
@@ -146,4 +146,6 @@ export const footerLinks = [
   { label: "Publications", href: "/news" },
   { label: "Gallery", href: "/gallery" },
   { label: "FAQ", href: "/faq" },
+  { label: "Partners & Funders", href: "/partners" },
+  { label: "Mental Health", href: "/programs/health" },
 ];

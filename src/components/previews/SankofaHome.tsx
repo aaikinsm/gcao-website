@@ -296,6 +296,52 @@ export function SankofaHome({ upcomingEvents, news }: SankofaHomeProps) {
         </div>
       </AnimatedSection>
 
+      <AnimatedSection id="partners" className="px-6 py-32 md:px-10 md:py-40" delay={80}>
+        <div className="mx-auto max-w-6xl">
+          <p className={`text-[13px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>
+            Community
+          </p>
+          <h2
+            className="mt-4 text-4xl font-semibold tracking-[-0.02em] md:text-[3.35rem]"
+            style={display}
+          >
+            {siteContent.partners.title}
+          </h2>
+          <ul className="mt-14 grid list-none grid-cols-2 gap-x-6 gap-y-4 sm:grid-cols-3 lg:grid-cols-5">
+            {siteContent.partners.groups
+              .flatMap((group) => group.items)
+              .filter((item) => item.featured && item.logo)
+              .map((item) => (
+                <li key={item.name} className="group relative pb-14">
+                  <div
+                    tabIndex={0}
+                    className={`flex h-20 w-full items-center justify-center rounded-2xl bg-[#FFFBF2] px-3 outline-none focus-visible:ring-2 ${
+                      isLight ? "focus-visible:ring-[#006B3F]" : "focus-visible:ring-[#FCD116]"
+                    }`}
+                  >
+                    <img
+                      src={item.logo}
+                      alt={item.name}
+                      className="max-h-12 w-auto max-w-full object-contain"
+                    />
+                  </div>
+                  <p className="pointer-events-none absolute inset-x-0 top-20 mt-2 text-center text-sm font-medium leading-snug opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-within:opacity-100">
+                    {item.name}
+                  </p>
+                </li>
+              ))}
+          </ul>
+          <a
+            href={`${basePath}/partners`}
+            className={`link-arrow mt-12 inline-flex text-sm font-semibold ${
+              isLight ? "text-[#006B3F]" : "text-[#FCD116]"
+            }`}
+          >
+            View the full list <span aria-hidden>→</span>
+          </a>
+        </div>
+      </AnimatedSection>
+
       <AnimatedSection
         id="get-involved"
         className="relative overflow-hidden px-6 py-32 md:px-10 md:py-40"

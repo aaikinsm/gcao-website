@@ -23,7 +23,7 @@ export function PlaceholderImage({
       <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(0,107,63,0.08),rgba(252,209,22,0.12))]" />
       <div className="relative w-full p-4">
         <span className="inline-block rounded-full bg-black/70 px-3 py-1 text-xs font-medium text-white">
-          Placeholder — replace before launch
+          Placeholder, replace before launch
         </span>
         <p className="mt-2 max-w-sm text-sm font-medium text-gray-700">{label}</p>
       </div>

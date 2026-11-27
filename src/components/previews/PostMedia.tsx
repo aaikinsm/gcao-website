@@ -5,13 +5,19 @@ function isImageAttachment(url: string) {
 }
 import { SiteImage } from "@/components/shared/SiteImage";
 
-export function PostVideo({ youtubeId }: { youtubeId: string | null }) {
+export function PostVideo({
+  youtubeId,
+  title = "Video",
+}: {
+  youtubeId: string | null;
+  title?: string;
+}) {
   if (!youtubeId) return null;
   return (
     <div className="mt-10 aspect-video overflow-hidden rounded-2xl">
       <iframe
         src={`https://www.youtube-nocookie.com/embed/${youtubeId}`}
-        title="Video"
+        title={title}
         className="h-full w-full"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowFullScreen

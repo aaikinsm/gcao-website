@@ -193,6 +193,17 @@ export function SankofaAbout() {
                     {value.name}.
                   </span>{" "}
                   {value.text}
+                  {value.name === "Collaboration" ? (
+                    <>
+                      {" "}
+                      <a
+                        href={`${basePath}/partners`}
+                        className={isLight ? "text-[#006B3F] underline" : "text-[#FCD116] underline"}
+                      >
+                        See our partners and funders
+                      </a>.
+                    </>
+                  ) : null}
                 </span>
               </li>
             ))}

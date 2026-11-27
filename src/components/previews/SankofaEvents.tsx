@@ -64,7 +64,7 @@ export function SankofaEvents({ events }: SankofaEventsProps) {
         </h1>
         <p className={`mt-6 max-w-2xl text-lg leading-relaxed ${t.heroBody}`}>
           Upcoming gatherings and past celebrations from the Ghanaian-Canadian community across
-          Ontario — lectures, picnics, language classes, and cultural nights.
+          Ontario. Lectures, picnics, language classes, and cultural nights.
         </p>
       </SankofaKenteHero>
 

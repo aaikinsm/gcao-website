@@ -21,6 +21,7 @@ const programsNav = [
   { label: "Youth · Seniors · Women · Men", href: "#community" },
   { label: "Health & wellness", href: "#health" },
   { label: "DETT", href: "#dett" },
+  { label: "Chamber of Commerce", href: "#chamber" },
 ];
 
 export function SankofaPrograms() {
@@ -188,7 +189,7 @@ export function SankofaPrograms() {
         </div>
       </AnimatedSection>
 
-      <AnimatedSection id="health" className={`border-y px-6 py-24 md:px-10 md:py-32 ${t.statsWrap}`}>
+      <AnimatedSection id="health" className={`scroll-mt-[11rem] border-y px-6 py-24 md:px-10 md:py-32 ${t.statsWrap}`}>
         <div className="mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-12">
           <div className="order-2 lg:order-1 lg:col-span-6">
             <p className={`text-[13px] font-semibold uppercase tracking-[0.28em] ${t.eyebrow}`}>
@@ -199,6 +200,7 @@ export function SankofaPrograms() {
             </h2>
             <p className={`mt-6 text-base leading-relaxed ${t.cardMuted}`}>{p.health.summary}</p>
             <p className={`mt-4 text-base leading-relaxed ${t.cardMuted}`}>{p.health.context}</p>
+            <p className={`mt-4 text-base leading-relaxed ${t.cardMuted}`}>{p.health.definition}</p>
             <ul className={`mt-8 space-y-3 ${t.cardMuted}`}>
               {p.health.highlights.map((item) => (
                 <li key={item} className="flex gap-3 text-sm">
@@ -212,6 +214,31 @@ export function SankofaPrograms() {
                 </li>
               ))}
             </ul>
+            <p className={`mt-8 text-sm leading-relaxed ${t.cardMuted}`}>
+              To take part, contact {p.health.contacts[0].name} at{" "}
+              <a
+                href={`mailto:${p.health.contacts[0].email}`}
+                className={isLight ? "text-[#006B3F] underline" : "text-[#FCD116] underline"}
+              >
+                {p.health.contacts[0].email}
+              </a>
+              {", or "}
+              {p.health.contacts[1].name} at{" "}
+              <a
+                href={`mailto:${p.health.contacts[1].email}`}
+                className={isLight ? "text-[#006B3F] underline" : "text-[#FCD116] underline"}
+              >
+                {p.health.contacts[1].email}
+              </a>.
+            </p>
+            <p className="mt-4 text-sm">
+              <a
+                href={`${basePath}/programs/health`}
+                className={isLight ? "text-[#006B3F] underline" : "text-[#FCD116] underline"}
+              >
+                Learn about Mental Health First Aid
+              </a>
+            </p>
           </div>
           <div className="group relative order-1 overflow-hidden rounded-3xl lg:order-2 lg:col-span-6">
             <SiteImage

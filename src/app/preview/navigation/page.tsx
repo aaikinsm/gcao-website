@@ -68,7 +68,7 @@ export default function NavigationPreviewPage() {
             Simplify the menu from{" "}
             <strong>{navComparison.before.totalLinks} links</strong> to{" "}
             <strong>{navComparison.after.topLevelCount} items + Donate</strong>.
-            All existing content is preserved — old URLs redirect automatically.
+            All existing content is preserved. Old URLs redirect automatically.
           </p>
         </div>
       </header>
@@ -130,7 +130,7 @@ export default function NavigationPreviewPage() {
                     className="rounded-lg border border-amber-200 bg-amber-50/60 px-4 py-2.5 text-sm"
                   >
                     <span className="font-semibold text-amber-900">{page.name}</span>
-                    <span className="text-amber-950/80"> — {page.summary}</span>
+                    <span className="text-amber-950/80">: {page.summary}</span>
                   </li>
                 ))}
               </ul>
@@ -141,13 +141,13 @@ export default function NavigationPreviewPage() {
                 Safe to drop
               </h3>
               <p className="mt-1 text-xs text-gray-500">
-                WordPress template/plugin pages — not real GCAO content.
+                WordPress template/plugin pages, not real GCAO content.
               </p>
               <ul className="mt-2 grid gap-1 text-sm text-gray-600 sm:grid-cols-2">
                 {droppedPages.map((page) => (
                   <li key={page.slug}>
                     <code className="text-xs">{page.slug}</code>
-                    <span className="text-gray-400"> — {page.reason}</span>
+                    <span className="text-gray-400">: {page.reason}</span>
                   </li>
                 ))}
               </ul>
